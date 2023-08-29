@@ -715,7 +715,7 @@
         },
         "determiningParam" : ["Case (Prepaid)"] 
       },
-      "Bonus Data" : {
+      "Rate Nol" : {
         "type"        : "input",
         "value"       : [
         ],

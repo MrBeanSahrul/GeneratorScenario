@@ -1994,8 +1994,8 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
                      if "Landing Page" in params:
                             landingPage = params["Landing Page"]
                      
-                     if "Bonus Data" in params:
-                            bonusData = params["Bonus Data"]
+                     if "Rate Nol" in params:
+                            bonusData = params["Rate Nol"]
                      
                      if "Remaining Allowance" in params:
                             remainingAllowance = params["Remaining Allowance"]
@@ -2164,8 +2164,8 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
               if "Landing Page" in params:
                      landingPage = params["Landing Page"]
               
-              if "Bonus Data" in params:
-                     bonusData = params["Bonus Data"]
+              if "Rate Nol" in params:
+                     bonusData = params["Rate Nol"]
               
               if "Remaining Allowance" in params:
                      remainingAllowance = params["Remaining Allowance"]
@@ -2621,7 +2621,7 @@ def GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonus
               rounded       = int(roundedUnit[0])*1048576
               # rate          = rate/1048576
        
-       #change bonus data to kb
+       #change Rate Nol to kb
        if unitBonusData.lower() == 'kb':
               amountBonusData      = amountBonusData   
        elif unitBonusData.lower() == 'mb':
@@ -2682,7 +2682,7 @@ def GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonus
 
                             landingPageSteps.extend(stepLandingPage)
                      
-                     #steps for reduce bonus data
+                     #steps for reduce Rate Nol
                      percentageRemainingAllowance = int(amountRemainingAllowance)/int(amountBonusData)
 
                      halfPercentBonusData         = int(amountBonusData)*0.005
@@ -2798,7 +2798,7 @@ def GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonus
 
                             landingPageSteps.extend(stepLandingPage)
                      
-                     #steps for reduce bonus data
+                     #steps for reduce Rate Nol
                      for remainingAllowanceData in remainingAllowanceSplit:
                             remainingAllowanceSplitData = remainingAllowanceData.split(';')
                             amountRemainingAllowance    = remainingAllowanceSplitData[0]
@@ -2925,7 +2925,7 @@ def GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonus
 
                             landingPageSteps.extend(stepLandingPage)
                      
-                     #steps for reduce bonus data
+                     #steps for reduce Rate Nol
                      for remainingAllowanceData in remainingAllowanceSplit:
                             remainingAllowanceSplitData = remainingAllowanceData.split(';')
                             amountRemainingAllowance    = remainingAllowanceSplitData[0]
@@ -3049,7 +3049,7 @@ def GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonus
 
                             landingPageSteps.extend(stepLandingPage)
                      
-                     #steps for reduce bonus data
+                     #steps for reduce Rate Nol
                      for remainingAllowanceData in remainingAllowanceSplit:
                             remainingAllowanceSplitData = remainingAllowanceData.split(';')
                             amountRemainingAllowance    = remainingAllowanceSplitData[0]
