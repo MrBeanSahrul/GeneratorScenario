@@ -1,0 +1,746 @@
+[
+  {
+         "ItemName" : "Flat Call SLI 007 (Internasional call menggunakan prefix 007)",
+         "EventName" : "Flat Call SLI 007",
+         "FunctionName" : "exportExcelFlatCallSLI",
+         "Params": {
+                "Price Pre Paid" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "false",
+                       "dataType" : "int",
+                       "delimiter" : "",
+                       "canOthers" : "false"
+                },
+                "Price Post Paid" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "false",
+                       "dataType" : "int",
+                       "delimiter" : "",
+                       "canOthers" : "false"
+                },
+                "Country" : {
+                       "type" : "option",
+                       "multiple" :"false",
+                       "canOthers" : "true",
+                       "dataType" : "array",
+                       "value" : [
+                              "Amerika Serikat +1",
+                              "Bangladesh +880",
+                              "Brunei Darussalam +673",
+                              "China +86",
+                              "Hong Kong +852",
+                              "India +91",
+                              "Korea Selatan +82",
+                              "Malaysia +60",
+                              "Singapura +65",
+                              "Jepang +81",
+                              "Thailand +66"
+                       ]
+                }
+         }
+  },
+  {
+         "ItemName" : "Empty Offer",
+         "EventName" : "Empty Offer",
+         "FunctionName" : "exportExcelEmptyOffer",
+         "Params": {
+                "OfferName" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "true",
+                       "dataType" : "array"
+                },
+                "OfferDesc" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                }
+         }
+  },
+  {
+         "ItemName" : "RC Offer",
+         "EventName" : "RC Offer",
+         "FunctionName" : "exportExcelRcOffer",
+         "Params": {
+                "OfferName" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "true",
+                       "dataType" : "array"
+                },
+                "OfferDesc" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Rate" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Proration" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array",
+                       "details" : "Prorate/Non Prorate"
+                },
+                "AMDD Charge Code" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                }
+         }
+  },
+  {
+         "ItemName" : "OC Offer",
+         "EventName" : "OC Offer",
+         "FunctionName" : "exportExcelOCOffer",
+         "Params": {
+                "OC Type": {
+                       "type" : "option",
+                       "multiple" :"false",
+                       "canOthers" : "false",
+                       "dataType" : "array",
+                       "value" : [
+                              "One Time Charge",
+                              "Installment",
+                              "Penalty"
+                       ]
+                },
+                "OfferName" : {
+                       "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "true",
+                       "dataType"    : "array"
+                },
+                "OfferDesc" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Rate" : {
+                       "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array"
+                },
+                "AMDD Charge Code" : {
+                       "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array"
+                },
+                "Commitment Period" : {
+                      "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array", 
+                       "conditions"  : ["Installment", "Penalty"],
+                       "determiningParam" : "OC Type"
+                },
+                "AMDD Charge Code Remove Offer" : {
+                       "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array",
+                       "conditions"  : ["Penalty"],
+                       "determiningParam" : "OC Type"
+                }
+         }
+  },
+  {
+         "ItemName" : "Discount Offer",
+         "EventName" : "Discount Offer",
+         "FunctionName" : "exportExcelDiscountOffer",
+         "Params": {
+                "Offer Name" : {
+                       "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "true",
+                       "dataType"    : "array"
+                },
+                "Offer Description" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Rate/Discount Value" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Rate Offer OC" : {
+                       "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array",
+                       "details"     : "Case >,<,Remove Offer",
+                       "status"      : "Disabled"
+                },
+                "Rate Offer RC" : {
+                       "type"        : "input",
+                       "value"       : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array",
+                       "details"     : "Case >,<,Remove Offer",
+                       "status"      : "Disabled"
+                }
+         }
+  },
+  {
+         "ItemName" : "New Service filter and new charge code",
+         "EventName" : "New Service filter and new charge code",
+         "FunctionName" : "exportExcelNewServiceFilter",
+         "Params": {
+                "Product Name" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "true",
+                       "dataType" : "array"
+                },
+                "Service Filter" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array",
+                       "details" : "ON,OFF"
+                },
+                "Charge Code" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array",
+                       "details" : "ON,OFF"
+                }
+         }
+  },
+  {
+         "ItemName" : "Minimum Usage",
+         "EventName" : "Minimum Usage",
+         "FunctionName" : "exportExcelMinimunUsage",
+         "Params": {
+                "Offer Name" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "true",
+                       "dataType" : "array"
+                },
+                "Offer Description" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Amount" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Vascode" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                }
+         }
+  },
+  {
+         "ItemName" : "MU BA Level",
+         "EventName" : "MU BA Level",
+         "FunctionName" : "exportExcelMUBALevel",
+         "Params": {
+                "Offer Name" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "true",
+                       "dataType" : "array"
+                },
+                "Offer Description" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Amount MU" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array"
+                },
+                "Amount For Flexible RC" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array",
+                       "status"      : "Disabled"
+                },
+                "Amount For Flexible OC" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple"    : "true",
+                       "delimiter"   : "|",
+                       "canOthers"   : "false",
+                       "dataType"    : "array",
+                       "status"      : "Disabled"
+                },
+                "Vascode" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                }
+         }
+  },
+  {
+         "ItemName" : "Update AMDD Charge Code",
+         "EventName" : "Update AMDD Charge Code",
+         "FunctionName" : "exportExcelUpdateAMDD",
+         "Params": {
+                "Offer Name" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "true",
+                       "dataType" : "array"
+                },
+                "Offer Description" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Offer ID" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                },
+                "Service Filter" : {
+                       "type" : "input",
+                       "value" : [
+                       ],
+                       "multiple" : "true",
+                       "delimiter" : "|",
+                       "canOthers" : "false",
+                       "dataType" : "array"
+                }
+         }
+  },
+  {
+    "ItemName" : "New PP",
+    "EventName" : "New PP",
+    "FunctionName" : "exportExcelNewPP",
+    "Params": {
+      "Type": {
+              "type" : "option",
+              "multiple" :"false",
+              "canOthers" : "false",
+              "dataType" : "array",
+              "value" : [
+                    "Prepaid",
+                    "Postpaid"
+              ]
+      },
+      "PP Name" : {
+            "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "false",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array"
+      },
+      "Case (Prepaid)" : {
+        "type" : "option",
+        "multiple" :"false",
+        "canOthers" : "false",
+        "dataType" : "array",
+        "value" : [
+              "Preload Bonus",
+              "Tarif Voice",
+              "Tarif SMS",
+              "GPRS & Landing Page",
+              "Split Recharge",
+              "Attach offer & diameter",
+              "Change PP",
+              "PAYU Capped GPRSROAM"
+        ],
+        "conditions"  : ["Prepaid"],
+        "determiningParam" : "Type"
+      },
+      "Case (Postpaid)" : {
+              "type" : "option",
+              "multiple" :"false",
+              "canOthers" : "false",
+              "dataType" : "array",
+              "value" : [
+                    "Tarif Voice",
+                    "Tarif SMS",
+                    "GPRS & Landing Page",
+                    "PAYU Capped GPRSROAM",
+                    "Attach offer RC, OC, and Flexible Offer",
+                    "Change PP",
+                    "Offline Event"
+              ],
+              "conditions"  : ["Postpaid"],
+              "determiningParam" : "Type"
+      },
+      "Card Type" : {
+        "type"      : "option",
+        "multiple"  :"false",
+        "canOthers" : "false",
+        "dataType"  : "array",
+        "value"     : [
+          "Telkomsel Prabayar",
+          "Simpati/Loop",
+          "KartuAs"
+        ],
+        "conditions": {
+          "Case (Prepaid)" : ["GPRS & Landing Page"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Rounded (Time Unit)" : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "true",
+        "dataType"    : "array",
+        "conditions"  : {
+          "Case (Postpaid)" : ["Tarif Voice"]
+        },
+        "determiningParam" : ["Case (Postpaid)"] 
+      },
+      "Rounded/Unit" : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "false",
+        "dataType"    : "array",
+        "details"     : "sample [20/kb]",
+        "conditions"  : {
+          "Case (Prepaid)" : ["GPRS & Landing Page"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Rate Onnet" : {
+            "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Postpaid)" : ["Tarif Voice","Tarif SMS"],
+                    "Case (Prepaid)"  : ["Tarif Voice"]
+              },
+              "determiningParam" : ["Case (Postpaid)","Case (Prepaid)"] 
+      },
+      "Rate Offnet" : {
+            "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Postpaid)" : ["Tarif Voice","Tarif SMS"],
+                    "Case (Prepaid)"  : ["Tarif Voice"]
+              },
+              "determiningParam" : ["Case (Postpaid)"] 
+      },
+      "Rate Lokal PSTN" : {
+            "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Postpaid)" : ["Tarif Voice"]
+              },
+              "determiningParam" : ["Case (Postpaid)"] 
+      },
+      "PP To" : {
+            "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Postpaid)" : ["Change PP"],
+                    "Case (Prepaid)" : ["Change PP"]
+              },
+              "determiningParam" : ["Case (Postpaid)", "Case (Prepaid)"] 
+      },
+      "Unit" : {
+            "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Postpaid)" : ["GPRS & Landing Page"]
+              },
+              "determiningParam" : ["Case (Postpaid)"] 
+      },
+      "Rate" : {
+            "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "details"     : "Per Unit/Per Rounded",
+              "conditions"  : {
+                    "Case (Postpaid)" : ["GPRS & Landing Page"],
+                    "Case (Prepaid)" : ["GPRS & Landing Page"]
+              },
+              "determiningParam" : ["Case (Postpaid)", "Case (Prepaid)"] 
+      },
+      "Welcome Message"  : {
+              "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Prepaid)" : ["Preload Bonus","Split Recharge"]
+              },
+              "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Preload Bonus"  : {
+              "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Prepaid)" : ["Preload Bonus", "Change PP"]
+              },
+              "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Preload Balance"  : {
+              "type"        : "input",
+              "value"       : [
+              ],
+              "multiple"    : "true",
+              "delimiter"   : "|",
+              "canOthers"   : "false",
+              "dataType"    : "array",
+              "conditions"  : {
+                    "Case (Prepaid)" : ["Preload Bonus"]
+              },
+              "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Validity"  : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "false",
+        "dataType"    : "array",
+        "conditions"  : {
+              "Case (Prepaid)" : ["Preload Bonus"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Preload Bonus (For PP TO)"  : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "false",
+        "dataType"    : "array",
+        "conditions"  : {
+              "Case (Prepaid)" : ["Preload Bonus", "Change PP"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Rate Per Zone" : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "false",
+        "dataType"    : "array",
+        "details"     : "A;B;C;D;E;F;G;H;Special",
+        "conditions"  : {
+              "Case (Prepaid)" : ["Tarif SMS"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Landing Page" : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "false",
+        "dataType"    : "array",
+        "details"     : "limit;error_code,limit;error_code",
+        "conditions"  : {
+              "Case (Prepaid)" : ["GPRS & Landing Page"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Bonus Data" : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "false",
+        "dataType"    : "array",
+        "conditions"  : {
+              "Case (Prepaid)" : ["GPRS & Landing Page"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      },
+      "Remaining Allowance" : {
+        "type"        : "input",
+        "value"       : [
+        ],
+        "multiple"    : "true",
+        "delimiter"   : "|",
+        "canOthers"   : "false",
+        "dataType"    : "array",
+        "conditions"  : {
+              "Case (Prepaid)" : ["GPRS & Landing Page"]
+        },
+        "determiningParam" : ["Case (Prepaid)"] 
+      }
+    }
+  }
+]

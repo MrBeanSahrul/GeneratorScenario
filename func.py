@@ -1,14 +1,9 @@
+from calendar import day_abbr
 import re
 import math
 import random
-from zlib import Z_DEFAULT_COMPRESSION
 import openpyxl
-
-from calendar import day_abbr
-from email.headerregistry import AddressHeader
 from openpyxl import Workbook
-from openpyxl.utils import get_column_letter
-from openpyxl.styles import Alignment
 from datetime import datetime, timedelta
 
 def getAllZoneMapping():
@@ -32,6 +27,21 @@ def getAllZoneMapping():
             data_dict[key][zone_name] = value
 
     return data_dict
+
+def changeFormatData(data):
+       returnDataString = ''
+
+       if data >= 1048576:
+              data = round(data/1048576)
+              returnDataString = str(data)+' GB'
+       elif data >= 1024:
+              data = round(data/1024)
+              returnDataString = str(data)+' MB'
+       else:
+              data = round(data)
+              returnDataString = str(data)+' KB'
+              
+       return returnDataString
 
 allZoneMapping = getAllZoneMapping()
 
@@ -1919,6 +1929,11 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
        validity = 0
        preloadBonusPPTo = ''
        ratePerZone = ''
+       cardType = ''
+       roundedUnit = ''
+       landingPage = ''
+       bonusData = ''
+       remainingAllowance = 0
 
        if isinstance(params, list):
               for params in params:
@@ -1969,6 +1984,22 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
 
                      if "Rate Per Zone" in params:
                             ratePerZone = params["Rate Per Zone"]
+
+                     if "Card Type" in params:
+                            cardType = params["Card Type"]
+                     
+                     if "Rounded/Unit" in params:
+                            roundedUnit = params["Rounded/Unit"]
+                     
+                     if "Landing Page" in params:
+                            landingPage = params["Landing Page"]
+                     
+                     if "Bonus Data" in params:
+                            bonusData = params["Bonus Data"]
+                     
+                     if "Remaining Allowance" in params:
+                            remainingAllowance = params["Remaining Allowance"]
+
                      
                      if type == 'Postpaid':
                             if case == 'Tarif Voice':
@@ -2001,6 +2032,8 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
                                    steps = changePPPrepaid(name, PPTo, preloadBonus, preloadBonusPPTo)
                             elif case == "Tarif SMS":
                                    steps = tarifSMSPrepaid(name, ratePerZone)
+                            elif case == 'GPRS & Landing Page':
+                                   steps = GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonusData, remainingAllowance)
                             else:
                                    print ("Sorry the data is not ready!!")
                                    exit()
@@ -2072,7 +2105,7 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
               print("Testing Scenario Successfully Generated")
               
               # Save Excel File
-              wb.save(f'Scenario {eventName} {type} {name} {case}.xlsx')
+              wb.save(f'Result/Scenario {eventName} {type} {name} {case}.xlsx')
        else:
               if "Type" in params:
                      type = params['Type'][0]
@@ -2118,6 +2151,24 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
               
               if "Preload Bonus (For PP TO)" in params:
                      preloadBonusPPTo = params["Preload Bonus (For PP TO)"]
+              
+              if "Rate Per Zone" in params:
+                     ratePerZone = params["Rate Per Zone"]
+
+              if "Card Type" in params:
+                     cardType = params["Card Type"]
+              
+              if "Rounded/Unit" in params:
+                     roundedUnit = params["Rounded/Unit"]
+              
+              if "Landing Page" in params:
+                     landingPage = params["Landing Page"]
+              
+              if "Bonus Data" in params:
+                     bonusData = params["Bonus Data"]
+              
+              if "Remaining Allowance" in params:
+                     remainingAllowance = params["Remaining Allowance"]
 
               if type == 'Postpaid':
                      if case == 'Tarif Voice':
@@ -2148,6 +2199,8 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
                             steps = splitRechargePrepaid(name, welcomeMessage)
                      elif case == "Change PP":
                             steps = changePPPrepaid(name, PPTo, preloadBonus, preloadBonusPPTo)
+                     elif case == 'GPRS & Landing Page':
+                            steps = GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonusData, remainingAllowance)
                      else:
                             print ("Sorry the data is not ready!!")
                             exit()
@@ -2219,7 +2272,7 @@ def exportExcelNewPP(eventName, params=None, neededParams = None):
               print("Testing Scenario Successfully Generated")
               
               # Save Excel File
-              wb.save(f'Scenario {eventName} {type} {name} {case}.xlsx')
+              wb.save(f'Result/Scenario {eventName} {type} {name} {case}.xlsx')
 
 def tarifVoicePostpaid(name, rounded, rateOnnet, rateOffnet, rateLokalPTSN):
        zone = ["zone 1", "zone 2", "zone 4"]
@@ -2547,6 +2600,538 @@ def changePPPostpaid(name, PPTo):
        ]
 
        return step
+
+def GPRSLandingPagePrepaid(name, cardType, roundedUnit, rate, landingPage, bonusData, remainingAllowance):
+       cardType                    = cardType[0]
+       roundedUnit                 = roundedUnit.split('/')
+       unit                        = roundedUnit[1]
+       bonusDataSplit              = bonusData.split(' ')
+       unitBonusData               = bonusDataSplit[1]
+       amountBonusData             = bonusDataSplit[0]
+       rate                        = int(rate)
+       
+       #change rounded to kb (rate is per rounded)
+       if unit.lower() == 'kb':
+              rounded       = roundedUnit[0]
+              # rate          = rate      
+       elif unit.lower() == 'mb':
+              rounded       = int(roundedUnit[0])*1024
+              # rate          = rate/1024
+       elif unit.lower() == 'gb':
+              rounded       = int(roundedUnit[0])*1048576
+              # rate          = rate/1048576
+       
+       #change bonus data to kb
+       if unitBonusData.lower() == 'kb':
+              amountBonusData      = amountBonusData   
+       elif unitBonusData.lower() == 'mb':
+              amountBonusData      = int(amountBonusData)*1024
+       elif unitBonusData.lower() == 'gb':
+              amountBonusData      = int(amountBonusData)*1048576 
+       
+       if cardType == 'Telkomsel Prabayar':
+              checkedDaily  = []
+              day           = 1
+              remainingAllowanceSplit     = remainingAllowance.split(';')
+              unitRemainingAllowance      = remainingAllowanceSplit[1]
+              amountRemainingAllowance    = remainingAllowanceSplit[0]
+              
+              #change remaining allowance to kb
+              if unitRemainingAllowance.lower() == 'kb':
+                     amountRemainingAllowance      = amountRemainingAllowance   
+              elif unitRemainingAllowance.lower() == 'mb':
+                     amountRemainingAllowance      = int(amountRemainingAllowance)*1024
+              elif unitRemainingAllowance.lower() == 'gb':
+                     amountRemainingAllowance      = int(amountRemainingAllowance)*1048576
+
+              while day <= 2:
+                     landingPageSteps = []
+                     landingPageSplit = landingPage.split(",")
+                     landingPageAmount= rate
+                     for landingPages in landingPageSplit:
+                            landingPagesSplit           = landingPages.split(';')
+                            landingPageBorder           = landingPagesSplit[0]
+                            landingPageErrorCode        = landingPagesSplit[1]
+                            intermediateLandingPage     = math.ceil((int(landingPageBorder) - int(landingPageAmount)) * (float(rounded) / rate))
+                            chargedLandingPage          = intermediateLandingPage/int(rounded)*int(rate)
+                            landingPageAmount           += chargedLandingPage
+
+                            intermediateSteps           = []
+                            while intermediateLandingPage > 0:
+                                   if intermediateLandingPage > 512:
+                                          page_count    = 512
+                                          errorPage     = 'Success'
+                                   else:
+                                          page_count    = intermediateLandingPage
+                                          errorPage     = "Error code "+str(landingPageErrorCode)
+
+                                   intermediateStep = [
+                                          ["Create event GPRS Intermediate "+str(page_count)+" "+str(unit)+" RG 55 at 11AM", errorPage, "No Bonus"],
+                                   ]
+                                   intermediateSteps.extend(intermediateStep)
+                                   intermediateLandingPage -= page_count
+
+                            stepLandingPage = [
+                                   ["Create event GPRS Initial "+str(landingPageBorder)+" notif RG 55 at 11AM", "Success", "No Bonus"],
+                            ]
+                            stepLandingPageTerminate = [
+                                   ["Create event GPRS Terminate 0Kb RG 55 at 11AM", "Charged "+str(chargedLandingPage)+" IDR", "No Bonus"],
+                            ]
+                            stepLandingPage.extend(intermediateSteps)
+                            stepLandingPage.extend(stepLandingPageTerminate)
+
+                            landingPageSteps.extend(stepLandingPage)
+                     
+                     #steps for reduce bonus data
+                     percentageRemainingAllowance = int(amountRemainingAllowance)/int(amountBonusData)
+
+                     halfPercentBonusData         = int(amountBonusData)*0.005
+                     halfPercentBonusDataStr      = changeFormatData(halfPercentBonusData)
+
+                     threePercentBonusData        = int(int(amountBonusData)*(float(percentageRemainingAllowance)-0.02))
+                     threePercentBonusDataStr     = changeFormatData(threePercentBonusData)
+
+                     nineteenPercentBonusData     = int(amountBonusData)*0.19
+                     nineteenPercentBonusDataStr  = changeFormatData(nineteenPercentBonusData)
+
+                     restPercentBonusData         = int(amountBonusData)*(1-(percentageRemainingAllowance+0.2))
+                     restPercentBonusDataStr      = changeFormatData(restPercentBonusData)
+
+                     stepsBonusData = [
+                            ["Create event GPRS Intial RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                            ["Create event GPRS Terminate "+str(nineteenPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Charged 0 IDR", "No Bonus"],
+                            ["Create Event GPRS "+str(restPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                            ["Create event GPRS Intial RG 55 at D+"+str(day)+" 5PM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Error code 4977", "No Bonus"],
+                            ["Create event GPRS Terminate "+str(threePercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                            ["Create event GPRS Intial RG 55 at D+"+str(day)+" 7PM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 7PM", "Success", "No Bonus"],
+                            ["Create event GPRS Terminate 0Kb RG 55 at D+"+str(day)+" 7PM", "Charged 0 IDR", "No Bonus"],
+                            ["Create event GPRS Intial RG 55 at D+"+str(day)+" 9PM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 9PM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 9PM", "Reject with Error Code 4848", "No Bonus"],
+                            ["Create event GPRS Terminate 0Kb RG 55 at D+"+str(day)+" 9PM", "Consume Bonus", "No Bonus"],
+                            ["Create event GPRS Intial RG 55 at D+"+str(day)+" 11PM", "Reject with Error Code 4848", "No Bonus"],
+                            ["Create event GPRS Terminate 0Kb RG 55 at D+"+str(day)+" 11PM", "Charged 0 IDR", "No Bonus"],
+                     ]
+                     
+                     step = [
+                            ["Create event GPRS Initial first notif RG 55 at D+"+str(day)+" 11AM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(rounded)+str(unit)+" RG 55 at D+"+str(day)+" 11AM", "Error code 4859", "No Bonus"],
+                            ["Create event GPRS Terminate 0Kb RG 55 at D+"+str(day)+" 11AM", "Charged "+str(rate)+" IDR", "No Bonus"],
+                     ]
+                     step.extend(landingPageSteps)
+                     step.extend(stepsBonusData)
+
+                     checkedDaily.extend(step)
+                     day += 1
+
+              steps = [
+                     ["Create & Activate new subscriber PP Prepaid "+name, "Check Active Period", "150 MB Data"],
+                     ["Update Expiration Date", "ExpDate Updated", "150 MB Data"],
+                     ["Update Balance", "Balance Updated", "150 MB Data"],
+                     ["Check Bonus Preload", "Checked", "150 MB Data"],
+                     ["Create event GPRS Intial RG 55 at 10AM", "Consume Bonus", "No Bonus"],
+                     ["Create event GPRS Intermediate 153088kb RG 55 at 10AM", "Success", "No Bonus"],
+                     ["Create event GPRS Intermediate 512kb RG 55 at 10AM", "Error code 4920", "No Bonus"],
+                     ["Create event GPRS Terminate 0Kb RG 55 at 10AM", "Success", "No Bonus"],
+              ]
+
+              getCharge1MB         = 1024/float(rounded)*rate
+              lastSteps = [
+                     ["Create Event GPRS Event RG 17 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 50 apn internet 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 55 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 75 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 77 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 11 (International)  1024 kb", "Charged 1802 IDR", "No Bonus"], 
+                     ["Check Indira","Success", "No Bonus"]
+              ]
+
+              steps.extend(checkedDaily)
+              steps.extend(lastSteps)
+       elif cardType == 'Simpati/Loop':
+              checkedDaily  = []
+              day           = 1
+
+              while day <= 2:
+                     landingPageSteps            = []
+                     remainingAllowanceSteps     = []
+                     landingPageSplit            = landingPage.split(",")
+                     remainingAllowanceSplit     = remainingAllowance.split(',')
+                     landingPageAmount           = rate
+
+                     #Steps for landing page
+                     for landingPages in landingPageSplit:
+                            landingPagesSplit           = landingPages.split(';')
+                            landingPageBorder           = landingPagesSplit[0]
+                            landingPageErrorCode        = landingPagesSplit[1]
+                            intermediateLandingPage     = math.ceil((int(landingPageBorder) - int(landingPageAmount)) * (float(rounded) / rate))
+                            chargedLandingPage          = intermediateLandingPage/int(rounded)*int(rate)
+                            landingPageAmount           += chargedLandingPage
+                            
+                            intermediateSteps           = []
+                            while intermediateLandingPage > 0:
+                                   if intermediateLandingPage > 512:
+                                          page_count    = 512
+                                          errorPage     = 'Success'
+                                   else:
+                                          page_count    = intermediateLandingPage
+                                          errorPage     = "Error code "+str(landingPageErrorCode)
+
+                                   intermediateStep = [
+                                          ["Create event GPRS Intermediate "+str(page_count)+" "+str(unit)+" RG 55 at 11AM", errorPage, "No Bonus"],
+                                   ]
+                                   intermediateSteps.extend(intermediateStep)
+                                   intermediateLandingPage -= page_count
+
+                            stepLandingPage = [
+                                   ["Create event GPRS Initial "+str(landingPageBorder)+" notif RG 55 at 11AM", "Success", "No Bonus"],
+                            ]
+                            stepLandingPageTerminate = [
+                                   ["Create event GPRS Terminate 0Kb RG 55 at 11AM", "Charged "+str(chargedLandingPage)+" IDR", "No Bonus"],
+                            ]
+                            stepLandingPage.extend(intermediateSteps)
+                            stepLandingPage.extend(stepLandingPageTerminate)
+
+                            landingPageSteps.extend(stepLandingPage)
+                     
+                     #steps for reduce bonus data
+                     for remainingAllowanceData in remainingAllowanceSplit:
+                            remainingAllowanceSplitData = remainingAllowanceData.split(';')
+                            amountRemainingAllowance    = remainingAllowanceSplitData[0]
+                            unitRemainingAllowance      = remainingAllowanceSplitData[1]
+                            errorCodeRemainingAllowance = remainingAllowanceSplitData[2]
+                            
+                            #change remaining allowance to kb
+                            if unitRemainingAllowance.lower() == 'kb':
+                                   amountRemainingAllowance      = amountRemainingAllowance   
+                            elif unitRemainingAllowance.lower() == 'mb':
+                                   amountRemainingAllowance      = float(amountRemainingAllowance)*1024
+                            elif unitRemainingAllowance.lower() == 'gb':
+                                   amountRemainingAllowance      = float(amountRemainingAllowance)*1048576
+
+                            percentageRemainingAllowance = int(amountRemainingAllowance)/int(amountBonusData)
+                            useRemainingAllowance        = amountBonusData-amountRemainingAllowance
+
+                            halfPercentBonusData         = int(useRemainingAllowance)*0.005
+                            halfPercentBonusDataStr      = changeFormatData(halfPercentBonusData)
+
+                            threePercentBonusData        = int(useRemainingAllowance)*0.003
+                            threePercentBonusDataStr     = changeFormatData(threePercentBonusData)
+
+                            nineteenPercentBonusData     = int(useRemainingAllowance)*0.19
+                            nineteenPercentBonusDataStr  = changeFormatData(nineteenPercentBonusData)
+
+                            restPercentBonusData         = int(useRemainingAllowance)-(useRemainingAllowance*0.23)
+                            restPercentBonusDataStr      = changeFormatData(restPercentBonusData)
+
+                            stepsRemainingAllowanceData = [
+                                   ["Create event GPRS Intial RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Terminate "+str(nineteenPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Charged 0 IDR", "No Bonus"],
+                                   ["Create Event GPRS "+str(restPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                                   ["Create event GPRS Intial RG 55 at D+"+str(day)+" 5PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Error code "+errorCodeRemainingAllowance, "No Bonus"],
+                                   ["Create event GPRS Terminate "+str(threePercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                            ]
+                            remainingAllowanceSteps.extend(stepsRemainingAllowanceData)
+                            amountBonusData = amountRemainingAllowance
+                     
+                     step = [
+                            ["Create event GPRS Initial first notif RG 55 at D+"+str(day)+" 11AM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(rounded)+str(unit)+" RG 55 at D+"+str(day)+" 11AM", "Error code 4859", "No Bonus"],
+                            ["Create event GPRS Terminate 0Kb RG 55 at D+"+str(day)+" 11AM", "Charged "+str(rate)+" IDR", "No Bonus"],
+                     ]
+                     step.extend(landingPageSteps)
+                     step.extend(remainingAllowanceSteps)
+
+                     checkedDaily.extend(step)
+                     day += 1
+
+              steps = [
+                     ["Create & Activate new subscriber PP "+name, "Checkl Active Period", "No Bonus"],
+                     ["Update Exp Date", "Exp Date Updated", "No Bonus"],
+                     ["Update Balance 1000000", "Balance Updated", "No Bonus"],
+                     ["Create Event GPRS initial RG 55 3pm ", "Initial Success", "No Bonus"],
+                     ["Create Event GPRS intermediate 512KB RG 55 3pm", "Initial Success", "No Bonus"],
+                     ["Create Event GPRS intermediate 512KB RG 55 3pm", "Rejected 4920", "No Bonus"],
+                     ["Create Event GPRS Terminate 0kb RG 55 3pm", "Charged 104 IDR", "No Bonus"],
+                     #Landing Page
+                     
+              ]
+
+              getCharge1MB         = 1024/float(rounded)*rate
+              lastSteps = [
+                     ["Create Event GPRS Event RG 17 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 50 apn internet 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 55 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 75 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 77 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 11 (International)  1024 kb", "Charged 1802 IDR", "No Bonus"], 
+                     ["Check Indira","Success", "No Bonus"]
+              ]
+
+              steps.extend(checkedDaily)
+              steps.extend(lastSteps)
+       elif cardType == 'KartuAs':
+              #3G First
+              steps         = []
+              checkedDaily  = []
+              day           = 1
+
+              while day <= 2:
+                     landingPageSteps            = []
+                     remainingAllowanceSteps     = []
+                     landingPageSplit            = landingPage.split(",")
+                     remainingAllowanceSplit     = remainingAllowance.split(',')
+                     landingPageAmount           = rate
+
+                     #Steps for landing page
+                     for landingPages in landingPageSplit:
+                            landingPagesSplit           = landingPages.split(';')
+                            landingPageBorder           = landingPagesSplit[0]
+                            landingPageErrorCode        = landingPagesSplit[1]
+                            intermediateLandingPage     = math.ceil((int(landingPageBorder) - int(landingPageAmount)) * (float(rounded) / rate))
+                            chargedLandingPage          = intermediateLandingPage/int(rounded)*int(rate)
+                            landingPageAmount           += chargedLandingPage
+
+                            intermediateSteps           = []
+                            while intermediateLandingPage > 0:
+                                   if intermediateLandingPage > 512:
+                                          page_count    = 512
+                                          errorPage     = 'Success'
+                                   else:
+                                          page_count    = intermediateLandingPage
+                                          errorPage     = "Error code "+str(landingPageErrorCode)
+
+                                   intermediateStep = [
+                                          ["Create event GPRS Intermediate "+str(page_count)+" "+str(unit)+" RG 55 at 11AM", errorPage, "No Bonus"],
+                                   ]
+                                   intermediateSteps.extend(intermediateStep)
+                                   intermediateLandingPage -= page_count
+
+                            stepLandingPage = [
+                                   ["Create event GPRS Initial "+str(landingPageBorder)+" notif RG 55 at 11AM", "Success", "No Bonus"],
+                            ]
+                            stepLandingPageTerminate = [
+                                   ["Create event GPRS Terminate 0Kb RG 55 at 11AM", "Charged "+str(chargedLandingPage)+" IDR", "No Bonus"],
+                            ]
+                            stepLandingPage.extend(intermediateSteps)
+                            stepLandingPage.extend(stepLandingPageTerminate)
+
+                            landingPageSteps.extend(stepLandingPage)
+                     
+                     #steps for reduce bonus data
+                     for remainingAllowanceData in remainingAllowanceSplit:
+                            remainingAllowanceSplitData = remainingAllowanceData.split(';')
+                            amountRemainingAllowance    = remainingAllowanceSplitData[0]
+                            unitRemainingAllowance      = remainingAllowanceSplitData[1]
+                            errorCodeRemainingAllowance = remainingAllowanceSplitData[2]
+                            
+                            #change remaining allowance to kb
+                            if unitRemainingAllowance.lower() == 'kb':
+                                   amountRemainingAllowance      = amountRemainingAllowance   
+                            elif unitRemainingAllowance.lower() == 'mb':
+                                   amountRemainingAllowance      = float(amountRemainingAllowance)*1024
+                            elif unitRemainingAllowance.lower() == 'gb':
+                                   amountRemainingAllowance      = float(amountRemainingAllowance)*1048576
+
+                            percentageRemainingAllowance = int(amountRemainingAllowance)/int(amountBonusData)
+                            useRemainingAllowance        = amountBonusData-amountRemainingAllowance
+
+                            halfPercentBonusData         = int(useRemainingAllowance)*0.005
+                            halfPercentBonusDataStr      = changeFormatData(halfPercentBonusData)
+
+                            threePercentBonusData        = int(useRemainingAllowance)*0.003
+                            threePercentBonusDataStr     = changeFormatData(threePercentBonusData)
+
+                            nineteenPercentBonusData     = int(useRemainingAllowance)*0.19
+                            nineteenPercentBonusDataStr  = changeFormatData(nineteenPercentBonusData)
+
+                            restPercentBonusData         = int(useRemainingAllowance)-(useRemainingAllowance*0.23)
+                            restPercentBonusDataStr      = changeFormatData(restPercentBonusData)
+
+                            stepsRemainingAllowanceData = [
+                                   ["Create event GPRS Intial RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Terminate "+str(nineteenPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 3PM", "Charged 0 IDR", "No Bonus"],
+                                   ["Create Event GPRS "+str(restPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                                   ["Create event GPRS Intial RG 55 at D+"+str(day)+" 5PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Error code "+errorCodeRemainingAllowance, "No Bonus"],
+                                   ["Create event GPRS Terminate "+str(threePercentBonusDataStr)+" RG 55 at D+"+str(day)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                            ]
+                            remainingAllowanceSteps.extend(stepsRemainingAllowanceData)
+                            amountBonusData = amountRemainingAllowance
+                     
+                     step = [
+                            ["Create event GPRS Initial first notif RG 55 at D+"+str(day)+" 11AM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(rounded)+str(unit)+" RG 55 at D+"+str(day)+" 11AM", "Error code 4859", "No Bonus"],
+                            ["Create event GPRS Terminate 0Kb RG 55 at D+"+str(day)+" 11AM", "Charged "+str(rate)+" IDR", "No Bonus"],
+                     ]
+                     step.extend(landingPageSteps)
+                     step.extend(remainingAllowanceSteps)
+
+                     checkedDaily.extend(step)
+                     day += 1
+
+              steps3G = [
+                     ["Create & Activate new subscriber PP KartuAs Extra Ampuh Murah 3264714", "Check active period", "25MB Internet Pedana"],
+                     ["Create event update balance 500000", "success", "No Bonus"],
+                     ["Create Event GPRS initial RG 55 3pm ", "Initial Success", "No Bonus"],
+                     ["Create Event GPRS intermediate 512KB RG 55 3pm", "Rejected 4949", "No Bonus"],
+                     ["Create Event GPRS terminate 0kb RG 55 3pm", "Charged 3380 IDR", "No Bonus"],
+              ]
+
+              getCharge1MB         = 1024/float(rounded)*rate
+              lastSteps = [
+                     ["Create Event GPRS Event RG 17 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 50 apn internet 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 55 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 75 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 77 1024 kb", "Charged "+str(getCharge1MB)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 11 (International)  1024 kb", "Charged 1802 IDR", "No Bonus"], 
+                     ["Check Indira","Success", "No Bonus"]
+              ]
+
+              steps.extend(steps3G)
+              steps.extend(checkedDaily)
+              steps.extend(lastSteps)
+              #End 3G Step
+
+              #4G Steps
+              checkedDaily4G  = []
+              day4G           = 1
+
+              while day4G <= 2:
+                     landingPageSteps            = []
+                     remainingAllowanceSteps     = []
+                     landingPageSplit            = landingPage.split(",")
+                     remainingAllowanceSplit     = remainingAllowance.split(',')
+                     landingPageAmount           = rate
+
+                     #Steps for landing page
+                     for landingPages in landingPageSplit:
+                            landingPagesSplit           = landingPages.split(';')
+                            landingPageBorder           = landingPagesSplit[0]
+                            landingPageErrorCode        = landingPagesSplit[2]
+                            intermediateLandingPage     = math.ceil((int(landingPageBorder) - int(landingPageAmount)) * (float(rounded) / rate))
+                            chargedLandingPage          = intermediateLandingPage/int(rounded)*int(rate)
+                            landingPageAmount           += chargedLandingPage
+
+                            intermediateSteps           = []
+                            while intermediateLandingPage > 0:
+                                   if intermediateLandingPage > 512:
+                                          page_count    = 512
+                                          errorPage     = 'Success'
+                                   else:
+                                          page_count    = intermediateLandingPage
+                                          errorPage     = "Error code "+str(landingPageErrorCode)
+
+                                   intermediateStep = [
+                                          ["Create event GPRS Intermediate "+str(page_count)+" "+str(unit)+" RG 55 at 11AM", errorPage, "No Bonus"],
+                                   ]
+                                   intermediateSteps.extend(intermediateStep)
+                                   intermediateLandingPage -= page_count
+
+                            stepLandingPage = [
+                                   ["Create event GPRS Initial "+str(landingPageBorder)+" notif RG 55 at 11AM", "Success", "No Bonus"],
+                            ]
+                            stepLandingPageTerminate = [
+                                   ["Create event GPRS Terminate 0Kb RG 55 at 11AM", "Charged "+str(chargedLandingPage)+" IDR", "No Bonus"],
+                            ]
+                            stepLandingPage.extend(intermediateSteps)
+                            stepLandingPage.extend(stepLandingPageTerminate)
+
+                            landingPageSteps.extend(stepLandingPage)
+                     
+                     #steps for reduce bonus data
+                     for remainingAllowanceData in remainingAllowanceSplit:
+                            remainingAllowanceSplitData = remainingAllowanceData.split(';')
+                            amountRemainingAllowance    = remainingAllowanceSplitData[0]
+                            unitRemainingAllowance      = remainingAllowanceSplitData[1]
+                            errorCodeRemainingAllowance = remainingAllowanceSplitData[2]
+                            
+                            #change remaining allowance to kb
+                            if unitRemainingAllowance.lower() == 'kb':
+                                   amountRemainingAllowance      = amountRemainingAllowance   
+                            elif unitRemainingAllowance.lower() == 'mb':
+                                   amountRemainingAllowance      = float(amountRemainingAllowance)*1024
+                            elif unitRemainingAllowance.lower() == 'gb':
+                                   amountRemainingAllowance      = float(amountRemainingAllowance)*1048576
+
+                            percentageRemainingAllowance = int(amountRemainingAllowance)/int(amountBonusData)
+                            useRemainingAllowance        = amountBonusData-amountRemainingAllowance
+
+                            halfPercentBonusData         = int(useRemainingAllowance)*0.005
+                            halfPercentBonusDataStr      = changeFormatData(halfPercentBonusData)
+
+                            threePercentBonusData        = int(useRemainingAllowance)*0.003
+                            threePercentBonusDataStr     = changeFormatData(threePercentBonusData)
+
+                            nineteenPercentBonusData     = int(useRemainingAllowance)*0.19
+                            nineteenPercentBonusDataStr  = changeFormatData(nineteenPercentBonusData)
+
+                            restPercentBonusData         = int(useRemainingAllowance)-(useRemainingAllowance*0.23)
+                            restPercentBonusDataStr      = changeFormatData(restPercentBonusData)
+
+                            stepsRemainingAllowanceData = [
+                                   ["Create event GPRS Intial RG 55 at D+"+str(day4G)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day4G)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day4G)+" 3PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Terminate "+str(nineteenPercentBonusDataStr)+" RG 55 at D+"+str(day4G)+" 3PM", "Charged 0 IDR", "No Bonus"],
+                                   ["Create Event GPRS "+str(restPercentBonusDataStr)+" RG 55 at D+"+str(day4G)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                                   ["Create event GPRS Intial RG 55 at D+"+str(day4G)+" 5PM", "Success", "No Bonus"],
+                                   ["Create event GPRS Intermediate "+str(halfPercentBonusDataStr)+" RG 55 at D+"+str(day4G)+" 5PM", "Error code "+errorCodeRemainingAllowance, "No Bonus"],
+                                   ["Create event GPRS Terminate "+str(threePercentBonusDataStr)+" RG 55 at D+"+str(day4G)+" 5PM", "Charged 0 IDR", "No Bonus"],
+                            ]
+                            remainingAllowanceSteps.extend(stepsRemainingAllowanceData)
+                            amountBonusData = amountRemainingAllowance
+                     
+                     step = [
+                            ["Create event GPRS Initial first notif RG 55 at D+"+str(day4G)+" 11AM", "Success", "No Bonus"],
+                            ["Create event GPRS Intermediate "+str(rounded)+str(unit)+" RG 55 at D+"+str(day4G)+" 11AM", "Error code 4859", "No Bonus"],
+                            ["Create event GPRS Terminate 0Kb RG 55 at D+"+str(day4G)+" 11AM", "Charged "+str(rate)+" IDR", "No Bonus"],
+                     ]
+                     step.extend(landingPageSteps)
+                     step.extend(remainingAllowanceSteps)
+
+                     checkedDaily4G.extend(step)
+                     day4G += 1
+
+              steps4G = [
+                     ["Create & Activate new subscriber PP KartuAS Gampang Internetan", "", "No Bonus"],
+                     ["Attach Offer Landing Page Kartu As 4G - 3361244", "", "No Bonus"],
+                     ["Create Event GPRS initial RG 17 3pm ", "Initial Success", "No Bonus"],
+                     ["Create Event GPRS intermediate 25088KB RG 17 3pm", "Intermediate Success", "No Bonus"],
+                     ["Create Event GPRS intermediate 512KB RG 17 3pm", "Rejected 4960", "No Bonus"],
+                     ["Create Event GPRS terminate 0kb RG 17 3pm", "Consume Bonus", "No Bonus"],
+                     ["Create event update balance 500000", "success", "No Bonus"],
+                     ["Create Event GPRS initial RG 17 3pm ", "Initial Success", "No Bonus"],
+                     ["Create Event GPRS intermediate 512KB RG 17 3pm", "Rejected 4949", "No Bonus"],
+                     ["Create Event GPRS terminate 0kb RG 17 3pm", "Charged 3380 IDR", "No Bonus"],
+              ]
+
+              getCharge1MB4G         = 1024/float(rounded)*rate
+              lastSteps4G = [
+                     ["Create Event GPRS Event RG 17 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB4G)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 50 apn internet 1024 kb", "Charged "+str(getCharge1MB4G)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 55 apn telkomsel 1024 kb", "Charged "+str(getCharge1MB4G)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 75 1024 kb", "Charged "+str(getCharge1MB4G)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 77 1024 kb", "Charged "+str(getCharge1MB4G)+" IDR", "No Bonus"], 
+                     ["Create Event GPRS Event RG 11 (International)  1024 kb", "Charged 1802 IDR", "No Bonus"], 
+                     ["Check Indira","Success", "No Bonus"]
+              ]
+
+              steps.extend(steps4G)
+              steps.extend(checkedDaily4G)
+              steps.extend(lastSteps4G)
+       
+       return steps
 
 def GPRSLandingPagePostpaid(name, unit, rate):
        staticRate           = 1024 * rate
