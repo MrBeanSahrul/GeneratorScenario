@@ -703,7 +703,7 @@ def getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProrat
        QuotaString          = ''
 
        if OCType == "Penalty + Allowance" or OCType == "Charge Installment + Allowance":
-              stringInstallment = 'with installment '+commitmentPeriod+' month'
+              stringInstallment = 'with installment '+ str(commitmentPeriod) +' month'
        else:
               stringInstallment = ''
        
