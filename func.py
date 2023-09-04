@@ -521,6 +521,9 @@ def exportExcelOCOffer(eventName, params=None, neededParams = None):
 
        wb = Workbook()
        ws = wb.active
+       Quota         = []
+       pritName      = ''
+       proration     = ''
        for params in params:
               if "OfferName" in params:
                      offerName = params['OfferName']
@@ -549,58 +552,79 @@ def exportExcelOCOffer(eventName, params=None, neededParams = None):
                      commitmentPeriod = f" with Commitment period {params['Commitment Period']} months"
               else:
                      commitmentPeriod = " without Commitment period"
-
-              steps = [
-                     ["Create & Activate PP Kartu Halo Bebas Abonemen V2","Number Activated"],
-                     ["Update Parameter","Success"],
-                     ["Attach Offer CLS (Credit Limit Service) 2000000 IDR","Offer Attached"],
-                     ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer not Attached"],
-                     ["Check Offer name and offer description",""+str(offerName)+"|"+str(offerDesc)+""],
-                     ["Check 888",f'Charged | {rate}'],
-                     ["Create event voice onnet 60s","Charged"],
-                     ["Create event 10 SMS onnet ","Charged"],
-                     ["Create event GPRS 1MB RG50","Charged"],
-                     ["Check RB Log","Checked"],
-                     ["Check Rated Event","Checked"],
-                     ["Check AMDD Charge code OC",chargeCode],
-                     ["Check error from table TRB1_Subs_errs","No errors"],
-                     "Invoicing",
-                     ["Create & Activate PP Kartu Halo Bebas Abonemen V2","Number Activated"],
-                     ["Update Parameter","Success"],
-                     ["Attach Offer CLS (Credit Limit Service) 2000000 IDR","Offer Attached"],
-                     ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
-                     ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
-                     ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
-                     ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
-                     ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
-                     ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
-                     ["Check Offer name and offer description",""+str(offerName)+"|"+str(offerDesc)+""],
-                     ["Check 888",f"Checked | {rate}"],
-                     ["Create event voice onnet 60s","Charged"],
-                     ["Create event 10 SMS onnet ","Charged"],
-                     ["Create event GPRS 1MB RG50","Charged"],
-                     ["Check RB Log","Checked"],
-                     ["Check Rated Event","Checked"],
-                     ["Check AMDD Charge code OC",chargeCode],
-                     ["Check error from table TRB1_Subs_errs","No errors"],
-                     "Invoicing",
-              ]
-
-              if OCType == 'Penalty':
-                     if "AMDD Charge Code Remove Offer" in params:
-                            chargeCodeRemove = params['AMDD Charge Code Remove Offer']
+              
+              if "Prit Name" in params:
+                     pritName = params["Prit Name"]
+              
+              if "Quota" in params:
+                     Quota = params["Quota"]
+              
+              if "Proration" in params:
+                     proration = params['Proration']
+                     if re.search('Non Prorate|Non Proration', proration):
+                            strProration = ''
+                            strResultProration = "| "+str(rate)
+                     elif re.search('Prorate|Proration', proration):
+                            strProration = "| Proration"
+                            strResultProration = "| "+str(rate)+" (Prorate)"
                      else:
-                            chargeCodeRemove = chargeCode
-
-                     additionalStep = [
-                            [f"Remove offer {offerName} on D+1","Offer Removed"],
-                            ["Check AMDD Charge code OC",f"{chargeCodeRemove}"]
+                            strProration = ''
+                            strResultProration = ''
+              
+              if OCType == "Penalty + Allowance" or OCType == "Charge + Allowance" or OCType == "Charge Installment + Allowance":
+                     steps = getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProration, strResultProration, pritName, Quota, commitmentPeriod)
+              else:
+                     steps = [
+                            ["Create & Activate PP Kartu Halo Bebas Abonemen V2","Number Activated"],
+                            ["Update Parameter","Success"],
+                            ["Attach Offer CLS (Credit Limit Service) 2000000 IDR","Offer Attached"],
+                            ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer not Attached"],
+                            ["Check Offer name and offer description",""+str(offerName)+"|"+str(offerDesc)+""],
+                            ["Check 888",f'Charged | {rate}'],
+                            ["Create event voice onnet 60s","Charged"],
+                            ["Create event 10 SMS onnet ","Charged"],
+                            ["Create event GPRS 1MB RG50","Charged"],
+                            ["Check RB Log","Checked"],
+                            ["Check Rated Event","Checked"],
+                            ["Check AMDD Charge code OC",chargeCode],
+                            ["Check error from table TRB1_Subs_errs","No errors"],
+                            "Invoicing",
+                            ["Create & Activate PP Kartu Halo Bebas Abonemen V2","Number Activated"],
+                            ["Update Parameter","Success"],
+                            ["Attach Offer CLS (Credit Limit Service) 2000000 IDR","Offer Attached"],
+                            ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
+                            ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
+                            ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
+                            ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
+                            ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
+                            ["Attach Offer "+str(offerName)+str(commitmentPeriod),"Offer Attached"],
+                            ["Check Offer name and offer description",""+str(offerName)+"|"+str(offerDesc)+""],
+                            ["Check 888",f"Checked | {rate}"],
+                            ["Create event voice onnet 60s","Charged"],
+                            ["Create event 10 SMS onnet ","Charged"],
+                            ["Create event GPRS 1MB RG50","Charged"],
+                            ["Check RB Log","Checked"],
+                            ["Check Rated Event","Checked"],
+                            ["Check AMDD Charge code OC",chargeCode],
+                            ["Check error from table TRB1_Subs_errs","No errors"],
+                            "Invoicing",
                      ]
 
-                     insert_index = 12
+                     if OCType == 'Penalty':
+                            if "AMDD Charge Code Remove Offer" in params:
+                                   chargeCodeRemove = params['AMDD Charge Code Remove Offer']
+                            else:
+                                   chargeCodeRemove = chargeCode
 
-                     for addStep in additionalStep[::-1]:
-                            steps.insert(insert_index, addStep)
+                            additionalStep = [
+                                   [f"Remove offer {offerName} on D+1","Offer Removed"],
+                                   ["Check AMDD Charge code OC",f"{chargeCodeRemove}"]
+                            ]
+
+                            insert_index = 12
+
+                            for addStep in additionalStep[::-1]:
+                                   steps.insert(insert_index, addStep)
 
               # Write Header Row
               header = [f'{eventName} | {offerName} | {offerDesc}']
@@ -629,19 +653,204 @@ def exportExcelOCOffer(eventName, params=None, neededParams = None):
                                    "XYZ"
                             ]
                      else:
-                            row = [
-                                   no,
-                                   step[0],
-                                   step[1],
-                                   "No Bonus",
-                                   "XYZ"
-                            ]
+                            if len(step) == 5:
+                                   row = [
+                                          step[0],
+                                          step[1],
+                                          step[2],
+                                          step[3],
+                                          step[4]
+                                   ]
+                            elif len(step) == 4:
+                                   row = [
+                                          step[0],
+                                          step[1],
+                                          step[2],
+                                          step[3],
+                                          "XYZ"
+                                   ] 
+                            elif len(step) == 3:
+                                   row = [
+                                          no,
+                                          step[0],
+                                          step[1],
+                                          step[2],
+                                          "XYZ"
+                                   ]
+                                   no = no+1
+                            else:
+                                   row = [
+                                          no,
+                                          step[0],
+                                          step[1],
+                                          "No Bonus",
+                                          "XYZ"
+                                   ]
+                                   no = no+1
                      ws.append(row)
 
        print("Testing Scenario Successfully Generated")
        
        # Save Excel File
        wb.save('Result/Scenario '+str(eventName)+'.xlsx')
+
+def getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProration, strResultProration, pritName, Quota, commitmentPeriod):
+       QuotaSplitString     = Quota.split(';')
+       QuotaSMS             = 0
+       firstQuotaSMS        = 0
+       QuotaVoice           = int(QuotaSplitString[0])
+       firstQuotaVoice      = int(QuotaSplitString[0])
+       QuotaString          = ''
+
+       if OCType == "Penalty + Allowance" or OCType == "Charge Installment + Allowance":
+              stringInstallment = 'with installment '+commitmentPeriod+' month'
+       else:
+              stringInstallment = ''
+       
+
+       if len(QuotaSplitString) > 1:
+              QuotaSMS             = int(QuotaSplitString[1])
+              firstQuotaSMS        = int(QuotaSplitString[1])
+       
+       if QuotaVoice > 0:
+              QuotaString += "All Opr "+str(QuotaVoice)+" minutes"
+
+              if QuotaSMS > 0:
+                     stringQuotaSMS = ", All Opr " + str(QuotaSMS) + " sms"
+              else:
+                     stringQuotaSMS = ''
+
+              event_descriptions = [
+                     "voice onnet 50 minutes 11am",
+                     "voice offnet 50 minutes 1pm",
+                     "voice fwa 50 minutes 8am",
+                     "voice pstn 50 minutes 11am",
+                     "voice 50 minutes voice onnet 3am",
+                     "voice 50 minutes voice pstn 10am",
+                     "voice offnet 50 minutes",
+                     "voice onnet 50 minutes using ServiceSubType 21"
+              ]
+
+              stepsConsumeVoice = []
+              for description in event_descriptions:
+                     if QuotaVoice >= 50:
+                            step = [
+                            f"Create event {description}",
+                            "Consume Bonus",
+                            f"All Opr {QuotaVoice} minutes{stringQuotaSMS}"
+                            ]
+                            stepsConsumeVoice.append(step)
+                            QuotaVoice -= 50
+       
+       if QuotaSMS > 0:
+              QuotaString += ", All Opr "+ str(QuotaSMS) +" sms"
+
+              if QuotaVoice > 0:
+                     stringQuotaVoice = "All Opr " + str(QuotaVoice) + " minutes,"
+              else:
+                     stringQuotaVoice = ''
+
+              event_descriptions = [
+                     "100 sms onnet 5pm",
+                     "100 sms offnet 7pm",
+                     "100 sms onnet 1am",
+                     "100 sms offnet 1pm",
+                     "100 sms onnet",
+              ]
+
+              stepsConsumeSMS = []
+              for description in event_descriptions:
+                     if QuotaSMS >= 100:
+                            step = [
+                            f"Create event {description}",
+                            "Consume Bonus",
+                            f"{stringQuotaVoice} All Opr {QuotaSMS} sms"
+                            ]
+                            stepsConsumeSMS.append(step)
+                            QuotaSMS -= 100
+
+       steps = []
+       firstStep = [
+              ["Create & Activate new subscriber PP KartuHalo Bebas Abonemen","Check active period","No Bonus"],
+              ["Update Parameter (Init activation date)","SUCCESS","No Bonus"],
+              ["Set New Credit Limit Service (offer id : 3669334) as 50.000.000","Offer Attached","No Bonus"],
+              ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString],
+              ["Check Offer Name & Offer Description",""+str(offerName)+"|"+str(offerName)+"",""+str(offerName)+"|"+str(offerName)+""],
+              ["Check 888",""+str(rate)+" "+str(strProration),QuotaString],
+              ["Check 889","Checked",QuotaString],
+              ["Check 889*1","Checked","No Bonus"],
+              ["Check 889*2","Checked","All Opr "+ str(firstQuotaVoice) +" minutes"],
+              ["Check 889*3","Checked","All Opr "+ str(firstQuotaSMS)+" sms"],
+              ["Check 889*4","Checked","No Bonus"],
+              ["Check AMDD and Charge ",""+ str(chargeCode) +" | "+ str(rate),"No Bonus"],
+              ["Check PRIT Name",pritName,"No Bonus"]
+       ]
+       #Step Consume Quota (Voice & SMS)
+       secondStep = [
+              ["Check bonus before next bc","Checked","All Opr "+ str(firstQuotaVoice) +" minutes, All Opr "+ str(firstQuotaSMS) +" sms"],
+              ["Check bonus after next bc","Checked",QuotaString],
+              ["Check table TRB1_SUB Errs","Checked","No Bonus"],
+              ["INVOICING","Checked","No Bonus"],
+              ["Create & Activate new subscriber PP KartuHalo Bebas Abonemen","Check active period","No Bonus"],
+              ["Update Parameter (Init activation date)","SUCCESS","No Bonus"],
+              ["Set New Credit Limit Service (offer id : 3669334) as 50.000.000","Offer Attached","No Bonus"],
+              ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString],
+              ["Check Offer Name & Offer Description",""+str(offerName)+"|"+str(offerName)+"",""+str(offerName)+"|"+str(offerName)+""],
+              ["Check 888",""+str(rate)+"|"+str(chargeCode)+"",QuotaString],
+              ["Check 889","Checked",QuotaString]
+       ]
+       #Step Consume Quota (Voice & SMS)
+       if OCType == "Penalty + Allowance":
+              thirdStep = [
+                     ["Remove offer D+1","Offer removed","No Bonus"],
+                     ["Check AMDD and Charge ",""+str(chargeCode)+" |"+str(rate)+"","No Bonus"],
+                     ["Check 888 charge","248417","No Bonus"],
+                     ["Check table TRB1_SUB Errs","Checked","No Bonus"],
+                     ["INVOICING","Checked","No Bonus"],
+                     ["Create & Activate new subscriber PP KartuHalo Bebas Abonemen","Check active period","No Bonus"],
+                     ["Update Parameter (Init activation date)","SUCCESS","No Bonus"],
+                     ["Set New Credit Limit Service (offer id : 3669334) as 50.000.000","Offer Attached","No Bonus"],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check 888",""+str(rate)+" x 6",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check 889","Checked",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check on Database","Should be 6 Offers because Postpaid",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check table TRB1_SUB Errs","Checked",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["INVOICING","Checked",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+              ]
+       else:
+              thirdStep = [
+                     ["Check AMDD and Charge ",""+str(chargeCode)+" |"+str(rate)+"","No Bonus"],
+                     ["Check 888 charge","248417","No Bonus"],
+                     ["Check table TRB1_SUB Errs","Checked","No Bonus"],
+                     ["INVOICING","Checked","No Bonus"],
+                     ["Create & Activate new subscriber PP KartuHalo Bebas Abonemen","Check active period","No Bonus"],
+                     ["Update Parameter (Init activation date)","SUCCESS","No Bonus"],
+                     ["Set New Credit Limit Service (offer id : 3669334) as 50.000.000","Offer Attached","No Bonus"],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Attach Offer with "+str(offerName)+" "+stringInstallment,"Offer Attached",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check 888",""+str(rate)+" x 6",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check 889","Checked",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check on Database","Should be 6 Offers because Postpaid",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["Check table TRB1_SUB Errs","Checked",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+                     ["INVOICING","Checked",QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString+"; "+QuotaString],
+              ]  
+       steps.extend(firstStep)
+       steps.extend(stepsConsumeVoice)
+       steps.extend(stepsConsumeSMS)
+       steps.extend(secondStep)
+       steps.extend(stepsConsumeVoice)
+       steps.extend(stepsConsumeSMS)
+       steps.extend(thirdStep)
+       return steps
 
 def exportExcelDiscountOffer(eventName, params=None, neededParams = None):
        # Export Test Cases to Excel File

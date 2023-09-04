@@ -122,79 +122,117 @@
          }
   },
   {
-         "ItemName" : "OC Offer",
+         "ItemName" : "OC Offer (OC/OCIns/OCInsPen)",
          "EventName" : "OC Offer",
          "FunctionName" : "exportExcelOCOffer",
          "Params": {
-                "OC Type": {
-                       "type" : "option",
-                       "multiple" :"false",
-                       "canOthers" : "false",
-                       "dataType" : "array",
-                       "value" : [
-                              "One Time Charge",
-                              "Installment",
-                              "Penalty"
-                       ]
-                },
-                "OfferName" : {
-                       "type"        : "input",
-                       "value"       : [
-                       ],
-                       "multiple"    : "true",
-                       "delimiter"   : "|",
-                       "canOthers"   : "true",
-                       "dataType"    : "array"
-                },
-                "OfferDesc" : {
-                       "type" : "input",
-                       "value" : [
-                       ],
-                       "multiple" : "true",
-                       "delimiter" : "|",
-                       "canOthers" : "false",
-                       "dataType" : "array"
-                },
-                "Rate" : {
-                       "type"        : "input",
-                       "value"       : [
-                       ],
-                       "multiple"    : "true",
-                       "delimiter"   : "|",
-                       "canOthers"   : "false",
-                       "dataType"    : "array"
-                },
-                "AMDD Charge Code" : {
-                       "type"        : "input",
-                       "value"       : [
-                       ],
-                       "multiple"    : "true",
-                       "delimiter"   : "|",
-                       "canOthers"   : "false",
-                       "dataType"    : "array"
-                },
-                "Commitment Period" : {
-                      "type"        : "input",
-                       "value"       : [
-                       ],
-                       "multiple"    : "true",
-                       "delimiter"   : "|",
-                       "canOthers"   : "false",
-                       "dataType"    : "array", 
-                       "conditions"  : ["Installment", "Penalty"],
-                       "determiningParam" : "OC Type"
-                },
-                "AMDD Charge Code Remove Offer" : {
-                       "type"        : "input",
-                       "value"       : [
-                       ],
-                       "multiple"    : "true",
-                       "delimiter"   : "|",
-                       "canOthers"   : "false",
-                       "dataType"    : "array",
-                       "conditions"  : ["Penalty"],
-                       "determiningParam" : "OC Type"
-                }
+              "OC Type": {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "One Time Charge",
+                            "Installment",
+                            "Penalty",
+                            "Charge + Allowance",
+                            "Charge Installment + Allowance",
+                            "Penalty + Allowance"
+                     ]
+              },
+              "OfferName" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "true",
+                     "dataType"    : "array"
+              },
+              "OfferDesc" : {
+                     "type" : "input",
+                     "value" : [
+                     ],
+                     "multiple" : "true",
+                     "delimiter" : "|",
+                     "canOthers" : "false",
+                     "dataType" : "array"
+              },
+              "Rate" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array"
+              },
+              "AMDD Charge Code" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array"
+              },
+              "Commitment Period" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array", 
+                     "conditions"  : ["Installment", "Penalty", "Charge Installment + Allowance","Penalty + Allowance"],
+                     "determiningParam" : "OC Type"
+              },
+              "Proration" : {
+                     "type"               : "input",
+                     "value"              : [
+                     ],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Prorate/Non Prorate",
+                     "conditions"         : ["Charge + Allowance","Charge Installment + Allowance","Penalty + Allowance"],
+                     "determiningParam"   : "OC Type"
+              },
+              "Prit Name" : {
+                     "type"               : "input",
+                     "value"              : [
+                     ],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Charge + Allowance","Charge Installment + Allowance","Penalty + Allowance"],
+                     "determiningParam"   : "OC Type"
+              },
+              "Quota" : {
+                     "type"               : "input",
+                     "value"              : [
+                     ],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice (in minutes);SMS",
+                     "conditions"         : ["Charge + Allowance","Charge Installment + Allowance","Penalty + Allowance"],
+                     "determiningParam"   : "OC Type"
+              },
+              "AMDD Charge Code Remove Offer" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : ["Penalty"],
+                     "determiningParam" : "OC Type"
+              }
          }
   },
   {
@@ -736,6 +774,7 @@
         "delimiter"   : "|",
         "canOthers"   : "false",
         "dataType"    : "array",
+        "details"     : "allowance;unit;error_code",
         "conditions"  : {
               "Case (Prepaid)" : ["GPRS & Landing Page"]
         },
