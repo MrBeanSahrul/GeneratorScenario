@@ -69,57 +69,57 @@
          }
   },
   {
-         "ItemName" : "RC Offer",
-         "EventName" : "RC Offer",
-         "FunctionName" : "exportExcelRcOffer",
-         "Params": {
-                "OfferName" : {
-                       "type" : "input",
-                       "value" : [
-                       ],
-                       "multiple" : "true",
-                       "delimiter" : "|",
-                       "canOthers" : "true",
-                       "dataType" : "array"
-                },
-                "OfferDesc" : {
-                       "type" : "input",
-                       "value" : [
-                       ],
-                       "multiple" : "true",
-                       "delimiter" : "|",
-                       "canOthers" : "false",
-                       "dataType" : "array"
-                },
-                "Rate" : {
-                       "type" : "input",
-                       "value" : [
-                       ],
-                       "multiple" : "true",
-                       "delimiter" : "|",
-                       "canOthers" : "false",
-                       "dataType" : "array"
-                },
-                "Proration" : {
-                       "type" : "input",
-                       "value" : [
-                       ],
-                       "multiple" : "true",
-                       "delimiter" : "|",
-                       "canOthers" : "false",
-                       "dataType" : "array",
-                       "details" : "Prorate/Non Prorate"
-                },
-                "AMDD Charge Code" : {
-                       "type" : "input",
-                       "value" : [
-                       ],
-                       "multiple" : "true",
-                       "delimiter" : "|",
-                       "canOthers" : "false",
-                       "dataType" : "array"
-                }
-         }
+       "ItemName" : "RC Offer",
+       "EventName" : "RC Offer",
+       "FunctionName" : "exportExcelRcOffer",
+       "Params": {
+              "OfferName" : {
+                     "type" : "input",
+                     "value" : [
+                     ],
+                     "multiple" : "true",
+                     "delimiter" : "|",
+                     "canOthers" : "true",
+                     "dataType" : "array"
+              },
+              "OfferDesc" : {
+                     "type" : "input",
+                     "value" : [
+                     ],
+                     "multiple" : "true",
+                     "delimiter" : "|",
+                     "canOthers" : "false",
+                     "dataType" : "array"
+              },
+              "Rate" : {
+                     "type" : "input",
+                     "value" : [
+                     ],
+                     "multiple" : "true",
+                     "delimiter" : "|",
+                     "canOthers" : "false",
+                     "dataType" : "array"
+              },
+              "Proration" : {
+                     "type" : "input",
+                     "value" : [
+                     ],
+                     "multiple" : "true",
+                     "delimiter" : "|",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "details" : "Prorate/Non Prorate"
+              },
+              "AMDD Charge Code" : {
+                     "type" : "input",
+                     "value" : [
+                     ],
+                     "multiple" : "true",
+                     "delimiter" : "|",
+                     "canOthers" : "false",
+                     "dataType" : "array"
+              }
+       }
   },
   {
          "ItemName" : "OC Offer (OC/OCIns/OCInsPen)",
@@ -232,8 +232,23 @@
                      "dataType"    : "array",
                      "conditions"  : ["Penalty"],
                      "determiningParam" : "OC Type"
+              },
+              "Bonus Description" : {
+                     "type"               : "option",
+                     "value"              : [
+                            "All Opr",
+                            "Tsel (Onnet, Onbrand for Loop)",
+                            "Opr Lain (Include fwa,pstn)",
+                            "Opr Lain (Exclude fwa,pstn)"
+                     ],
+                     "multiple"           : "false",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Charge + Allowance","Charge Installment + Allowance","Penalty + Allowance"],
+                     "determiningParam"   : "OC Type"
               }
-         }
+       }
   },
   {
          "ItemName" : "Discount Offer",

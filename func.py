@@ -524,6 +524,7 @@ def exportExcelOCOffer(eventName, params=None, neededParams = None):
        Quota         = []
        pritName      = ''
        proration     = ''
+       bonusDescription = ''
        for params in params:
               if "OfferName" in params:
                      offerName = params['OfferName']
@@ -571,8 +572,11 @@ def exportExcelOCOffer(eventName, params=None, neededParams = None):
                             strProration = ''
                             strResultProration = ''
               
+              if "Bonus Description" in params:
+                     bonusDescription = params["Bonus Description"][0]
+              
               if OCType == "Penalty + Allowance" or OCType == "Charge + Allowance" or OCType == "Charge Installment + Allowance":
-                     steps = getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProration, strResultProration, pritName, Quota, commitmentPeriod)
+                     steps = getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProration, strResultProration, pritName, Quota, commitmentPeriod, bonusDescription)
               else:
                      steps = [
                             ["Create & Activate PP Kartu Halo Bebas Abonemen V2","Number Activated"],
@@ -692,18 +696,26 @@ def exportExcelOCOffer(eventName, params=None, neededParams = None):
        print("Testing Scenario Successfully Generated")
        
        # Save Excel File
-       wb.save('Result/Scenario '+str(eventName)+'.xlsx')
+       wb.save('Result/Scenario '+str(eventName)+' '+str(OCType)+'.xlsx')
 
-def getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProration, strResultProration, pritName, Quota, commitmentPeriod):
+def getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProration, strResultProration, pritName, Quota, commitmentPeriod, bonusDescription):
        QuotaSplitString     = Quota.split(';')
        QuotaSMS             = 0
        firstQuotaSMS        = 0
        QuotaVoice           = int(QuotaSplitString[0])
        firstQuotaVoice      = int(QuotaSplitString[0])
        QuotaString          = ''
+       lastQuota            = ''
+
+       if bonusDescription == 'All Opr':
+              stringBonus = "All Opr"
+       elif bonusDescription == 'Tsel (Onnet, Onbrand for Loop)':
+              stringBonus = "Tsel"
+       else:
+              stringBonus = "Opr Lain"
 
        if OCType == "Penalty + Allowance" or OCType == "Charge Installment + Allowance":
-              stringInstallment = 'with installment '+ str(commitmentPeriod) +' month'
+              stringInstallment = commitmentPeriod
        else:
               stringInstallment = ''
        
@@ -713,61 +725,284 @@ def getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProrat
               firstQuotaSMS        = int(QuotaSplitString[1])
        
        if QuotaVoice > 0:
-              QuotaString += "All Opr "+str(QuotaVoice)+" minutes"
+              tenPercentVoice = round(QuotaVoice*0.1)
+              useTenPercentVoice = round(QuotaVoice-tenPercentVoice)
+              QuotaString += stringBonus + ' ' + str(QuotaVoice) + " minutes"
 
               if QuotaSMS > 0:
-                     stringQuotaSMS = ", All Opr " + str(QuotaSMS) + " sms"
+                     stringQuotaSMS = ", " + stringBonus + ' ' + str(QuotaSMS) + " sms"
               else:
                      stringQuotaSMS = ''
 
-              event_descriptions = [
-                     "voice onnet 50 minutes 11am",
-                     "voice offnet 50 minutes 1pm",
-                     "voice fwa 50 minutes 8am",
-                     "voice pstn 50 minutes 11am",
-                     "voice 50 minutes voice onnet 3am",
-                     "voice 50 minutes voice pstn 10am",
-                     "voice offnet 50 minutes",
-                     "voice onnet 50 minutes using ServiceSubType 21"
-              ]
-
-              stepsConsumeVoice = []
-              for description in event_descriptions:
-                     if QuotaVoice >= 50:
-                            step = [
-                            f"Create event {description}",
-                            "Consume Bonus",
-                            f"All Opr {QuotaVoice} minutes{stringQuotaSMS}"
+              if bonusDescription == 'All Opr':
+                     event_descriptions = [
+                            [
+                                   "voice onnet paramVoice minutes 11am",
+                                   0
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes 1pm",
+                                   0
+                            ],
+                            [
+                                   "voice fwa paramVoice minutes 8am",
+                                   0
+                            ],
+                            [
+                                   "voice pstn paramVoice minutes 11am",
+                                   0
+                            ],
+                            [
+                                   "voice paramVoice minutes voice onnet 3am",
+                                   0
+                            ],
+                            [
+                                   "voice paramVoice minutes voice pstn 10am",
+                                   0
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes",
+                                   0
+                            ],
+                            [
+                                   "voice onnet paramVoice minutes using ServiceSubType 21",
+                                   0
                             ]
+                     ]
+              elif bonusDescription == 'Tsel (Onnet, Onbrand for Loop)':
+                     event_descriptions = [
+                            [
+                                   "voice onnet paramVoice minutes 11am",
+                                   0
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes 1pm",
+                                   1
+                            ],
+                            [
+                                   "voice fwa paramVoice minutes 8am",
+                                   1
+                            ],
+                            [
+                                   "voice pstn paramVoice minutes 11am",
+                                   1
+                            ],
+                            [
+                                   "voice paramVoice minutes voice onnet 3am",
+                                   0
+                            ],
+                            [
+                                   "voice paramVoice minutes voice pstn 10am",
+                                   1
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes",
+                                   1
+                            ],
+                            [
+                                   "voice onnet paramVoice minutes using ServiceSubType 21",
+                                   0
+                            ]
+                     ]
+              elif bonusDescription == 'Opr Lain (Include fwa,pstn)':
+                     event_descriptions = [
+                            [
+                                   "voice onnet paramVoice minutes 11am",
+                                   1
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes 1pm",
+                                   0
+                            ],
+                            [
+                                   "voice fwa paramVoice minutes 8am",
+                                   0
+                            ],
+                            [
+                                   "voice pstn paramVoice minutes 11am",
+                                   0
+                            ],
+                            [
+                                   "voice paramVoice minutes voice onnet 3am",
+                                   1
+                            ],
+                            [
+                                   "voice paramVoice minutes voice pstn 10am",
+                                   0
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes",
+                                   0
+                            ],
+                            [
+                                   "voice onnet paramVoice minutes using ServiceSubType 21",
+                                   1
+                            ]
+                     ]
+              else:
+                     event_descriptions = [
+                            [
+                                   "voice onnet paramVoice minutes 11am",
+                                   1
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes 1pm",
+                                   0
+                            ],
+                            [
+                                   "voice fwa paramVoice minutes 8am",
+                                   1
+                            ],
+                            [
+                                   "voice pstn paramVoice minutes 11am",
+                                   1
+                            ],
+                            [
+                                   "voice paramVoice minutes voice onnet 3am",
+                                   1
+                            ],
+                            [
+                                   "voice paramVoice minutes voice pstn 10am",
+                                   1
+                            ],
+                            [
+                                   "voice offnet paramVoice minutes",
+                                   0
+                            ],
+                            [
+                                   "voice onnet paramVoice minutes using ServiceSubType 21",
+                                   1
+                            ]
+                     ]
+              
+              stepsConsumeVoice = []
+              for desc in event_descriptions:
+                     description   = desc[0]
+                     validating    = desc[1]
+                     if validating == 0:
+                            if QuotaVoice >= 0:
+                                   decreasingQuotaVoice = round((QuotaVoice*0.5)/4)
+                                   QuotaVoice -= decreasingQuotaVoice
+                                   step = [
+                                   f"Create event {description.replace('paramVoice', str(decreasingQuotaVoice))}",
+                                   "Consume Bonus",
+                                   f"{stringBonus} {QuotaVoice} minutes{stringQuotaSMS}"
+                                   ]
+                                   lastQuota = f"{stringBonus} {QuotaVoice} minutes{stringQuotaSMS}"
+                                   stepsConsumeVoice.append(step)
+                     else:
+                            step = [
+                                   f"Create event {description.replace('paramVoice', '100')}",
+                                   "Charged",
+                                   f"{stringBonus} {QuotaVoice} minutes{stringQuotaSMS}"
+                            ]
+                            lastQuota = f"{stringBonus} {QuotaVoice} minutes{stringQuotaSMS}"
                             stepsConsumeVoice.append(step)
-                            QuotaVoice -= 50
        
        if QuotaSMS > 0:
-              QuotaString += ", All Opr "+ str(QuotaSMS) +" sms"
+              tenPercentSMS = round(QuotaSMS*0.1)
+              useTenPercentSMS = round(QuotaSMS-tenPercentSMS)
+              QuotaString += ", "+ stringBonus + ' ' + str(QuotaSMS) +" sms"
 
               if QuotaVoice > 0:
-                     stringQuotaVoice = "All Opr " + str(QuotaVoice) + " minutes,"
+                     stringQuotaVoice = stringBonus + ' ' + str(QuotaVoice) + " minutes,"
               else:
                      stringQuotaVoice = ''
 
-              event_descriptions = [
-                     "100 sms onnet 5pm",
-                     "100 sms offnet 7pm",
-                     "100 sms onnet 1am",
-                     "100 sms offnet 1pm",
-                     "100 sms onnet",
-              ]
+              if bonusDescription == 'All Opr':
+                     event_descriptions = [
+                            [
+                                   "paramSMS sms onnet 5pm",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms offnet 7pm",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms onnet 1am",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms offnet 1pm",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms onnet",
+                                   0
+                            ]
+                     ]
+              elif bonusDescription == 'Tsel (Onnet, Onbrand for Loop)':
+                     event_descriptions = [
+                            [
+                                   "paramSMS sms onnet 5pm",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms offnet 7pm",
+                                   1
+                            ],
+                            [
+                                   "paramSMS sms onnet 1am",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms offnet 1pm",
+                                   1
+                            ],
+                            [
+                                   "paramSMS sms onnet",
+                                   0
+                            ]
+                     ]
+              else:
+                    event_descriptions = [
+                            [
+                                   "paramSMS sms onnet 5pm",
+                                   1
+                            ],
+                            [
+                                   "paramSMS sms offnet 7pm",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms onnet 1am",
+                                   1
+                            ],
+                            [
+                                   "paramSMS sms offnet 1pm",
+                                   0
+                            ],
+                            [
+                                   "paramSMS sms onnet",
+                                   1
+                            ]
+                     ] 
 
               stepsConsumeSMS = []
-              for description in event_descriptions:
-                     if QuotaSMS >= 100:
+              for desc in event_descriptions:
+                     description   = desc[0]
+                     validating    = desc[1]
+
+                     if validating == 0:
+                            if QuotaSMS >= 0:
+                                   decreasingQuotaSMS = round((QuotaSMS*0.5)/4)
+                                   QuotaSMS -= decreasingQuotaSMS
+                                   step = [
+                                   f"Create event {description.replace('paramSMS', str(decreasingQuotaSMS))}",
+                                   "Consume Bonus",
+                                   f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
+                                   ]
+                                   lastQuota = f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
+                                   stepsConsumeSMS.append(step)
+                     else:
                             step = [
-                            f"Create event {description}",
-                            "Consume Bonus",
-                            f"{stringQuotaVoice} All Opr {QuotaSMS} sms"
+                                   f"Create event {description.replace('paramSMS', '100')}",
+                                   "Charged",
+                                   f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
                             ]
+                            lastQuota = f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
                             stepsConsumeSMS.append(step)
-                            QuotaSMS -= 100
 
        steps = []
        firstStep = [
@@ -779,16 +1014,22 @@ def getStepsForOCOffer(OCType, offerName, offerDesc, rate, chargeCode, strProrat
               ["Check 888",""+str(rate)+" "+str(strProration),QuotaString],
               ["Check 889","Checked",QuotaString],
               ["Check 889*1","Checked","No Bonus"],
-              ["Check 889*2","Checked","All Opr "+ str(firstQuotaVoice) +" minutes"],
-              ["Check 889*3","Checked","All Opr "+ str(firstQuotaSMS)+" sms"],
+              ["Check 889*2","Checked",stringBonus + ' ' + str(firstQuotaVoice) +" minutes"],
+              ["Check 889*3","Checked",stringBonus + ' ' + str(firstQuotaSMS)+" sms"],
               ["Check 889*4","Checked","No Bonus"],
               ["Check AMDD and Charge ",""+ str(chargeCode) +" | "+ str(rate),"No Bonus"],
               ["Check PRIT Name",pritName,"No Bonus"]
        ]
        #Step Consume Quota (Voice & SMS)
+       
        secondStep = [
-              ["Check bonus before next bc","Checked","All Opr "+ str(firstQuotaVoice) +" minutes, All Opr "+ str(firstQuotaSMS) +" sms"],
+              ["Create event direct debit with vascode google (5500k) 1pm","Charged",lastQuota],
+              ["Create event voice international to taiwan 60s 2pm","Charged",lastQuota],
+              ["Create event gprs 1Mb rg 55 5pm","Charged",lastQuota],
+              ["Check bonus before next bc","Checked",lastQuota],
               ["Check bonus after next bc","Checked",QuotaString],
+              ["Create event voice onnet "+str(tenPercentVoice)+" minutes after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentVoice)+" minutes, "+ stringBonus + ' ' + str(firstQuotaSMS)+" sms"],
+              ["Create event "+str(useTenPercentSMS)+" sms offnet after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentVoice)+" minutes, "+ stringBonus + ' ' + str(useTenPercentSMS)+" sms"],
               ["Check table TRB1_SUB Errs","Checked","No Bonus"],
               ["INVOICING","Checked","No Bonus"],
               ["Create & Activate new subscriber PP KartuHalo Bebas Abonemen","Check active period","No Bonus"],
