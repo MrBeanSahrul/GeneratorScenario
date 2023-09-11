@@ -69,10 +69,20 @@
          }
   },
   {
-       "ItemName" : "RC Offer",
+       "ItemName" : "RC Offer (Charge, Charge+Allowance)",
        "EventName" : "RC Offer",
        "FunctionName" : "exportExcelRcOffer",
        "Params": {
+              "RC Type": {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Charge",
+                            "Charge + Allowance"
+                     ]
+              },
               "OfferName" : {
                      "type" : "input",
                      "value" : [
@@ -98,7 +108,8 @@
                      "multiple" : "true",
                      "delimiter" : "|",
                      "canOthers" : "false",
-                     "dataType" : "array"
+                     "dataType" : "array",
+                     "details" : "Example : 50000"
               },
               "Proration" : {
                      "type" : "input",
@@ -118,6 +129,44 @@
                      "delimiter" : "|",
                      "canOthers" : "false",
                      "dataType" : "array"
+              },
+              "Prit Name" : {
+                     "type"               : "input",
+                     "value"              : [
+                     ],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Charge + Allowance"],
+                     "determiningParam"   : "RC Type"
+              },
+              "Quota" : {
+                     "type"               : "input",
+                     "value"              : [
+                     ],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice (in minutes);SMS",
+                     "conditions"         : ["Charge + Allowance"],
+                     "determiningParam"   : "RC Type"
+              },
+              "Bonus Description" : {
+                     "type"               : "option",
+                     "value"              : [
+                            "All Opr",
+                            "Tsel (Onnet, Onbrand for Loop)",
+                            "Opr Lain (Include fwa,pstn)",
+                            "Opr Lain (Exclude fwa,pstn)"
+                     ],
+                     "multiple"           : "false",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Charge + Allowance"],
+                     "determiningParam"   : "RC Type"
               }
        }
   },
@@ -165,6 +214,7 @@
                      "multiple"    : "true",
                      "delimiter"   : "|",
                      "canOthers"   : "false",
+                     "details"     : "Example : 50000",
                      "dataType"    : "array"
               },
               "AMDD Charge Code" : {
@@ -184,6 +234,7 @@
                      "delimiter"   : "|",
                      "canOthers"   : "false",
                      "dataType"    : "array", 
+                     "details"     : "12/6",
                      "conditions"  : ["Installment", "Penalty", "Charge Installment + Allowance","Penalty + Allowance"],
                      "determiningParam" : "OC Type"
               },
