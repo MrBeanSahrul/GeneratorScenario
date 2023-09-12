@@ -2270,7 +2270,7 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      ["Attach Offer Minimum Usage "+str(offerName),"Offer Attached"],
                      ["Check Offer Description","Minimum Usage "+str(offerName)+"|Minimum Usage "+str(offerDesc)+""],
                      ["Check 888","Checked"],
-                     ["Check AMDD RC", "Checked"]
+                     ["Check AMDD RC", "Checked"],
                      ["Check TRB1_Sub_Errs","Checked | Makesure no Error"],
                      ["Check Indira","Checked"],
                      "Invoicing"	 
@@ -2285,7 +2285,7 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      ["Attach Offer Minimum Usage "+str(offerName),"Offer Attached"],
                      ["Check Offer Description","Minimum Usage "+str(offerName)+"|Minimum Usage "+str(offerDesc)+""],
                      ["Check 888","Checked"],
-                     ["Check AMDD OC", "Checked"]
+                     ["Check AMDD OC", "Checked"],
                      ["Check TRB1_Sub_Errs","Checked | Makesure no Error"],
                      ["Check Indira","Checked"],
                      "Invoicing"
@@ -2417,8 +2417,8 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      ["5 PM, Create event voice onnet 6000s","Charged"],
                      ["6 PM D+1, Create event voice offnet 6000s","Charged"],
                      ["7 PM D+1, Create event 1 SMS onnet","Charged"],
-                     ["Check AMDD RC", "Checked"]
-                     ["Check AMDD OC", "Checked"]
+                     ["Check AMDD RC", "Checked"],
+                     ["Check AMDD OC", "Checked"],
                      ["Check TRB1_Sub_Errs","Checked | Makesure no Error"],
                      ["Check Indira","Checked"],
                      "Invoicing"	 
