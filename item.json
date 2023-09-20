@@ -847,5 +847,115 @@
         "determiningParam" : ["Case (Prepaid)"] 
       }
     }
+  },
+  {
+       "ItemName" : "Prepaid Offer",
+       "EventName" : "Prepaid Offer",
+       "FunctionName" : "exportExcelPrepaidOffer",
+       "Params": {
+              "Offer Type" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Offer Fix",
+                            "Offer Flexible",
+                            "Offer TM"
+                     ]
+              },
+              "Offer Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "true",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Price Plan Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Preload Bonus" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Quota" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice (in minutes);SMS",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Bonus Description" : {
+                     "type"               : "option",
+                     "value"              : [
+                                                 "All Opr",
+                                                 "Tsel (Onnet, Onbrand for Loop)",
+                                                 "Opr Lain (Include fwa,pstn)",
+                                                 "Opr Lain (Exclude fwa,pstn)"
+                                          ],
+                     "multiple"           : "false",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "in days",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Timeband" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "24 hours format [ex:00-23]",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Flexible Type" : {
+                     "type"               : "option",
+                     "value"              : [
+                                                 "Flexible Voice/SMS",
+                                                 "Flexible Roaming",
+                                                 "Flexible Monbal"
+                                          ],
+                     "multiple"           : "false",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              }
+       }
   }
 ]

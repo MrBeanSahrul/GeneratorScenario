@@ -3,6 +3,7 @@ from queue import Empty
 import re
 import math
 import random
+from time import time
 import openpyxl
 from openpyxl import Workbook
 from datetime import datetime, timedelta
@@ -4504,3 +4505,654 @@ def tarifSMSPrepaid(name, ratePerZone):
        steps[index:index] = checkedStep
 
        return steps
+
+def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
+       wb = Workbook()
+       ws = wb.active
+
+       offerType     = ''
+       offerName     = ''
+       PPName        = ''
+       quota         = ''
+       bonusDesc     = ''
+       flexibleType  = ''
+       preloadBonus  = ''
+       validity      = ''
+       timeband      = ''
+
+       for params in params:
+              if "Offer Type" in params:
+                     offerType = params['Offer Type'][0]
+              else:
+                     offerType = ''
+              
+              if "Offer Name" in params:
+                     offerName = params['Offer Name']
+              else:
+                     offerName = '' 
+              
+              if offerName == '':
+                     continue
+              
+              if "Price Plan Name" in params:
+                     PPName = params['Price Plan Name']
+              else:
+                     PPName = ''
+              
+              if "Quota" in params:
+                     quota = params["Quota"]
+              
+              if "Bonus Description" in params:
+                     bonusDesc = params["Bonus Description"][0]
+              
+              if "Flexible Type" in params:
+                     flexibleType = params["Flexible Type"][0]
+              
+              if "Preload Bonus" in params:
+                     preloadBonus = params["Preload Bonus"]
+              
+              if "Validity" in params:
+                     validity = params["Validity"]
+
+              if "Timeband" in params:
+                     timeband = params["Timeband"]
+              
+              if offerType == 'Offer Fix':
+                     steps = stepOfferFix(offerName, PPName, quota, bonusDesc, preloadBonus, validity, timeband)
+              elif offerType == 'Offer Fix':
+                     if flexibleType == 'Flexible Voice/SMS':
+                            steps = stepOfferFlexibleVoiceSMS(offerName, PPName, quota, bonusDesc)
+                     elif flexibleType == 'Flexible Roaming':
+                            steps = stepOfferFlexibleRoaming(offerName, PPName, quota, bonusDesc)
+                     elif flexibleType == 'Flexible Monbal':
+                            steps = stepOfferFlexibleMonbal(offerName, PPName, quota, bonusDesc)
+              else:
+                     print("Sorry, Scenario isn't ready yet")
+                     exit('')
+
+              # Write Header Row
+              header = [f'{eventName} | {offerName}']
+              ws.append(header)
+
+              # Merge Header Cells
+              startColumnIndex = 3  # Example of a dynamic column index
+              startColumn = chr(ord("A") + startColumnIndex)  # Calculate the start column dynamically
+              endColumn = "E"
+              startRow = 1
+              endRow = 1
+              cellRange = f"{startColumn}{startRow}:{endColumn}{endRow}"
+              ws.merge_cells(cellRange)
+
+              headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
+              ws.append(headerRow)
+
+              for no, step in enumerate(steps, start=1):
+                     if isinstance(step, str):
+                            row = [
+                                   no,
+                                   step,
+                                   "Success",
+                                   "No Bonus",
+                                   "XYZ"
+                            ]
+                            no = no+1
+                     else:
+                            if step is None:
+                                   continue
+                            else:
+                                   if len(step) == 5:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 step[4]
+                                          ]
+                                   elif len(step) == 4:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 "XYZ"
+                                          ]
+                                   elif len(step) == 3:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                                   else:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 "No Bonus",
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                     ws.append(row)
+
+       print("Testing Scenario Successfully Generated")
+       
+       # Save Excel File
+       wb.save('Result/Scenario '+str(eventName)+' '+str(offerType)+'.xlsx')
+
+def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, timeband):
+       QuotaSplitString     = Quota.split(';')
+       QuotaSMS             = 0
+       firstQuotaSMS        = 0
+       QuotaVoice           = int(QuotaSplitString[0])
+       firstQuotaVoice      = int(QuotaSplitString[0])
+       QuotaString          = ''
+       stepConsumePreload   = None
+       bonusPreload         = 'No Bonus'
+       start_hour, end_hour = map(int, timeband.split('-'))
+       validity             = int(validity)
+       detailQuotaVoice     = []
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet',
+                     "Param" : ["All Opr", "Tsel (Onnet, Onbrand for Loop)"]
+              },
+              {
+                     "Name" : 'Offnet',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"]
+              },
+              {
+                     "Name" : 'FWA',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"]
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : []
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50 ',
+                     "Param" : []
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250 ',
+                     "Param" : []
+              },
+       ]
+
+       if preloadBonus != '' or preloadBonus != 0:
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              bonusPreload         = preloadBonus
+
+       if bonusDesc == 'All Opr':
+              stringBonus = "All Opr"
+       elif bonusDesc == 'Tsel (Onnet, Onbrand for Loop)':
+              stringBonus = "Tsel"
+       else:
+              stringBonus = "Opr Lain"
+
+       if len(QuotaSplitString) > 1:
+              QuotaSMS             = int(QuotaSplitString[1])
+              firstQuotaSMS        = int(QuotaSplitString[1])
+       
+       # if QuotaVoice > 0:
+       #       stepsConsumeVoice, QuotaVoice, detailQuotaVoice = getStepRecudeVoice(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity)
+
+       # if QuotaSMS > 0:
+       #        stepsConsumeSMS = getStepReduceSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity, detailQuotaVoice)
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, validity)
+
+       stringBonusAll = ''
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+stringBonus
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+stringBonus
+       
+       steps = [
+              ["Create & Activate new subscriber PP "+PPName,"Check active period",bonusPreload],
+              stepConsumePreload,
+              ["Update Balance 10000000","Balance Updated","No Bonus"],
+              ["Update Exp Date","Update Expired Date","No Bonus"],
+              ["Attach Offer "+str(offerName)+" Voice "+str(stringBonus)+"","Offer Attached",stringBonusAll],
+              ["Check Bonus 889*1 11am","Checked","No Bonus"],
+              ["Check Bonus 889*2 11am","Checked",stringBonusAll],
+              ["Check Bonus 889*3 11am","Checked","No Bonus"]
+       ]
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              steps.extend(stepsConsumeBonus)
+
+       # if firstQuotaVoice > 0:
+       #        steps.extend(stepsConsumeVoice)
+       # if firstQuotaSMS > 0:
+       #        steps.extend(stepsConsumeSMS)
+
+       return steps
+
+def getStepReduceSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity, detailQuotaVoice):
+       stepsConsumeSMS      = []
+       dayString            = 0
+       timeString           = ''
+       consumeOrCharged     = ''
+       restBonus            = 'No Bonus'
+       validity             = int(validity)
+       maxValidity          = validity+5
+       reduceOrNot          = False
+       
+       # Generate a shuffled list of numbers from dayString to validity - 1
+       days = list(range(dayString, maxValidity))
+
+       for strValidity in days:
+              random_event  = random.choice(dataEvent)
+              event_name    = random_event["Name"]
+              event_param   = random_event["Param"]
+              timeNumber    = random.randint(0, 23)
+              timeString    = timeNumber
+              if len(detailQuotaVoice) > 0:
+                     filtered_dicts = [item for item in detailQuotaVoice if item["Day"] == strValidity]
+
+                     # Check if there are any matches
+                     if filtered_dicts:
+                            # Extract the "Quota" value from the first matching dictionary (assuming there's only one)
+                            quota_value = filtered_dicts[0]["Quota"]
+                            stringQuotaVoice = stringBonus + ' ' + str(quota_value) + " minutes,"
+                     else:
+                            stringQuotaVoice = ''
+              else:
+                     if QuotaVoice > 0:
+                            stringQuotaVoice = stringBonus + ' ' + str(QuotaVoice) + " minutes,"
+                     else:
+                            stringQuotaVoice = ''
+
+              # Check if random event is included in bonus desc
+              if bonusDesc in event_param:
+                     if strValidity < validity:
+                            if start_hour <= end_hour:
+                                   # Time range does not span midnight
+                                   if start_hour <= timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged = 'Consume Bonus'
+                                          reduceOrNot      = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged = 'Charged'
+                                          reduceOrNot      = True
+                            else:
+                                   # Time range spans midnight
+                                   if timeNumber >= start_hour or timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged = 'Consume Bonus'
+                                          reduceOrNot      = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged = 'Charged'
+                                          reduceOrNot      = True
+                     else:
+                            consumeOrCharged = 'Charged'
+                            reduceOrNot      = True
+
+              else:
+                     consumeOrCharged = 'Charged'
+
+              if QuotaSMS > 0 and reduceOrNot:
+                     decreasingQuotaSMS = round((QuotaSMS * 0.5) / 4)
+                     QuotaSMS -= decreasingQuotaSMS
+                     eventString = decreasingQuotaSMS
+              else:
+                     eventString = '1'
+
+              if int(timeString) > 12:
+                     timeString = str(int(timeString) - 12) + 'PM'
+              else:
+                     timeString = str(timeString) + "AM"
+
+              if int(strValidity) >= validity:
+                     restBonus = "No Bonus"
+              else:
+                     restBonus = f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
+
+              step = [
+                     f"Create event {eventString} SMS {event_name} {timeString} D+{strValidity}",
+                     consumeOrCharged,
+                     restBonus
+              ]
+              stepsConsumeSMS.append(step)
+
+       return stepsConsumeSMS
+
+def getStepRecudeVoice(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity):
+       if QuotaSMS > 0:
+              stringQuotaSMS = ", " + stringBonus + ' ' + str(QuotaSMS) + " sms"
+       else:
+              stringQuotaSMS = ''
+
+       stepsConsumeVoice    = []
+       dayString            = 0
+       timeString           = ''
+       consumeOrCharged     = ''
+       restBonus            = 'No Bonus'
+       validity             = int(validity)
+       maxValidity          = validity+5
+       reduceOrNot          = False
+       detailQuotaVoice     = []
+       
+       # Generate a shuffled list of numbers from dayString to validity - 1
+       days = list(range(dayString, maxValidity))
+
+       for strValidity in days:
+              random_event  = random.choice(dataEvent)
+              event_name    = random_event["Name"]
+              event_param   = random_event["Param"]
+              timeNumber    = random.randint(0, 23)
+              timeString    = timeNumber
+
+              # Check if random event is included in bonus desc
+              if bonusDesc in event_param:
+                     if strValidity < validity:
+                            if start_hour <= end_hour:
+                                   # Time range does not span midnight
+                                   if start_hour <= timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged = 'Consume Bonus'
+                                          reduceOrNot      = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged = 'Charged'
+                                          reduceOrNot      = False
+                            else:
+                                   # Time range spans midnight
+                                   if timeNumber >= start_hour or timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged = 'Consume Bonus'
+                                          reduceOrNot      = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged = 'Charged'
+                                          reduceOrNot      = False
+                     else:
+                            consumeOrCharged     = 'Charged'
+                            reduceOrNot          = False
+
+              else:
+                     consumeOrCharged = 'Charged'
+                     reduceOrNot      = False
+
+              if QuotaVoice > 0 and reduceOrNot:
+                     decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
+                     QuotaVoice -= decreasingQuotaVoice
+                     eventString = decreasingQuotaVoice
+              else:
+                     eventString = '1'
+
+              if int(timeString) > 12:
+                     timeString = str(int(timeString) - 12) + 'PM'
+              else:
+                     timeString = str(timeString) + "AM"
+
+              if int(strValidity) >= validity:
+                     restBonus = "No Bonus"
+                     detailVoiceQuota = {
+                            "Day" : strValidity,
+                            "Quota" : "Not Found"
+                     }
+              else:
+                     restBonus = f"{stringBonus} {QuotaVoice} minutes {stringQuotaSMS}"
+                     detailVoiceQuota = {
+                            "Day" : strValidity,
+                            "Quota" : QuotaVoice
+                     }
+
+              step = [
+                     f"Create event {eventString} minutes voice {event_name} {timeString} D+{strValidity}",
+                     consumeOrCharged,
+                     restBonus
+              ]
+              stepsConsumeVoice.append(step)
+              detailQuotaVoice.append(detailVoiceQuota)
+
+       return stepsConsumeVoice, QuotaVoice, detailQuotaVoice
+
+def getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, validity):
+       stepsConsume         = []
+       dayString            = 0
+       timeString           = ''
+       consumeOrCharged     = ''
+       restBonus            = 'No Bonus'
+       validity             = int(validity)
+       maxValidity          = validity+5
+       reduceOrNot          = False
+       detailQuotaVoice     = []
+       
+       # Generate a shuffled list of numbers from dayString to validity - 1
+       days = list(range(dayString, maxValidity))
+
+       for strValidity in days:
+              stepConsumeVoice, QuotaVoice       = getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity)
+              stepConsumeSMS, QuotaSMS           = getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity)
+              stepsConsume.append(stepConsumeVoice)
+              stepsConsume.append(stepConsumeSMS)
+
+       return stepsConsume, QuotaVoice, QuotaSMS
+
+def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, days, validity):
+       
+       if QuotaSMS > 0:
+              stringQuotaSMS = ", " + stringBonus + ' ' + str(QuotaSMS) + " sms"
+       else:
+              stringQuotaSMS = ''
+       
+       timeString           = ''
+       consumeOrCharged     = ''
+       restBonus            = 'No Bonus'
+       reduceOrNot          = False
+ 
+       random_event  = random.choice(dataEvent)
+       event_name    = random_event["Name"]
+       event_param   = random_event["Param"]
+       timeNumber    = random.randint(0, 23)
+       timeString    = timeNumber
+
+       # Check if random event is included in bonus desc
+       if bonusDesc in event_param:
+              if days < validity:
+                     if start_hour <= end_hour:
+                            # Time range does not span midnight
+                            if start_hour <= timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged = 'Consume Bonus'
+                                   reduceOrNot      = True
+                            else:
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged = 'Charged'
+                                   reduceOrNot      = False
+                     else:
+                            # Time range spans midnight
+                            if timeNumber >= start_hour or timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged = 'Consume Bonus'
+                                   reduceOrNot      = True
+                            else:
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged = 'Charged'
+                                   reduceOrNot      = False
+              else:
+                     consumeOrCharged     = 'Charged'
+                     reduceOrNot          = False
+
+       else:
+              consumeOrCharged = 'Charged'
+              reduceOrNot      = False
+
+       if QuotaVoice > 0 and reduceOrNot:
+              decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
+              QuotaVoice -= decreasingQuotaVoice
+              eventString = decreasingQuotaVoice
+       else:
+              eventString = '1'
+
+       if int(timeString) > 12:
+              timeString = str(int(timeString) - 12) + 'PM'
+       else:
+              timeString = str(timeString) + "AM"
+
+       if int(days) >= validity:
+              restBonus = "No Bonus"
+       else:
+              restBonus = f"{stringBonus} {QuotaVoice} minutes {stringQuotaSMS}"
+
+       step = [
+              f"Create event {eventString} minutes voice {event_name} {timeString} D+{days}",
+              consumeOrCharged,
+              restBonus
+       ]
+
+       return step, QuotaVoice
+
+def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, days, validity):
+       
+       timeString           = ''
+       consumeOrCharged     = ''
+       restBonus            = 'No Bonus'
+       reduceOrNot          = False
+       random_event         = random.choice(dataEvent)
+       event_name           = random_event["Name"]
+       event_param          = random_event["Param"]
+       timeNumber           = random.randint(0, 23)
+       timeString           = timeNumber
+
+       if QuotaVoice > 0:
+              stringQuotaVoice = stringBonus + ' ' + str(QuotaVoice) + " minutes,"
+       else:
+              stringQuotaVoice = ''
+
+       # Check if random event is included in bonus desc
+       if bonusDesc in event_param:
+              if days < validity:
+                     if start_hour <= end_hour:
+                            # Time range does not span midnight
+                            if start_hour <= timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged = 'Consume Bonus'
+                                   reduceOrNot      = True
+                            else:
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged = 'Charged'
+                                   reduceOrNot      = True
+                     else:
+                            # Time range spans midnight
+                            if timeNumber >= start_hour or timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged = 'Consume Bonus'
+                                   reduceOrNot      = True
+                            else:
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged = 'Charged'
+                                   reduceOrNot      = True
+              else:
+                     consumeOrCharged = 'Charged'
+                     reduceOrNot      = True
+
+       else:
+              consumeOrCharged = 'Charged'
+
+       if QuotaSMS > 0 and reduceOrNot:
+              decreasingQuotaSMS = round((QuotaSMS * 0.5) / 4)
+              QuotaSMS -= decreasingQuotaSMS
+              eventString = decreasingQuotaSMS
+       else:
+              eventString = '1'
+
+       if int(timeString) > 12:
+              timeString = str(int(timeString) - 12) + 'PM'
+       else:
+              timeString = str(timeString) + "AM"
+
+       if int(days) >= validity:
+              restBonus = "No Bonus"
+       else:
+              restBonus = f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
+
+       step = [
+              f"Create event {eventString} SMS {event_name} {timeString} D+{days}",
+              consumeOrCharged,
+              restBonus
+       ]
+
+       return step, QuotaSMS
+
+def generatingScenario(eventName, offerName, offerDesc, offerType, steps):
+       wb = Workbook()
+       ws = wb.active
+
+       # Write Header Row
+       header = [f'{eventName} | {offerName} | {offerDesc}']
+       ws.append(header)
+
+       # Merge Header Cells
+       startColumnIndex = 3  # Example of a dynamic column index
+       startColumn = chr(ord("A") + startColumnIndex)  # Calculate the start column dynamically
+       endColumn = "E"
+       startRow = 1
+       endRow = 1
+       cellRange = f"{startColumn}{startRow}:{endColumn}{endRow}"
+       ws.merge_cells(cellRange)
+
+       headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
+       ws.append(headerRow)
+
+       for no, step in enumerate(steps):
+              if isinstance(step, str):
+                     row = [
+                            no,
+                            step,
+                            "Success",
+                            "No Bonus",
+                            "XYZ"
+                     ]
+                     no = no+1
+              else:
+                     if step is None:
+                            continue
+                     else:
+                            if len(step) == 5:
+                                   row = [
+                                          step[0],
+                                          step[1],
+                                          step[2],
+                                          step[3],
+                                          step[4]
+                                   ]
+                            elif len(step) == 4:
+                                   row = [
+                                          step[0],
+                                          step[1],
+                                          step[2],
+                                          step[3],
+                                          "XYZ"
+                                   ]
+                            elif len(step) == 3:
+                                   row = [
+                                          no,
+                                          step[0],
+                                          step[1],
+                                          step[2],
+                                          "XYZ"
+                                   ]
+                                   no = no+1
+                            else:
+                                   row = [
+                                          no,
+                                          step[0],
+                                          step[1],
+                                          "No Bonus",
+                                          "XYZ"
+                                   ]
+                                   no = no+1
+              ws.append(row)
+
+       print("Testing Scenario Successfully Generated")
+       
+       # Save Excel File
+       wb.save('Result/Scenario '+str(eventName)+' '+str(offerType)+'.xlsx')
