@@ -4647,38 +4647,11 @@ def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, ti
        firstQuotaSMS        = 0
        QuotaVoice           = int(QuotaSplitString[0])
        firstQuotaVoice      = int(QuotaSplitString[0])
-       QuotaString          = ''
        stepConsumePreload   = None
        bonusPreload         = 'No Bonus'
        start_hour, end_hour = map(int, timeband.split('-'))
        validity             = int(validity)
-       detailQuotaVoice     = []
-       dataEvent            = [
-              {
-                     "Name" : 'Onnet',
-                     "Param" : ["All Opr", "Tsel (Onnet, Onbrand for Loop)"]
-              },
-              {
-                     "Name" : 'Offnet',
-                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"]
-              },
-              {
-                     "Name" : 'FWA',
-                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"]
-              },
-              {
-                     "Name" : 'International',
-                     "Param" : []
-              },
-              {
-                     "Name" : 'GPRS 1MB RG 50 ',
-                     "Param" : []
-              },
-              {
-                     "Name" : 'Direct Debit bank_digi_250 ',
-                     "Param" : []
-              },
-       ]
+       
 
        if preloadBonus != '' or preloadBonus != 0:
               stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
@@ -4702,7 +4675,7 @@ def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, ti
        #        stepsConsumeSMS = getStepReduceSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity, detailQuotaVoice)
 
        if QuotaVoice > 0 or QuotaSMS > 0:
-              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, validity)
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, bonusDesc, start_hour, end_hour, validity)
 
        stringBonusAll = ''
        if firstQuotaVoice > 0:
@@ -4721,7 +4694,7 @@ def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, ti
               ["Check Bonus 889*3 11am","Checked","No Bonus"]
        ]
 
-       if QuotaVoice > 0 or QuotaSMS > 0:
+       if firstQuotaVoice > 0 or firstQuotaSMS > 0:
               steps.extend(stepsConsumeBonus)
 
        # if firstQuotaVoice > 0:
@@ -4914,32 +4887,62 @@ def getStepRecudeVoice(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, 
 
        return stepsConsumeVoice, QuotaVoice, detailQuotaVoice
 
-def getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, validity):
+def getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, bonusDesc, start_hour, end_hour, validity):
        stepsConsume         = []
        dayString            = 0
-       timeString           = ''
-       consumeOrCharged     = ''
-       restBonus            = 'No Bonus'
        validity             = int(validity)
-       maxValidity          = validity+5
-       reduceOrNot          = False
-       detailQuotaVoice     = []
+       maxValidity          = validity+1
+       first                = True
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet',
+                     "Param" : ["All Opr", "Tsel (Onnet, Onbrand for Loop)"]
+              },
+              {
+                     "Name" : 'Offnet',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"]
+              },
+              {
+                     "Name" : 'FWA',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"]
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : []
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50 ',
+                     "Param" : []
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250 ',
+                     "Param" : []
+              },
+       ]
+
+       # Iterate through the list and add the "Priority" key based on the mapping
+       for item in dataEvent:
+              if bonusDesc in item["Param"]:
+                     item["Priority"] = 1
+              else:
+                     item["Priority"] = 0
        
        # Generate a shuffled list of numbers from dayString to validity - 1
        days = list(range(dayString, maxValidity))
 
        for strValidity in days:
-              stepConsumeVoice, QuotaVoice       = getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity)
-              stepConsumeSMS, QuotaSMS           = getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity)
+              stepConsumeVoice, QuotaVoice       = getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity, first)
+              stepConsumeSMS, QuotaSMS           = getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity, first)
               stepsConsume.append(stepConsumeVoice)
               stepsConsume.append(stepConsumeSMS)
+              first = False
 
        return stepsConsume, QuotaVoice, QuotaSMS
 
-def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, days, validity):
+def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, days, validity, first):
        
        if QuotaSMS > 0:
-              stringQuotaSMS = ", " + stringBonus + ' ' + str(QuotaSMS) + " sms"
+              stringQuotaSMS = stringBonus + ' ' + str(QuotaSMS) + " sms"
        else:
               stringQuotaSMS = ''
        
@@ -4948,10 +4951,17 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
        restBonus            = 'No Bonus'
        reduceOrNot          = False
  
-       random_event  = random.choice(dataEvent)
-       event_name    = random_event["Name"]
-       event_param   = random_event["Param"]
-       timeNumber    = random.randint(0, 23)
+       if first:
+              random_event = next((item for item in dataEvent if item["Priority"] == 1), None)
+              event_name    = random_event["Name"]
+              event_param   = random_event["Param"]
+              timeNumber    = random.randint(start_hour, end_hour)
+       else:
+              random_event  = random.choice(dataEvent)
+              event_name    = random_event["Name"]
+              event_param   = random_event["Param"]
+              timeNumber    = random.randint(0, 23)
+       
        timeString    = timeNumber
 
        # Check if random event is included in bonus desc
@@ -4991,6 +5001,7 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
               eventString = decreasingQuotaVoice
        else:
               eventString = '1'
+              consumeOrCharged = 'Charged'
 
        if int(timeString) > 12:
               timeString = str(int(timeString) - 12) + 'PM'
@@ -5000,7 +5011,16 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
        if int(days) >= validity:
               restBonus = "No Bonus"
        else:
-              restBonus = f"{stringBonus} {QuotaVoice} minutes {stringQuotaSMS}"
+              restBonus = f"{stringBonus} {QuotaVoice} minutes ,{stringQuotaSMS}"
+       
+       if QuotaSMS <= 0 and QuotaVoice > 0:
+              restBonus = f"{stringBonus} {QuotaVoice} minutes"
+       elif QuotaSMS > 0 and QuotaVoice <= 0:
+              restBonus = f"{stringQuotaSMS}"
+       elif QuotaSMS <= 0 and QuotaVoice <= 0:
+              restBonus = "No Bonus" 
+       else:
+              restBonus = f"{stringBonus} {QuotaVoice} minutes ,{stringQuotaSMS}"
 
        step = [
               f"Create event {eventString} minutes voice {event_name} {timeString} D+{days}",
@@ -5010,20 +5030,28 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
 
        return step, QuotaVoice
 
-def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, days, validity):
+def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, days, validity, first):
        
        timeString           = ''
        consumeOrCharged     = ''
        restBonus            = 'No Bonus'
        reduceOrNot          = False
-       random_event         = random.choice(dataEvent)
-       event_name           = random_event["Name"]
-       event_param          = random_event["Param"]
-       timeNumber           = random.randint(0, 23)
+
+       if first:
+              random_event = next((item for item in dataEvent if item["Priority"] == 1), None)
+              event_name    = random_event["Name"]
+              event_param   = random_event["Param"]
+              timeNumber    = random.randint(start_hour, end_hour)
+       else:
+              random_event  = random.choice(dataEvent)
+              event_name    = random_event["Name"]
+              event_param   = random_event["Param"]
+              timeNumber    = random.randint(0, 23)
+       
        timeString           = timeNumber
 
        if QuotaVoice > 0:
-              stringQuotaVoice = stringBonus + ' ' + str(QuotaVoice) + " minutes,"
+              stringQuotaVoice = stringBonus + ' ' + str(QuotaVoice) + " minutes"
        else:
               stringQuotaVoice = ''
 
@@ -5063,6 +5091,7 @@ def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, s
               eventString = decreasingQuotaSMS
        else:
               eventString = '1'
+              consumeOrCharged = 'Charged'
 
        if int(timeString) > 12:
               timeString = str(int(timeString) - 12) + 'PM'
@@ -5072,7 +5101,16 @@ def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, s
        if int(days) >= validity:
               restBonus = "No Bonus"
        else:
-              restBonus = f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
+              restBonus = f"{stringQuotaVoice}, {stringBonus} {QuotaSMS} sms"
+       
+       if QuotaSMS <= 0 and QuotaVoice > 0:
+              restBonus = f"{stringQuotaVoice}"
+       elif QuotaSMS <= 0 and QuotaVoice <= 0:
+              restBonus = "No Bonus"
+       elif QuotaSMS > 0 and QuotaVoice <= 0:
+              restBonus = f"{stringBonus} {QuotaSMS} sms"
+       else:
+              restBonus = f"{stringQuotaVoice}, {stringBonus} {QuotaSMS} sms"
 
        step = [
               f"Create event {eventString} SMS {event_name} {timeString} D+{days}",
