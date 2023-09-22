@@ -5007,11 +5007,6 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
               timeString = str(int(timeString) - 12) + 'PM'
        else:
               timeString = str(timeString) + "AM"
-
-       if int(days) >= validity:
-              restBonus = "No Bonus"
-       else:
-              restBonus = f"{stringBonus} {QuotaVoice} minutes ,{stringQuotaSMS}"
        
        if QuotaSMS <= 0 and QuotaVoice > 0:
               restBonus = f"{stringBonus} {QuotaVoice} minutes"
@@ -5019,6 +5014,11 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
               restBonus = f"{stringQuotaSMS}"
        elif QuotaSMS <= 0 and QuotaVoice <= 0:
               restBonus = "No Bonus" 
+       else:
+              restBonus = f"{stringBonus} {QuotaVoice} minutes ,{stringQuotaSMS}"
+
+       if int(days) >= validity:
+              restBonus = "No Bonus"
        else:
               restBonus = f"{stringBonus} {QuotaVoice} minutes ,{stringQuotaSMS}"
 
@@ -5098,17 +5098,17 @@ def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, s
        else:
               timeString = str(timeString) + "AM"
 
-       if int(days) >= validity:
-              restBonus = "No Bonus"
-       else:
-              restBonus = f"{stringQuotaVoice}, {stringBonus} {QuotaSMS} sms"
-       
        if QuotaSMS <= 0 and QuotaVoice > 0:
               restBonus = f"{stringQuotaVoice}"
        elif QuotaSMS <= 0 and QuotaVoice <= 0:
               restBonus = "No Bonus"
        elif QuotaSMS > 0 and QuotaVoice <= 0:
               restBonus = f"{stringBonus} {QuotaSMS} sms"
+       else:
+              restBonus = f"{stringQuotaVoice}, {stringBonus} {QuotaSMS} sms"
+
+       if int(days) >= validity:
+              restBonus = "No Bonus"
        else:
               restBonus = f"{stringQuotaVoice}, {stringBonus} {QuotaSMS} sms"
 
