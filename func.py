@@ -4896,27 +4896,33 @@ def getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, bonusDesc, start_hour,
        dataEvent            = [
               {
                      "Name" : 'Onnet',
-                     "Param" : ["All Opr", "Tsel (Onnet, Onbrand for Loop)"]
+                     "Param" : ["All Opr", "Tsel (Onnet, Onbrand for Loop)"],
+                     "ShowEvent" : True
               },
               {
                      "Name" : 'Offnet',
-                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"]
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"],
+                     "ShowEvent" : True
               },
               {
                      "Name" : 'FWA',
-                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"]
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"],
+                     "ShowEvent" : True
               },
               {
                      "Name" : 'International',
-                     "Param" : []
+                     "Param" : [],
+                     "ShowEvent" : True
               },
               {
                      "Name" : 'GPRS 1MB RG 50 ',
-                     "Param" : []
+                     "Param" : [],
+                     "ShowEvent" : False
               },
               {
                      "Name" : 'Direct Debit bank_digi_250 ',
-                     "Param" : []
+                     "Param" : [],
+                     "ShowEvent" : False
               },
        ]
 
@@ -4955,11 +4961,13 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
               random_event = next((item for item in dataEvent if item["Priority"] == 1), None)
               event_name    = random_event["Name"]
               event_param   = random_event["Param"]
+              event_show    = random_event["ShowEvent"]
               timeNumber    = random.randint(start_hour, end_hour)
        else:
               random_event  = random.choice(dataEvent)
               event_name    = random_event["Name"]
               event_param   = random_event["Param"]
+              event_show    = random_event["ShowEvent"]
               timeNumber    = random.randint(0, 23)
        
        timeString    = timeNumber
@@ -5019,11 +5027,14 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
 
        if int(days) >= validity:
               restBonus = "No Bonus"
+
+       if event_show:
+              eventLabel = f"Create event {eventString} minutes voice {event_name} {timeString} D+{days}"
        else:
-              restBonus = f"{stringBonus} {QuotaVoice} minutes ,{stringQuotaSMS}"
+              eventLabel = f"Create event {event_name} {timeString} D+{days}"
 
        step = [
-              f"Create event {eventString} minutes voice {event_name} {timeString} D+{days}",
+              eventLabel,
               consumeOrCharged,
               restBonus
        ]
@@ -5041,11 +5052,13 @@ def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, s
               random_event = next((item for item in dataEvent if item["Priority"] == 1), None)
               event_name    = random_event["Name"]
               event_param   = random_event["Param"]
+              event_show    = random_event["ShowEvent"]
               timeNumber    = random.randint(start_hour, end_hour)
        else:
               random_event  = random.choice(dataEvent)
               event_name    = random_event["Name"]
               event_param   = random_event["Param"]
+              event_show    = random_event["ShowEvent"]
               timeNumber    = random.randint(0, 23)
        
        timeString           = timeNumber
@@ -5067,7 +5080,7 @@ def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, s
                             else:
                                    # Number is not within the time range Timeband
                                    consumeOrCharged = 'Charged'
-                                   reduceOrNot      = True
+                                   reduceOrNot      = False
                      else:
                             # Time range spans midnight
                             if timeNumber >= start_hour or timeNumber <= end_hour:
@@ -5077,10 +5090,10 @@ def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, s
                             else:
                                    # Number is not within the time range Timeband
                                    consumeOrCharged = 'Charged'
-                                   reduceOrNot      = True
+                                   reduceOrNot      = False
               else:
                      consumeOrCharged = 'Charged'
-                     reduceOrNot      = True
+                     reduceOrNot      = False
 
        else:
               consumeOrCharged = 'Charged'
@@ -5109,11 +5122,14 @@ def getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, s
 
        if int(days) >= validity:
               restBonus = "No Bonus"
+
+       if event_show:
+              eventLabel = f"Create event {eventString} SMS {event_name} {timeString} D+{days}"
        else:
-              restBonus = f"{stringQuotaVoice}, {stringBonus} {QuotaSMS} sms"
+              eventLabel = f"Create event {event_name} {timeString} D+{days}"
 
        step = [
-              f"Create event {eventString} SMS {event_name} {timeString} D+{days}",
+              eventLabel,
               consumeOrCharged,
               restBonus
        ]
