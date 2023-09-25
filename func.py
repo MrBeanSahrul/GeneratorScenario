@@ -2341,6 +2341,13 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      flexibleVascode2Amount      = "{:,.0f}".format(flexibleVascode2AmountInt).replace(",", ".")
                      flexibleVascode3AmountInt   = amount - (flexibleVascode1AmountInt + flexibleVascode2AmountInt)
                      flexibleVascode3Amount      = "{:,.0f}".format(flexibleVascode3AmountInt).replace(",", ".")
+              else:
+                     flexibleVascode1AmountInt   = round(amount // 2)
+                     flexibleVascode1Amount      = "{:,.0f}".format(flexibleVascode1AmountInt).replace(",", ".")
+                     flexibleVascode2AmountInt   = round((amount - flexibleVascode1AmountInt) // 2)
+                     flexibleVascode2Amount      = "{:,.0f}".format(flexibleVascode2AmountInt).replace(",", ".")
+                     flexibleVascode3AmountInt   = amount - (flexibleVascode1AmountInt + flexibleVascode2AmountInt)
+                     flexibleVascode3Amount      = "{:,.0f}".format(flexibleVascode3AmountInt).replace(",", ".")
               
 
               flexibleVascode1PPN = "{:,.0f}".format(flexibleVascode1AmountInt+(flexibleVascode1AmountInt*0.11)).replace(",", ".")

@@ -953,7 +953,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Flexible", "Offer TM"],
+                     "conditions"         : ["Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               }
        }
