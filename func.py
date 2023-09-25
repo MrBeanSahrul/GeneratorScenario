@@ -2269,7 +2269,7 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      [f"Set New Credit Limit Service (offer id : 3669334) as {creditLimitService}","Offer Attached"],
                      ["Attach Offer Video Conference MF1110K (Charge Offer 1100000) (3882799)","Offer Attached"],
                      ["Attach Offer Minimum Usage "+str(offerName),"Offer Attached"],
-                     ["Check Offer Description","Minimum Usage "+str(offerName)+"|Minimum Usage "+str(offerDesc)+""],
+                     ["Check Offer Description",str(offerName)+" | "+str(offerDesc)],
                      ["Check 888","Checked"],
                      ["Check AMDD RC", "Checked"],
                      ["Check TRB1_Sub_Errs","Checked | Makesure no Error"],
@@ -2284,7 +2284,7 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      [f"Set New Credit Limit Service (offer id : 3669334) as {creditLimitService}","Offer Attached"],
                      [f"Attach Offer B2C Flexible Abonemen Charge with param name : Commitment period|Rate|Proration|Override RC amount|Invoice description|Quotation reference|External product id|Penalty Remaining|Penalty Flat|Penalty ind; 12|{amountFlexibleOC}|N|0|Invoice description|Quotation reference|External product id|0|0|No","Offer Attached"],
                      ["Attach Offer Minimum Usage "+str(offerName),"Offer Attached"],
-                     ["Check Offer Description","Minimum Usage "+str(offerName)+"|Minimum Usage "+str(offerDesc)+""],
+                     ["Check Offer Description",str(offerName)+" | "+str(offerDesc)],
                      ["Check 888","Checked"],
                      ["Check AMDD OC", "Checked"],
                      ["Check TRB1_Sub_Errs","Checked | Makesure no Error"],
@@ -2299,7 +2299,7 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      [f"Set New Credit Limit Service (offer id : 3669334) as {creditLimitService}","Offer Attached"],
                      ["Attach Offer OC Ins penalty Internet SuperRoam Subscription Charge 150K | 3875659 -- Amount 150000 set Commitment period 12 month","Offer Attached"],
                      ["Attach Offer Minimum Usage "+str(offerName),"Offer Attached"],
-                     ["Check Offer Description","Minimum Usage "+str(offerName)+"|Minimum Usage "+str(offerDesc)+""],
+                     ["Check Offer Description",str(offerName)+" | "+str(offerDesc)],
                      ["Check 888","Checked"],
                      ["Check TRB1_Sub_Errs","Checked | Makesure no Error"],
                      ["Remove offer D+1 === OC Ins penalty Internet SuperRoam Subscription Charge 150K | 3875659 -- Amount 150000","Removed"],
@@ -2313,7 +2313,7 @@ def exportExcelMinimunUsage(eventName, params=None, neededParams = None):
                      ["Update Parameter (Init activation date)","Updated"],
                      [f"Set New Credit Limit Service (offer id : 3669334) as {creditLimitService}","Offer Attached"],
                      ["Attach Offer Minimum Usage "+str(offerName)+"","Offer Attached"],
-                     ["Check Offer Description","Minimum Usage "+str(offerName)+"|Minimum Usage "+str(offerDesc)+""],
+                     ["Check Offer Description",str(offerName)+" | "+str(offerDesc)],
                      ["Check 888","Checked"],
                      ["5 PM, Create event voice onnet 600s","Charged"],
                      ["6 PM, Create event voice offnet 600s","Charged"],
@@ -4559,13 +4559,15 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
               
               if offerType == 'Offer Fix':
                      steps = stepOfferFix(offerName, PPName, quota, bonusDesc, preloadBonus, validity, timeband)
-              elif offerType == 'Offer Fix':
-                     if flexibleType == 'Flexible Voice/SMS':
-                            steps = stepOfferFlexibleVoiceSMS(offerName, PPName, quota, bonusDesc)
-                     elif flexibleType == 'Flexible Roaming':
-                            steps = stepOfferFlexibleRoaming(offerName, PPName, quota, bonusDesc)
-                     elif flexibleType == 'Flexible Monbal':
-                            steps = stepOfferFlexibleMonbal(offerName, PPName, quota, bonusDesc)
+              elif offerType == "Offer TM":
+                     steps = stepOfferTM(offerName, PPName, quota, bonusDesc, preloadBonus, validity, timeband)
+              # elif offerType == 'Offer Flexible':
+              #        if flexibleType == 'Flexible Voice/SMS':
+              #               steps = stepOfferFlexibleVoiceSMS(offerName, PPName, quota, bonusDesc)
+              #        elif flexibleType == 'Flexible Roaming':
+              #               steps = stepOfferFlexibleRoaming(offerName, PPName, quota, bonusDesc)
+              #        elif flexibleType == 'Flexible Monbal':
+              #               steps = stepOfferFlexibleMonbal(offerName, PPName, quota, bonusDesc)
               else:
                      print("Sorry, Scenario isn't ready yet")
                      exit('')
@@ -4642,6 +4644,69 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
        wb.save('Result/Scenario '+str(eventName)+' '+str(offerType)+'.xlsx')
 
 def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, timeband):
+       QuotaSplitString     = Quota.split(';')
+       QuotaSMS             = 0
+       firstQuotaSMS        = 0
+       QuotaVoice           = int(QuotaSplitString[0])
+       firstQuotaVoice      = int(QuotaSplitString[0])
+       stepConsumePreload   = None
+       bonusPreload         = 'No Bonus'
+       start_hour, end_hour = map(int, timeband.split('-'))
+       validity             = int(validity)
+       
+
+       if preloadBonus != '' or preloadBonus != 0:
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              bonusPreload         = preloadBonus
+
+       if bonusDesc == 'All Opr':
+              stringBonus = "All Opr"
+       elif bonusDesc == 'Tsel (Onnet, Onbrand for Loop)':
+              stringBonus = "Tsel"
+       else:
+              stringBonus = "Opr Lain"
+
+       if len(QuotaSplitString) > 1:
+              QuotaSMS             = int(QuotaSplitString[1])
+              firstQuotaSMS        = int(QuotaSplitString[1])
+       
+       # if QuotaVoice > 0:
+       #       stepsConsumeVoice, QuotaVoice, detailQuotaVoice = getStepRecudeVoice(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity)
+
+       # if QuotaSMS > 0:
+       #        stepsConsumeSMS = getStepReduceSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity, detailQuotaVoice)
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, bonusDesc, start_hour, end_hour, validity)
+
+       stringBonusAll = ''
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+stringBonus
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+stringBonus
+       
+       steps = [
+              ["Create & Activate new subscriber PP "+PPName,"Check active period",bonusPreload],
+              stepConsumePreload,
+              ["Update Balance 10000000","Balance Updated","No Bonus"],
+              ["Update Exp Date","Update Expired Date","No Bonus"],
+              ["Attach Offer "+str(offerName)+" Voice "+str(stringBonus)+"","Offer Attached",stringBonusAll],
+              ["Check Bonus 889*1 11am","Checked","No Bonus"],
+              ["Check Bonus 889*2 11am","Checked",stringBonusAll],
+              ["Check Bonus 889*3 11am","Checked","No Bonus"]
+       ]
+
+       if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+              steps.extend(stepsConsumeBonus)
+
+       # if firstQuotaVoice > 0:
+       #        steps.extend(stepsConsumeVoice)
+       # if firstQuotaSMS > 0:
+       #        steps.extend(stepsConsumeSMS)
+
+       return steps
+
+def stepOfferTM(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, timeband):
        QuotaSplitString     = Quota.split(';')
        QuotaSMS             = 0
        firstQuotaSMS        = 0
@@ -5023,7 +5088,7 @@ def getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc,
        elif QuotaSMS <= 0 and QuotaVoice <= 0:
               restBonus = "No Bonus" 
        else:
-              restBonus = f"{stringBonus} {QuotaVoice} minutes ,{stringQuotaSMS}"
+              restBonus = f"{stringBonus} {QuotaVoice} minutes, {stringQuotaSMS}"
 
        if int(days) >= validity:
               restBonus = "No Bonus"
