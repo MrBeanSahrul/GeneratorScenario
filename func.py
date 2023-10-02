@@ -4517,15 +4517,21 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
        wb = Workbook()
        ws = wb.active
 
-       offerType     = ''
-       offerName     = ''
-       PPName        = ''
-       quota         = ''
-       bonusDesc     = ''
-       flexibleType  = ''
-       preloadBonus  = ''
-       validity      = ''
-       timeband      = ''
+       offerType            = ''
+       offerName            = ''
+       PPName               = ''
+       quota                = ''
+       bonusDesc            = ''
+       preloadBonus         = ''
+       validity             = ''
+       timeband             = ''
+       eligible             = ''
+       startDateValidity    = ''
+       endDateValidity      = ''
+       endDateValidity60    = ''
+       endDateValidityBack  = ''
+       itemId               = ''
+       allowance            = ''
 
        for params in params:
               if "Offer Type" in params:
@@ -4552,8 +4558,26 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
               if "Bonus Description" in params:
                      bonusDesc = params["Bonus Description"][0]
               
-              if "Flexible Type" in params:
-                     flexibleType = params["Flexible Type"][0]
+              if "Eligible" in params:
+                     eligible = params["Eligible"][0]
+              
+              if "Start Date Validity" in params:
+                     startDateValidity = params["Start Date Validity"]
+              
+              if "End Date Validity" in params:
+                     endDateValidity = params["End Date Validity"]
+              
+              if "End Date Validity For More Than 60 Days" in params:
+                     endDateValidity60 = params["End Date Validity For More Than 60 Days"]
+              
+              if "End Date Validity For Back Date" in params:
+                     endDateValidityBack = params["End Date Validity For Back Date"]
+              
+              if "Item ID" in params:
+                     itemId = params["Item ID"]
+              
+              if "Allowance" in params:
+                     allowance = params["Allowance"]
               
               if "Preload Bonus" in params:
                      preloadBonus = params["Preload Bonus"]
@@ -4568,13 +4592,8 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
                      steps = stepOfferFix(offerName, PPName, quota, bonusDesc, preloadBonus, validity, timeband)
               elif offerType == "Offer TM":
                      steps = stepOfferTM(offerName, PPName, quota, bonusDesc, preloadBonus, validity, timeband)
-              # elif offerType == 'Offer Flexible':
-              #        if flexibleType == 'Flexible Voice/SMS':
-              #               steps = stepOfferFlexibleVoiceSMS(offerName, PPName, quota, bonusDesc)
-              #        elif flexibleType == 'Flexible Roaming':
-              #               steps = stepOfferFlexibleRoaming(offerName, PPName, quota, bonusDesc)
-              #        elif flexibleType == 'Flexible Monbal':
-              #               steps = stepOfferFlexibleMonbal(offerName, PPName, quota, bonusDesc)
+              elif offerType == 'Offer Flexible':
+                     steps = stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband)
               else:
                      print("Sorry, Scenario isn't ready yet")
                      exit('')
@@ -4773,6 +4792,217 @@ def stepOfferTM(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, tim
        #        steps.extend(stepsConsumeVoice)
        # if firstQuotaSMS > 0:
        #        steps.extend(stepsConsumeSMS)
+
+       return steps
+
+def stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband):
+       steps                = []
+       stepConsumePreload   = None
+       start_hour, end_hour = map(int, timeband.split('-'))
+
+       itemIDSplit   = itemId.split(';')
+       itemIDVoice   = itemIDSplit[0]
+       itemIDSMS     = 0
+       if len(itemIDSplit) > 1:
+              itemIDSMS = itemIDSplit[1]
+       
+       allowanceSplit       = allowance.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice/60) if allowanceVoice != 0 else 0
+       QuotaVoiceCase2      = 0
+       QuotaVoiceCase3      = 0
+       QuotaVoiceCase4      = int(allowanceVoice/60) if allowanceVoice != 0 else 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       QuotaSMSCase2        = 0
+       QuotaSMSCase3        = 0
+       QuotaSMSCase4        = allowanceSMS if allowanceSMS != 0 else 0
+       firstQuotaSMS        = QuotaSMS
+
+       if preloadBonus != '' or preloadBonus != 0:
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+       
+       if bonusDesc == 'All Opr':
+              stringBonus = "All Opr"
+       elif bonusDesc == 'Tsel (Onnet, Onbrand for Loop)':
+              stringBonus = "Tsel"
+       else:
+              stringBonus = "Opr Lain"
+
+       if eligible == 'Voice':
+              UOM = 'V'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;'
+       elif eligible == 'SMS':
+              UOM = 'S'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$;'
+       elif eligible == 'Voice & SMS':
+              UOMV = 'V'
+              UOMS = 'S'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidityBack}235959$'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$'
+
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+stringBonus
+              bonusVoice     = str(firstQuotaVoice)+" Min "+stringBonus
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+stringBonus
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+stringBonus
+       
+       start_datetime       = datetime.strptime(str(startDateValidity), '%Y%m%d')
+       end_datetime         = datetime.strptime(str(endDateValidity), '%Y%m%d')
+       end_datetimecase4    = datetime.strptime(str(endDateValidity60), '%Y%m%d')
+       
+       validity      = (end_datetime - start_datetime).days
+       validityCase4 = (end_datetimecase4 - start_datetime).days
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, bonusDesc, start_hour, end_hour, validity)
+              stepsConsumeBonusCase4, QuotaVoiceCase4, QuotaSMSCase4 = getStepRecudeQuota(QuotaVoiceCase4, QuotaSMSCase4, stringBonus, bonusDesc, start_hour, end_hour, validityCase4)
+              
+
+       #Case 1 = Positif Case
+       stepCase1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferString,"Offer attached",stringBonusAll],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+              ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+
+       stepCase1.extend(stepsConsumeBonus)
+       stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 2 = Negatif (Berdasarkan UOM)
+       stepsConsumeBonusCase2, QuotaVoiceCase2, QuotaSMSCase2 = getStepRecudeQuota(QuotaVoiceCase2, QuotaSMSCase2, stringBonus, bonusDesc, start_hour, end_hour, 5)
+       stepCase2 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferStringCase2,"Offer attached","No Bonus"],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*3","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+       stepCase2.extend(stepsConsumeBonusCase2)
+       stepCase2.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 3 = Negatif (Backdate)
+       stepsConsumeBonusCase3, QuotaVoiceCase3, QuotaSMSCase3 = getStepRecudeQuota(QuotaVoiceCase3, QuotaSMSCase3, stringBonus, bonusDesc, start_hour, end_hour, 5)
+       stepCase3 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferStringCase3,"Offer attached","No Bonus"],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*3","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+       stepCase3.extend(stepsConsumeBonusCase3)
+       stepCase3.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 4 = Positif (Lebih dari 60 hari)
+       stepCase4 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferStringCase4,"Offer attached",stringBonusAll],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+              ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+
+       stepCase4.extend(stepsConsumeBonusCase4)
+       stepCase4.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 5 = Multiple Attach (6x)
+       bonus6x = ""
+       if firstQuotaVoice > 0:
+              totalVoice    = firstQuotaVoice*6
+              bonus6x       = str(totalVoice)+" Min "+stringBonus
+       
+       if firstQuotaSMS > 0:
+              totalSMS      = firstQuotaSMS*6
+              if bonus6x != '':
+                     bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+stringBonus
+              else:
+                     bonus6x = str(totalSMS)+" SMS "+stringBonus
+
+       stepCase5 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferString,"Offer attached",stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check 889","Checked",bonus6x],
+              ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check PI on Indira","Success","No Bonus"]
+       ]
+
+       #Case 6
+       stepCase6 = [
+              [f"{offerName} SCN For check BSZ Extract | D-2", "", "", "", ""],
+              ["Create & Activate new subscriber PP KartuAS Regular", "Success", "Success"],
+              ["Update Exp Date", "Success", "Success"],
+              ["Update Balance 10000000", "Success", "Success"],
+              [attachOfferString, "Success", "Success"],
+              ["Check notification after add offer", "Success", "Success"],
+              ["Check Offer Name & Description", "Success", "Success"],
+              ["Check GetBonusInfo and validity", "Success", "Success"],
+              ["Check Bonus 889 and bonus description", "Success", "Success"],
+              ["Check Bonus 889*1", "Success", "Success"],
+              ["Check Bonus 889*2", "Success", "Success"],
+              ["Check Bonus 889*3", "Success", "Success"],
+              ["Check Bonus 889*4", "Success", "Success"],
+              ["Check PRIT Name", "Success", "Success"],
+              ["Create event vas with eligible vascode param_vascode", "Success", "Success"],
+              ["Check notification after first event consume", "Success", "Success"],
+              ["Create event voice Onnet 60s", "Success", "Success"],
+              ["run adjustment so it will expired by today -2", "Success", "Success"],
+              ["check bonus info (bonus should be gone)", "Success", "Success"],
+              ["check 888", "Success", "Success"],
+              ["run BSZ eod, and check bsz seizure", "Success", "Success"],
+       ]
+
+       steps.extend(stepCase1)
+       steps.extend(stepCase2)
+       steps.extend(stepCase3)
+       steps.extend(stepCase4)
+       steps.extend(stepCase5)
+       steps.extend(stepCase6)
 
        return steps
 
@@ -5006,9 +5236,23 @@ def getStepRecudeQuota(QuotaVoice, QuotaSMS, stringBonus, bonusDesc, start_hour,
                      item["Priority"] = 0
        
        # Generate a shuffled list of numbers from dayString to validity - 1
-       days = list(range(dayString, maxValidity))
+       days          = list(range(dayString, maxValidity))
+       firstDate     = days[0]
+       lastDate      = days[len(days) - 1]
 
-       for strValidity in days:
+       # Choose a random number of elements to select from data
+       num_elements = random.randint(1, len(days) - 2)
+
+       # Randomly select elements from data
+       selected_data = random.sample(days[1:-1], num_elements)
+
+       # Sort selected_data based on the index in the original data list
+       selected_data = sorted(selected_data, key=lambda x: days.index(x))
+
+       # Merge variables into a single list
+       merged_data = [firstDate] + selected_data + [lastDate]
+
+       for strValidity in merged_data:
               stepConsumeVoice, QuotaVoice       = getStepConsumeVoice(QuotaVoice, QuotaSMS, stringBonus, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity, first)
               stepConsumeSMS, QuotaSMS           = getStepConsumeSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, strValidity, validity, first)
               stepsConsume.append(stepConsumeVoice)

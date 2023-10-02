@@ -93,8 +93,8 @@ if function is not None and callable(function):
                                    txtFile = input("Please input your txt file name : ")
                                    delimiter = input("Please input delimiter in your file (it's only if you need more than one param) : ")
                                    try :
-                                          file=open("Data/"+txtFile+".txt","r")
-                                          data=file.readlines()
+                                          file = open("Data/" + txtFile + ".txt","r")
+                                          data = file.readlines()
                                           file.close()
                                           if param['dataType'] == 'array':
                                                  params[key] = data
@@ -185,7 +185,7 @@ if function is not None and callable(function):
                                    delimiter = input("Please input the delimiter in your file: ")
 
                                    try:
-                                          with open("Data" + txtFile + ".txt", "r") as file:
+                                          with open("Data/" + txtFile + ".txt", "r") as file:
                                                  data = file.readlines()
                                           
                                           if len(data) > 1:

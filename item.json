@@ -871,7 +871,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "true",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer TM"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               },
               "Price Plan Name" : {
@@ -881,7 +881,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer TM"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               },
               "Preload Bonus" : {
@@ -891,7 +891,21 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer TM"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Eligible" : {
+                     "type"               : "option",
+                     "multiple"           :"false",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "value"              : [
+                                                 "Voice",
+                                                 "SMS",
+                                                 "Voice & SMS",
+                                                 "Monatary"
+                                          ],
+                     "conditions"         : ["Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               },
               "Quota" : {
@@ -917,7 +931,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer TM"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               },
               "Validity" : {
@@ -931,6 +945,72 @@
                      "conditions"         : ["Offer Fix", "Offer TM"],
                      "determiningParam"   : "Offer Type"
               },
+              "Start Date Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "End Date Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "End Date Validity For More Than 60 Days" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "End Date Validity For Back Date" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Item ID" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice;SMS",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Allowance" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice;SMS",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
               "Timeband" : {
                      "type"               : "input",
                      "value"              : [],
@@ -939,21 +1019,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "24 hours format [ex:00-23]",
-                     "conditions"         : ["Offer Fix", "Offer TM"],
-                     "determiningParam"   : "Offer Type"
-              },
-              "Flexible Type" : {
-                     "type"               : "option",
-                     "value"              : [
-                                                 "Flexible Voice/SMS",
-                                                 "Flexible Roaming",
-                                                 "Flexible Monbal"
-                                          ],
-                     "multiple"           : "false",
-                     "delimiter"          : "|",
-                     "canOthers"          : "false",
-                     "dataType"           : "array",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               }
        }
