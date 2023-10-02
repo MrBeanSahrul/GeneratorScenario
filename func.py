@@ -4614,7 +4614,8 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
               headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
               ws.append(headerRow)
 
-              for no, step in enumerate(steps, start=1):
+              no = 1
+              for num, step in enumerate(steps, start=1):
                      if isinstance(step, str):
                             row = [
                                    no,
@@ -4975,26 +4976,27 @@ def stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, star
        #Case 6
        stepCase6 = [
               [f"{offerName} SCN For check BSZ Extract | D-2", "", "", "", ""],
-              ["Create & Activate new subscriber PP KartuAS Regular", "Success", "Success"],
-              ["Update Exp Date", "Success", "Success"],
-              ["Update Balance 10000000", "Success", "Success"],
-              [attachOfferString, "Success", "Success"],
-              ["Check notification after add offer", "Success", "Success"],
-              ["Check Offer Name & Description", "Success", "Success"],
-              ["Check GetBonusInfo and validity", "Success", "Success"],
-              ["Check Bonus 889 and bonus description", "Success", "Success"],
-              ["Check Bonus 889*1", "Success", "Success"],
-              ["Check Bonus 889*2", "Success", "Success"],
-              ["Check Bonus 889*3", "Success", "Success"],
+              [f"Create & Activate new subscriber PP {PPName}", "Success", preloadBonus],
+              stepConsumePreload,
+              ["Update Exp Date", "Success", "No Bonus"],
+              ["Update Balance 10000000", "Balance Update", "No Bonus"],
+              [attachOfferString, "Offer attached", stringBonusAll],
+              ["Check notification after add offer", "Success", "Checked"],
+              ["Check Offer Name & Description", "Success", offerName],
+              ["Check GetBonusInfo and validity", "Success", "Checked"],
+              ["Check Bonus 889 and bonus description", "Success", "Checked"],
+              ["Check Bonus 889*1", "Success", "No Bonus"],
+              ["Check Bonus 889*2", "Success", bonusVoice],
+              ["Check Bonus 889*3", "Success", bonusSMS],
               ["Check Bonus 889*4", "Success", "Success"],
               ["Check PRIT Name", "Success", "Success"],
               ["Create event vas with eligible vascode param_vascode", "Success", "Success"],
               ["Check notification after first event consume", "Success", "Success"],
               ["Create event voice Onnet 60s", "Success", "Success"],
-              ["run adjustment so it will expired by today -2", "Success", "Success"],
-              ["check bonus info (bonus should be gone)", "Success", "Success"],
-              ["check 888", "Success", "Success"],
-              ["run BSZ eod, and check bsz seizure", "Success", "Success"],
+              ["run adjustment so it will expired by today -2", "Success", "No Bonus"],
+              ["check bonus info (bonus should be gone)", "Success", "No Bonus"],
+              ["check 888", "Success", "No Bonus"],
+              ["run BSZ eod, and check bsz seizure", "Success", "No Bonus"],
        ]
 
        steps.extend(stepCase1)
