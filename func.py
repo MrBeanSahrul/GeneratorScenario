@@ -4532,6 +4532,11 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
        endDateValidityBack  = ''
        itemId               = ''
        allowance            = ''
+       accessCodePositif    = ''
+       accessCodeNegatif    = ''
+       bonDesc              = ''
+       countryPositif       = ''
+       countryNegatif       = ''
 
        for params in params:
               if "Offer Type" in params:
@@ -4588,12 +4593,29 @@ def exportExcelPrepaidOffer(eventName, params=None, neededParams = None):
               if "Timeband" in params:
                      timeband = params["Timeband"]
               
+              if "Access Code (for positif test case)" in params:
+                     accessCodePositif = params["Access Code (for positif test case)"]
+              
+              if "Access Code (for negatif test case)" in params:
+                     accessCodeNegatif = params["Access Code (for negatif test case)"]
+              
+              if "Bonus Desc" in params:
+                     bonDesc = params["Bonus Desc"]
+              
+              if "Country (for positif test case)" in params:
+                     countryPositif = params["Country (for positif test case)"]
+              
+              if "Country (for negatif test case)" in params:
+                     countryNegatif = params["Country (for negatif test case)"]
+              
               if offerType == 'Offer Fix':
                      steps = stepOfferFix(offerName, PPName, quota, bonusDesc, preloadBonus, validity, timeband)
               elif offerType == "Offer TM":
                      steps = stepOfferTM(offerName, PPName, quota, bonusDesc, preloadBonus, validity, timeband)
               elif offerType == 'Offer Flexible':
                      steps = stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband)
+              elif offerType == 'Offer Voice IDD':
+                     steps = stepOfferVoiceIDD(offerName, accessCodePositif, accessCodeNegatif, allowance, validity, timeband, bonDesc, countryPositif, countryNegatif)
               else:
                      print("Sorry, Scenario isn't ready yet")
                      exit('')
@@ -4678,6 +4700,8 @@ def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, ti
        firstQuotaVoice      = int(QuotaSplitString[0])
        stepConsumePreload   = None
        bonusPreload         = 'No Bonus'
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
        start_hour, end_hour = map(int, timeband.split('-'))
        validity             = int(validity)
        
@@ -4709,8 +4733,11 @@ def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, ti
        stringBonusAll = ''
        if firstQuotaVoice > 0:
               stringBonusAll = str(firstQuotaVoice)+" Min "+stringBonus
+              bonusVoice     = str(firstQuotaVoice)+" Min "+stringBonus
+       
        if firstQuotaSMS > 0:
               stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+stringBonus
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+stringBonus
        
        steps = [
               ["Create & Activate new subscriber PP "+PPName,"Check active period",bonusPreload],
@@ -4719,8 +4746,8 @@ def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, ti
               ["Update Exp Date","Update Expired Date","No Bonus"],
               ["Attach Offer "+str(offerName)+" Voice "+str(stringBonus)+"","Offer Attached",stringBonusAll],
               ["Check Bonus 889*1 11am","Checked","No Bonus"],
-              ["Check Bonus 889*2 11am","Checked",stringBonusAll],
-              ["Check Bonus 889*3 11am","Checked","No Bonus"]
+              ["Check Bonus 889*2 11am","Checked",bonusVoice],
+              ["Check Bonus 889*3 11am","Checked",bonusSMS]
        ]
 
        if firstQuotaVoice > 0 or firstQuotaSMS > 0:
@@ -4741,6 +4768,8 @@ def stepOfferTM(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, tim
        firstQuotaVoice      = int(QuotaSplitString[0])
        stepConsumePreload   = None
        bonusPreload         = 'No Bonus'
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
        start_hour, end_hour = map(int, timeband.split('-'))
        validity             = int(validity)
        
@@ -4772,8 +4801,11 @@ def stepOfferTM(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, tim
        stringBonusAll = ''
        if firstQuotaVoice > 0:
               stringBonusAll = str(firstQuotaVoice)+" Min "+stringBonus
+              bonusVoice     = str(firstQuotaVoice)+" Min "+stringBonus
+       
        if firstQuotaSMS > 0:
               stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+stringBonus
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+stringBonus
        
        steps = [
               ["Create & Activate new subscriber PP "+PPName,"Check active period",bonusPreload],
@@ -4782,8 +4814,8 @@ def stepOfferTM(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, tim
               ["Update Exp Date","Update Expired Date","No Bonus"],
               ["Attach Offer "+str(offerName)+" Voice "+str(stringBonus)+"","Offer Attached",stringBonusAll],
               ["Check Bonus 889*1 11am","Checked","No Bonus"],
-              ["Check Bonus 889*2 11am","Checked",stringBonusAll],
-              ["Check Bonus 889*3 11am","Checked","No Bonus"]
+              ["Check Bonus 889*2 11am","Checked",bonusVoice],
+              ["Check Bonus 889*3 11am","Checked",bonusSMS]
        ]
 
        if firstQuotaVoice > 0 or firstQuotaSMS > 0:
@@ -5007,6 +5039,140 @@ def stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, star
        steps.extend(stepCase6)
 
        return steps
+
+def stepOfferVoiceIDD(offerName, accessCodePositif, accessCodeNegatif, allowance, validity, timeband, bonDesc, countryPositif, countryNegatif):
+       steps = []
+
+       allowanceSplit       = allowance.split(';')
+       voiceIDD             = int(allowanceSplit[0])/60
+       allowanceString      = str(voiceIDD)+" Min "+bonDesc
+       countryPositifSplit  = countryPositif.split(';')
+       countryPositifData   = [{"name": name, "status": "Positif"} for name in countryPositifSplit]
+       priorityCountry      = len(countryPositifData)
+       countryNegatifSplit  = countryNegatif.split(';') 
+       countryNegatifData   = [{"name": name} for name in countryNegatifSplit] 
+       mergedCountryData    = countryPositifData + countryNegatifData
+       start_hour, end_hour = map(int, timeband.split('-'))
+
+       step = [
+              ["Create & Activate new subscriber PP KartuAS Regular","Check active period","No Bonus"],
+              ["Update Balance 1000000","Success","No Bonus"],
+              [f"Attach offer Prepaid {offerName} Package","Offer attached",allowanceString],
+              ["Check bonus 889*2","Checked",allowanceString],
+              ["Check bonus 889*3","Checked","No Bonus"]
+       ]
+
+       stepConsumeVoiceIDD = getStepReduceQuotaVoiceIDD(voiceIDD, mergedCountryData, priorityCountry, validity, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif)
+       
+       steps.extend(step)
+       steps.extend(stepConsumeVoiceIDD)
+
+       return steps
+
+def getStepReduceQuotaVoiceIDD(QuotaVoice, countryData, priorityCountry, validity, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif):
+       stepsConsume         = []
+       dayString            = 0
+       validity             = int(validity)
+       maxValidity          = validity+1
+       
+       # Generate a shuffled list of numbers from dayString to validity - 1
+       days          = list(range(dayString, maxValidity))
+       firstDate     = days[0]
+       lastDate      = days[len(days) - 1]
+
+       # Choose a random number of elements to select from data
+       num_elements = random.randint(1, len(days) - 2)
+
+       # Randomly select elements from data
+       selected_data = random.sample(days[1:-1], num_elements)
+
+       # Sort selected_data based on the index in the original data list
+       selected_data = sorted(selected_data, key=lambda x: days.index(x))
+
+       # Merge variables into a single list
+       merged_data = [firstDate] + selected_data + [lastDate]
+
+       if len(countryData) < len(merged_data):
+              random.shuffle(countryData)
+
+       getData = 0
+       for strValidity in merged_data:
+              if getData == len(countryData):
+                     getData = 0
+              country       = countryData[getData]
+              countryName   = country["name"]
+              
+              timeNumber    = random.randint(start_hour, end_hour)
+              timeString    = timeNumber
+              
+              if "status" in country:
+                     if strValidity < validity:
+                            if start_hour <= end_hour:
+                                   # Time range does not span midnight
+                                   if start_hour <= timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged     = 'Consume Bonus'
+                                          accessCodeUsed       = accessCodePositif
+                                          reduceOrNot          = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged     = 'Charged'
+                                          reduceOrNot          = False
+                                          accessCodeUsed       = accessCodeNegatif
+                            else:
+                                   # Time range spans midnight
+                                   if timeNumber >= start_hour or timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged     = 'Consume Bonus'
+                                          reduceOrNot          = True
+                                          accessCodeUsed       = accessCodePositif
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged     = 'Charged'
+                                          reduceOrNot          = False
+                                          accessCodeUsed       = accessCodeNegatif
+                     else:
+                            consumeOrCharged     = 'Charged'
+                            accessCodeUsed       = accessCodeNegatif
+                            reduceOrNot          = False
+              else:
+                     consumeOrCharged     = 'Charged'
+                     accessCodeUsed       = accessCodeNegatif
+                     reduceOrNot          = False
+              
+              if QuotaVoice > 0 and reduceOrNot:
+                     decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
+                     QuotaVoice -= decreasingQuotaVoice
+                     eventString = decreasingQuotaVoice
+              else:
+                     eventString = '1'
+                     consumeOrCharged = 'Charged'
+
+              if int(timeString) > 12:
+                     timeString = str(int(timeString) - 12) + 'PM'
+              else:
+                     timeString = str(timeString) + "AM"
+              
+              if QuotaVoice > 0:
+                     restBonus = f"{QuotaVoice} Min {bonDesc}"
+              elif QuotaVoice <= 0:
+                     restBonus = "No Bonus" 
+
+              if int(strValidity) >= validity:
+                     restBonus = "No Bonus"
+
+              eventLabel = f"Create event voice IDD to {countryName} using access code {accessCodeUsed} {eventString} Min D+{strValidity}"
+
+              step = [
+                     eventLabel,
+                     consumeOrCharged,
+                     restBonus
+              ]
+
+              stepsConsume.append(step)
+              getData += 1
+
+       return stepsConsume
 
 def getStepReduceSMS(QuotaVoice, stringBonus, QuotaSMS, dataEvent, bonusDesc, start_hour, end_hour, validity, detailQuotaVoice):
        stepsConsumeSMS      = []
