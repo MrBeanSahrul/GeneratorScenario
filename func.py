@@ -5954,11 +5954,9 @@ def validateStepShortValidity(QuotaVoice, merged_data, countryDatas, mergedAcces
 
        for strValidity in merged_data:
               for countryData in countryDatas:
-                     if getData == len(countryData):
-                            getData = 0
                      if getAccessCode == len(mergedAccessCode):
                             getAccessCode = 0
-                     country       = countryData[getData]
+                     country       = countryData
                      countryName   = country["name"]
 
                      accessCode           = mergedAccessCode[getAccessCode]

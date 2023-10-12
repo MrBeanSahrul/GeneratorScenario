@@ -966,7 +966,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "in days",
-                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Voice IDD"],
                      "determiningParam"   : "Offer Type"
               },
               "Start Date Validity" : {
