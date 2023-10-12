@@ -862,7 +862,8 @@
                             "Offer Fix",
                             "Offer Flexible",
                             "Offer TM",
-                            "Offer Voice IDD"
+                            "Offer Voice IDD",
+                            "Offer Voice IDD (Offer Flexible)"
                      ]
               },
               "Offer Name" : {
@@ -872,7 +873,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "true",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible", "Offer Voice IDD"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible", "Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Access Code (for positif test case)" : {
@@ -883,7 +884,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the access code more than 1",
-                     "conditions"         : ["Offer Voice IDD"],
+                     "conditions"         : ["Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Access Code (for negatif test case)" : {
@@ -894,7 +895,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the access code more than 1",
-                     "conditions"         : ["Offer Voice IDD"],
+                     "conditions"         : ["Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Price Plan Name" : {
@@ -904,7 +905,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Preload Bonus" : {
@@ -914,7 +915,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Eligible" : {
@@ -965,7 +966,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "in days",
-                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Voice IDD"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Start Date Validity" : {
@@ -976,7 +977,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "End Date Validity" : {
@@ -987,7 +988,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "End Date Validity For More Than 60 Days" : {
@@ -998,7 +999,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "End Date Validity For Back Date" : {
@@ -1009,7 +1010,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Item ID" : {
@@ -1020,7 +1021,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Voice;SMS",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Allowance" : {
@@ -1031,7 +1032,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Voice(in seconds);SMS",
-                     "conditions"         : ["Offer Flexible", "Offer Voice IDD"],
+                     "conditions"         : ["Offer Flexible", "Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Timeband" : {
@@ -1042,7 +1043,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "24 hours format [ex:00-23]",
-                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible", "Offer Voice IDD"],
+                     "conditions"         : ["Offer Fix", "Offer TM", "Offer Flexible", "Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Bonus Desc" : {
@@ -1052,7 +1053,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Voice IDD"],
+                     "conditions"         : ["Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Country (for positif test case)" : {
@@ -1063,7 +1064,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Voice IDD"],
+                     "conditions"         : ["Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               },
               "Country (for negatif test case)" : {
@@ -1074,7 +1075,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Voice IDD"],
+                     "conditions"         : ["Offer Voice IDD", "Offer Voice IDD (Offer Flexible)"],
                      "determiningParam"   : "Offer Type"
               }
        }
