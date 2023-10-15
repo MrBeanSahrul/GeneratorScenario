@@ -5153,34 +5153,26 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
 
        #Case 2 = Negatif (Berdasarkan UOM)
-       stepsConsumeBonusCase2 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase2, mergedCountryData, priorityCountry, 5, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
+       stepsConsumeBonusCase2 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase2, mergedCountryData, priorityCountry, 1, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
        stepCase2 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
               stepConsumePreload,
               ["Update Exp Date","Updated","No Bonus"],
               ["Update Balance 1000000","Balance Updated","No Bonus"],
               [attachOfferStringCase2,"Offer attached","No Bonus"],
-              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-              ["Check Bonus 889*2","Bonus Checked","No Bonus"],
-              ["Check Bonus 889*3","Bonus Checked","No Bonus"],
-              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
               #Reduce Allowance
        ]
        stepCase2.extend(stepsConsumeBonusCase2)
        stepCase2.extend([["Check PI on Indira","Success","No Bonus"]])
 
        #Case 3 = Negatif (Backdate)
-       stepsConsumeBonusCase3 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase3, mergedCountryData, priorityCountry, 5, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
+       stepsConsumeBonusCase3 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase3, mergedCountryData, priorityCountry, 1, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
        stepCase3 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
               stepConsumePreload,
               ["Update Exp Date","Updated","No Bonus"],
               ["Update Balance 1000000","Balance Updated","No Bonus"],
               [attachOfferStringCase3,"Offer attached","No Bonus"],
-              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-              ["Check Bonus 889*2","Bonus Checked","No Bonus"],
-              ["Check Bonus 889*3","Bonus Checked","No Bonus"],
-              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
               #Reduce Allowance
        ]
        stepCase3.extend(stepsConsumeBonusCase3)
@@ -5193,10 +5185,6 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
               ["Update Exp Date","Updated","No Bonus"],
               ["Update Balance 1000000","Balance Updated","No Bonus"],
               [attachOfferStringCase4,"Offer attached",stringBonusAll],
-              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
-              ["Check Bonus 889*3","Bonus Checked",'No Bonus'],
-              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
               #Reduce Allowance
        ]
 
@@ -5237,10 +5225,6 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
               ["Check Offer Name & Description", "Success", offerName],
               ["Check GetBonusInfo and validity", "Success", "Checked"],
               ["Check Bonus 889 and bonus description", "Success", "Checked"],
-              ["Check Bonus 889*1", "Success", "No Bonus"],
-              ["Check Bonus 889*2", "Success", bonusVoice],
-              ["Check Bonus 889*3", "Success", "No Bonus"],
-              ["Check Bonus 889*4", "Success", "Success"],
               ["Check PRIT Name", "Success", "Success"],
               ["Create event vas with eligible vascode param_vascode", "Success", "Success"],
               ["Check notification after first event consume", "Success", "Success"],
@@ -5272,17 +5256,20 @@ def getStepReduceQuotaVoiceIDD(QuotaVoice, countryData, priorityCountry, validit
        firstDate     = days[0]
        lastDate      = days[len(days) - 1]
 
-       # Choose a random number of elements to select from data
-       num_elements = random.randint(1, len(days) - 2)
+       if validity > 1:
+              # Choose a random number of elements to select from data
+              num_elements = random.randint(1, len(days) - 2)
 
-       # Randomly select elements from data
-       selected_data = random.sample(days[1:-1], num_elements)
+              # Randomly select elements from data
+              selected_data = random.sample(days[1:-1], num_elements)
 
-       # Sort selected_data based on the index in the original data list
-       selected_data = sorted(selected_data, key=lambda x: days.index(x))
+              # Sort selected_data based on the index in the original data list
+              selected_data = sorted(selected_data, key=lambda x: days.index(x))
 
-       # Merge variables into a single list
-       merged_data = [firstDate] + selected_data + [lastDate]
+              # Merge variables into a single list
+              merged_data = [firstDate] + selected_data + [lastDate]
+       else:
+              merged_data = [firstDate] + [lastDate]
        
        random.shuffle(mergedAccessCode)
 
@@ -5846,8 +5833,8 @@ def validateStepNormal(QuotaVoice, merged_data, countryData, mergedAccessCode, s
               timeNumber    = random.randint(start_hour, end_hour)
               timeString    = timeNumber
               
-              if accessCodeStatus == 'Positif':
-                     if "status" in country:
+              if "status" in country:
+                     if accessCodeStatus == 'Positif':
                             if strValidity < validity:
                                    if start_hour <= end_hour:
                                           # Time range does not span midnight
@@ -5878,6 +5865,7 @@ def validateStepNormal(QuotaVoice, merged_data, countryData, mergedAccessCode, s
               else:
                      consumeOrCharged     = 'Charged'
                      reduceOrNot          = False
+                     accessCodeUsed       = firstAccessCodePos
               
               if QuotaVoice > 0 and reduceOrNot:
                      decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
