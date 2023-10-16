@@ -5051,7 +5051,6 @@ def stepOfferVoiceIDD(offerName, accessCodePositif, accessCodeNegatif, allowance
        countryPositifSplit  = countryPositif.split(';')
        firstCountryPos      = countryPositifSplit[0]
        countryPositifData   = [{"name": name, "status": "Positif"} for name in countryPositifSplit]
-       priorityCountry      = len(countryPositifData)
        countryNegatifSplit  = countryNegatif.split(';') 
        countryNegatifData   = [{"name": name} for name in countryNegatifSplit] 
        mergedCountryData    = countryPositifData + countryNegatifData
@@ -5071,7 +5070,7 @@ def stepOfferVoiceIDD(offerName, accessCodePositif, accessCodeNegatif, allowance
               ["Check bonus 889*3","Checked","No Bonus"]
        ]
 
-       stepConsumeVoiceIDD = getStepReduceQuotaVoiceIDD(voiceIDD, mergedCountryData, priorityCountry, validity, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
+       stepConsumeVoiceIDD = getStepReduceQuotaVoiceIDD(voiceIDD, mergedCountryData, validity, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPositifData, accessCodePosData)
        
        steps.extend(step)
        steps.extend(stepConsumeVoiceIDD)
@@ -5095,7 +5094,6 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        countryPositifSplit  = countryPositif.split(';')
        firstCountryPos      = countryPositifSplit[0]
        countryPositifData   = [{"name": name, "status": "Positif"} for name in countryPositifSplit]
-       priorityCountry      = len(countryPositifData)
        countryNegatifSplit  = countryNegatif.split(';') 
        countryNegatifData   = [{"name": name} for name in countryNegatifSplit] 
        mergedCountryData    = countryPositifData + countryNegatifData
@@ -5131,8 +5129,8 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        validityCase4 = (end_datetimecase4 - start_datetime).days
 
        if QuotaVoice > 0:
-              stepsConsumeBonus = getStepReduceQuotaVoiceIDD(QuotaVoice, mergedCountryData, priorityCountry, validity, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
-              stepsConsumeBonusCase4 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase4, mergedCountryData, priorityCountry, validityCase4, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
+              stepsConsumeBonus = getStepReduceQuotaVoiceIDD(QuotaVoice, mergedCountryData, validity, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPositifData, accessCodePosData)
+              stepsConsumeBonusCase4 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase4, mergedCountryData, validityCase4, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPositifData, accessCodePosData)
               
 
        #Case 1 = Positif Case
@@ -5153,7 +5151,7 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
 
        #Case 2 = Negatif (Berdasarkan UOM)
-       stepsConsumeBonusCase2 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase2, mergedCountryData, priorityCountry, 1, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
+       stepsConsumeBonusCase2 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase2, mergedCountryData, 1, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPositifData, accessCodePosData)
        stepCase2 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
               stepConsumePreload,
@@ -5166,7 +5164,7 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        stepCase2.extend([["Check PI on Indira","Success","No Bonus"]])
 
        #Case 3 = Negatif (Backdate)
-       stepsConsumeBonusCase3 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase3, mergedCountryData, priorityCountry, 1, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos)
+       stepsConsumeBonusCase3 = getStepReduceQuotaVoiceIDD(QuotaVoiceCase3, mergedCountryData, 1, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPositifData, accessCodePosData)
        stepCase3 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
               stepConsumePreload,
@@ -5245,7 +5243,7 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        return steps
 
 
-def getStepReduceQuotaVoiceIDD(QuotaVoice, countryData, priorityCountry, validity, start_hour, end_hour, bonDesc, accessCodePositif, accessCodeNegatif, mergedAccessCode, firstCountryPos, firstAccessCodePos):
+def getStepReduceQuotaVoiceIDD(QuotaVoice, countryData, validity, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPosData, accessCodePosData):
        stepsConsume         = []
        dayString            = 0
        validity             = int(validity)
@@ -5275,7 +5273,7 @@ def getStepReduceQuotaVoiceIDD(QuotaVoice, countryData, priorityCountry, validit
 
        if len(countryData) < len(merged_data):
               random.shuffle(countryData)
-              stepsConsume = validateStepNormal(QuotaVoice, merged_data, countryData, mergedAccessCode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstAccessCodePos)
+              stepsConsume = validateStepNormal(QuotaVoice, merged_data, countryData, mergedAccessCode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstAccessCodePos, countryPosData, accessCodePosData)
        else:
               stepsConsume = validateStepShortValidity(QuotaVoice, merged_data, countryData, mergedAccessCode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstAccessCodePos)
 
@@ -5802,7 +5800,7 @@ def generatingScenario(eventName, offerName, offerDesc, offerType, steps):
        # Save Excel File
        wb.save('Result/Scenario '+str(eventName)+' '+str(offerType)+'.xlsx')
 
-def validateStepNormal(QuotaVoice, merged_data, countryData, mergedAccessCode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstAccessCodePos):
+def validateStepNormal(QuotaVoice, merged_data, countryData, mergedAccessCode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstAccessCodePos, countryPosData, accessCodePosData):
        stepsConsume         = []
        additionalNegatifCase = [
               "Create Voice Onnet 1 Min",
@@ -5813,22 +5811,37 @@ def validateStepNormal(QuotaVoice, merged_data, countryData, mergedAccessCode, s
               "Create Event Voice FWA 180s",
               f"Create Event Voice Roaming MOC Home in {firstCountryPos}"
        ]
+
        getData       = 0
        getAccessCode = 0
        count         = 1
 
-       for strValidity in merged_data:
-              if getData == len(countryData):
-                     getData = 0
-              if getAccessCode == len(mergedAccessCode):
-                     getAccessCode = 0
-              country       = countryData[getData]
-              countryName   = country["name"]
+       #Variable for count how much country positive and access code positive is out
+       priorityOut   = 0
 
-              accessCode           = mergedAccessCode[getAccessCode]
-              accessCodeName       = accessCode["name"]
-              accessCodeStatus     = accessCode["status"]
-              accessCodeUsed       = accessCodeName
+       for strValidity in merged_data:
+              if priorityOut >= len(countryPosData):
+                     if getData == len(countryData):
+                            getData = 0
+                     if getAccessCode == len(mergedAccessCode):
+                            getAccessCode = 0
+                     country       = countryData[getData]
+                     countryName   = country["name"]
+
+                     accessCode           = mergedAccessCode[getAccessCode]
+                     accessCodeName       = accessCode["name"]
+                     accessCodeStatus     = accessCode["status"]
+                     accessCodeUsed       = accessCodeName
+              else:
+                     country       = countryPosData[priorityOut]
+                     countryName   = country["name"]
+
+                     accessCode           = random.choice(accessCodePosData)
+                     accessCodeName       = accessCode["name"]
+                     accessCodeStatus     = accessCode["status"]
+                     accessCodeUsed       = accessCodeName
+
+                     priorityOut += 1
               
               timeNumber    = random.randint(start_hour, end_hour)
               timeString    = timeNumber
