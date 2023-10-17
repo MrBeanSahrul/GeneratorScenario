@@ -4708,7 +4708,7 @@ def stepOfferFix(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, ti
        validity             = int(validity)
        
 
-       if preloadBonus != '' or preloadBonus != 0:
+       if preloadBonus != '' and preloadBonus != 0:
               stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
               bonusPreload         = preloadBonus
 
@@ -4776,7 +4776,7 @@ def stepOfferTM(offerName, PPName, Quota, bonusDesc, preloadBonus, validity, tim
        validity             = int(validity)
        
 
-       if preloadBonus != '' or preloadBonus != 0:
+       if preloadBonus != '' and preloadBonus != 0:
               stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
               bonusPreload         = preloadBonus
 
@@ -4857,7 +4857,7 @@ def stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, star
        QuotaSMSCase4        = allowanceSMS if allowanceSMS != 0 else 0
        firstQuotaSMS        = QuotaSMS
 
-       if preloadBonus != '' or preloadBonus != 0:
+       if preloadBonus != '' and preloadBonus != 0:
               stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
        
        if bonusDesc == 'All Opr':
@@ -5104,7 +5104,7 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        accessCodeNegData    = [{"name": name, "status": "Negatif"} for name in accessCodeNegSplit]
        mergedAccessCode     = accessCodePosData + accessCodeNegData
 
-       if preloadBonus != '' or preloadBonus != 0:
+       if preloadBonus != '' and preloadBonus != 0:
               stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
 
        if eligible == 'Voice':
