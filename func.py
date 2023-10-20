@@ -5242,7 +5242,6 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
 
        return steps
 
-
 def getStepReduceQuotaVoiceIDD(QuotaVoice, countryData, validity, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPosData, accessCodePosData):
        stepsConsume         = []
        dayString            = 0
@@ -6058,3 +6057,4 @@ def validateStepShortValidity(QuotaVoice, merged_data, countryDatas, mergedAcces
                      getAccessCode += 1
 
        return stepsConsume
+

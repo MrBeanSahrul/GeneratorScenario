@@ -1079,5 +1079,250 @@
                      "determiningParam"   : "Offer Type"
               }
        }
+  },
+  {
+       "ItemName" : "Offer Roaming",
+       "EventName" : "Offer Roaming",
+       "FunctionName" : "exportExcelOfferRoaming",
+       "Params": {
+              "Card Type" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Postpaid",
+                            "Prepaid"
+                     ]
+              },
+              "Offer Type" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Offer Fix",
+                            "Offer Flexible"
+                     ]
+              },
+              "Offer Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "true",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Fix", "Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Price Plan Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Fix", "Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Preload Bonus" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Fix", "Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Eligible" : {
+                     "type"               : "option",
+                     "multiple"           : "false",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "value"              : [
+                                                 "Voice",
+                                                 "SMS",
+                                                 "Voice & SMS"
+                                          ],
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Quota" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice (in minutes);SMS",
+                     "conditions"         : ["Offer Fix", "Offer TM"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Bonus Description" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "MO Eligible" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "MT Eligible" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Vascode (for positif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Vascode (for negatif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Country (for positif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Country (for negatif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "in days",
+                     "conditions"         : ["Offer Fix"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Start Date Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "End Date Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "End Date Validity For More Than 60 Days" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "End Date Validity For Back Date" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Item ID" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice;SMS",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Allowance" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice(in seconds);SMS",
+                     "conditions"         : ["Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              },
+              "Timeband" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "24 hours format [ex:00-23]",
+                     "conditions"         : ["Offer Fix", "Offer Flexible"],
+                     "determiningParam"   : "Offer Type"
+              }
+       }
   }
 ]
