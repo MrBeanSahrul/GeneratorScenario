@@ -232,20 +232,47 @@ if function is not None and callable(function):
                                                                else:
                                                                       params[key] = datas[0]
                                           else:
-                                                 inputParam = data[0].split(delimiter)
-                                                 if len(inputParam) > 1:
-                                                        for i, value in enumerate(inputParam):
-                                                               if i < len(multiParam):
-                                                                      multiParam[i][key] = value
-                                                               else:
-                                                                      param_dict = {key: value}
-                                                                      multiParam.append(param_dict)
+                                                 datas = data[0].split(delimiter)
+                                                 if len(datas) >= 1:
+                                                        i = 0
+                                                        tempParam = {}
+                                                        for key, needParam in choosedTestCase['Params'].items():
+                                                               if "conditions" in needParam and isinstance(needParam['determiningParam'], str):
+                                                                      if needParam['determiningParam'] in params:
+                                                                             if "conditions" in needParam and params[param['determiningParam']][0] not in needParam["conditions"]:
+                                                                                    continue  # Skip the current iteration and move to the next one
+                                                                      else:
+                                                                             continue
+                                                               
+                                                               if "determiningParam" in needParam and isinstance(needParam['determiningParam'], list):
+                                                                      for determiningParam in needParam['determiningParam']:
+                                                                             if determiningParam in params:
+                                                                                    if params[determiningParam][0] not in needParam["conditions"][determiningParam]:
+                                                                                           skipConditions = True
+                                                                                           break  # Skip the current iteration and move to the next one      
+                                                                                    else:
+                                                                                           skipConditions = False
+                                                                                           break
+                                                                             else:
+                                                                                    skipConditions = True
+                                                                                    continue   
+                                                               if skipConditions:
+                                                                      skipConditions = False
+                                                                      continue
+                                                               
+                                                               if key in params and params[key] != '':
+                                                                      continue
+
+                                                               param_dict = {key: datas[i]}
+                                                               tempParam.update(param_dict)
+                                                               i = i+1
+                                                        multiParam.append(tempParam)                   
                                                  else:
                                                         if param['dataType'] == 'array':
                                                                arrayParam.update({key: inputParam[0]})
                                                                multiParam.insert(0,arrayParam)
                                                         else:
-                                                               params[key] = inputParam[0]
+                                                               params[key] = datas[0]
 
                                    except FileNotFoundError:
                                           print("File not found or unreadable in folder.")
@@ -282,7 +309,7 @@ if function is not None and callable(function):
 
               if stopLoop:
                      break
-
+              
        if len(multiParam) > 0:
               if params:
                      for item in multiParam:

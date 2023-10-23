@@ -6112,7 +6112,18 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
                      bonusDesc = params["Bonus Description"]
               
               if "Eligible" in params:
-                     eligible = params["Eligible"][0]
+                     dataEligible = {
+                            "1" : "Voice",
+                            "2" : "SMS",
+                            "3" : "Voice & SMS"
+                     }
+                     if isinstance(params["Eligible"], list):
+                            eligible = params["Eligible"][0]
+                     else:
+                            if params["Eligible"].isnumeric():
+                                   eligible = dataEligible[params["Eligible"]]
+                            else:
+                                   eligible = params["Eligible"]
               
               if "Start Date Validity" in params:
                      startDateValidity = params["Start Date Validity"]
@@ -6269,7 +6280,7 @@ def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eli
        QuotaSMSCase4        = allowanceSMS if allowanceSMS != 0 else 0
        firstQuotaSMS        = QuotaSMS
 
-       if preloadBonus != '' and preloadBonus != 0:
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
               stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
 
        if eligible == 'Voice':
