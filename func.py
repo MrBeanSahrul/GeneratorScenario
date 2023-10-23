@@ -6154,10 +6154,10 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
                      MOEligible = params["MT Eligible"]
               
               if "Vascode (for positif test case)" in params:
-                     countryPositif = params["Vascode (for positif test case)"]
+                     vascodePositif = params["Vascode (for positif test case)"]
               
               if "Vascode (for negatif test case)" in params:
-                     countryNegatif = params["Vascode (for negatif test case)"]
+                     vascodeNegatif = params["Vascode (for negatif test case)"]
               
               if cardType == 'Prepaid':
                      if offerType == 'Offer Flexible':
@@ -6472,16 +6472,15 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
               merged_data = [firstDate] + [lastDate]
        
        random.shuffle(mergedVascode)
-
-      
        random.shuffle(mergedCountryData)
+
        for strValidity in merged_data:
               #Steps for reduce quota voice
               getDataVoice         = 0
               getVascodeVoice      = 0
               countVoice           = 1
               priorityOutVoice     = 0
-              stepsConsumeVoice, QuotaVoice, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice)
+              stepsConsumeVoice, QuotaVoice, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData)
               stepsConsume.extend(stepsConsumeVoice)
               #Steps for reduce quota sms
               getDataSMS         = 0
@@ -6494,7 +6493,7 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
 
        return stepsConsume, QuotaVoice, QuotaSMS
 
-def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice):
+def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData):
        stepsConsume         = []
        additionalNegatifCase = [
               "Create Voice Onnet 1 Min",
@@ -6564,7 +6563,9 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        elif MO_MT_Choice == 'local':
               String_MO_MT = f'In {countryName}'
        else:
-              String_MO_MT = f'{countryName} To {countryName}'
+              countryNeg    = random.choice(countryNegatifData)
+              countryTo     = countryNeg["name"]
+              String_MO_MT  = f'{countryName} To {countryTo}'
        
        if checked_MO_MT:
               if "status" in country:
@@ -6603,7 +6604,7 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        else:
               consumeOrCharged     = 'Charged'
               reduceOrNot          = False
-              vascodeUsed       = firstVascodePos
+              vascodeUsed          = firstVascodePos
        
        if QuotaVoice > 0 and reduceOrNot:
               decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
@@ -6749,7 +6750,7 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, c
               vascodeUsed       = firstVascodePos
        
        if QuotaSMS > 0 and reduceOrNot:
-              decreasingQuotaSMS = round((QuotaSMS * 0.5) / 4)
+              decreasingQuotaSMS = 1
               QuotaSMS -= decreasingQuotaSMS
               eventString = decreasingQuotaSMS
        else:
@@ -6774,7 +6775,7 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, c
        if int(day) >= validity:
               restBonus = "No Bonus"
 
-       eventLabel = f"Create event direct debit with vascode {vascodeUsed} {timeString} {eventString}SMS D+{day}"
+       eventLabel = f"Create event direct debit with vascode {vascodeUsed} {timeString} D+{day}"
 
        step = [
               eventLabel,
@@ -6798,7 +6799,7 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, c
        
        if count == len(merged_data):
               stepLast = [
-                     f"Create event direct debit with vascode {vascodeUsed} {timeString} {eventString}SMS D+{day}",
+                     f"Create event direct debit with vascode {vascodeUsed} {timeString} D+{day}",
                      "Charged",
                      restBonus
               ]
