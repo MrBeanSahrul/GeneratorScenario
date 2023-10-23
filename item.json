@@ -1176,7 +1176,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
                      "conditions"         : ["Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               },
@@ -1187,7 +1187,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
                      "conditions"         : ["Offer Flexible"],
                      "determiningParam"   : "Offer Type"
               },

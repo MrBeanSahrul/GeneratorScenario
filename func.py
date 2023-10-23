@@ -6186,7 +6186,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               ws.append(headerRow)
 
               no = 1
-              print(steps)
+              
               for num, step in enumerate(steps, start=1):
                      if isinstance(step, str):
                             row = [
@@ -6488,7 +6488,7 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
               getVascodeSMS      = 0
               countSMS           = 1
               priorityOutSMS     = 0
-              stepsConsumeSMS, QuotaSMS, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS = validateStepNormalSMSInternational(QuotaSMS, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS)
+              stepsConsumeSMS, QuotaSMS, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS)
               stepsConsume.extend(stepsConsumeSMS)
        
 
