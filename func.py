@@ -6186,6 +6186,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               ws.append(headerRow)
 
               no = 1
+              print(steps)
               for num, step in enumerate(steps, start=1):
                      if isinstance(step, str):
                             row = [
@@ -6481,14 +6482,14 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
               countVoice           = 1
               priorityOutVoice     = 0
               stepsConsumeVoice, QuotaVoice, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice)
-              stepsConsume.append(stepsConsumeVoice)
+              stepsConsume.extend(stepsConsumeVoice)
               #Steps for reduce quota sms
               getDataSMS         = 0
               getVascodeSMS      = 0
               countSMS           = 1
               priorityOutSMS     = 0
               stepsConsumeSMS, QuotaSMS, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS = validateStepNormalSMSInternational(QuotaSMS, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS)
-              stepsConsume.append(stepsConsumeSMS)
+              stepsConsume.extend(stepsConsumeSMS)
        
 
        return stepsConsume, QuotaVoice, QuotaSMS
@@ -6665,7 +6666,7 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
                      
        getData += 1
        count += 1
-       getAccessCode += 1
+       getVascode += 1
 
        return stepsConsume, QuotaVoice, getData, getVascode, count, priorityOut
 
@@ -6805,7 +6806,7 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, c
                      
        getData += 1
        count += 1
-       getAccessCode += 1
+       getVascode += 1
 
        return stepsConsume, QuotaSMS, getData, getVascode, count, priorityOut
 
