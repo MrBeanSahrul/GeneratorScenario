@@ -6068,7 +6068,6 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
        PPName               = ''
        preloadBonus         = ''
        eligible             = ''
-       quota                = ''
        bonusDesc            = ''
        MOEligible           = ''
        MTEligible           = ''
@@ -6108,9 +6107,6 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
                      PPName = params['Price Plan Name']
               else:
                      PPName = ''
-              
-              if "Quota" in params:
-                     quota = params["Quota"]
               
               if "Bonus Description" in params:
                      bonusDesc = params["Bonus Description"]
@@ -6165,7 +6161,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               
               if cardType == 'Prepaid':
                      if offerType == 'Offer Flexible':
-                            steps = getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eligible, quota, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband)
+                            steps = getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband)
                      else:
                             print("Sorry, Scenario isn't ready yet")
                             exit('') 
@@ -6314,8 +6310,8 @@ def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eli
        validityCase4 = (end_datetimecase4 - start_datetime).days
 
        if QuotaVoice > 0 or QuotaSMS > 0:
-              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonusDesc, start_hour, end_hour, validity, MOEligible, MTEligible)
-              stepsConsumeBonusCase4, QuotaVoiceCase4, QuotaSMSCase4 = getStepReduceQuotaInternational(QuotaVoiceCase4, QuotaSMSCase4, bonusDesc, start_hour, end_hour, validityCase4, MOEligible, MTEligible)
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonusDesc, start_hour, end_hour, validity, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+              stepsConsumeBonusCase4, QuotaVoiceCase4, QuotaSMSCase4 = getStepReduceQuotaInternational(QuotaVoiceCase4, QuotaSMSCase4, bonusDesc, start_hour, end_hour, validityCase4, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
               
 
        #Case 1 = Positif Case
@@ -6336,7 +6332,7 @@ def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eli
        stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
 
        #Case 2 = Negatif (Berdasarkan UOM)
-       stepsConsumeBonusCase2, QuotaVoiceCase2, QuotaSMSCase2 = getStepReduceQuotaInternational(QuotaVoiceCase2, QuotaSMSCase2, bonusDesc, start_hour, end_hour, 5, MOEligible, MTEligible)
+       stepsConsumeBonusCase2, QuotaVoiceCase2, QuotaSMSCase2 = getStepReduceQuotaInternational(QuotaVoiceCase2, QuotaSMSCase2, bonusDesc, start_hour, end_hour, 5, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
        stepCase2 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
               stepConsumePreload,
@@ -6349,7 +6345,7 @@ def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eli
        stepCase2.extend([["Check PI on Indira","Success","No Bonus"]])
 
        #Case 3 = Negatif (Backdate)
-       stepsConsumeBonusCase3, QuotaVoiceCase3, QuotaSMSCase3 = getStepReduceQuotaInternational(QuotaVoiceCase3, QuotaSMSCase3, bonusDesc, start_hour, end_hour, 5, MOEligible, MTEligible)
+       stepsConsumeBonusCase3, QuotaVoiceCase3, QuotaSMSCase3 = getStepReduceQuotaInternational(QuotaVoiceCase3, QuotaSMSCase3, bonusDesc, start_hour, end_hour, 5, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
        stepCase3 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonus],
               stepConsumePreload,
@@ -6451,8 +6447,8 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
        vascodeNegSplit      = vascodeNegatif.split(";")
        vascodeNegData       = [{"name": name, "status": "Negatif"} for name in vascodeNegSplit]
        mergedVascode        = vascodePosData + vascodeNegData
-       MOEligible           = MO.split(";")
-       MTEligible           = MT.split(";")
+       MOEligible           = MO
+       MTEligible           = MT
        
        # Generate a shuffled list of numbers from dayString to validity - 1
        days          = list(range(dayString, maxValidity))
