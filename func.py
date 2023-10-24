@@ -6487,6 +6487,7 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
               merged_data = [firstDate] + [lastDate]
        
        random.shuffle(mergedVascode)
+       print("Merged Vascode : ",mergedVascode)
        random.shuffle(mergedCountryData)
        #Steps for reduce quota voice
        getDataVoice         = 0
@@ -6532,13 +6533,12 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        MO_or_MT = random.choice(MOMT)
 
        if priorityOut >= len(countryPosData):
-              if getData == len(countryData):
+              if getData >= len(countryData):
                      getData = 0
-              if getVascode == len(mergedVascode):
+              if getVascode >= len(mergedVascode):
                      getVascode = 0
               country       = countryData[getData]
               countryName   = country["name"]
-
               vascode           = mergedVascode[getVascode]
               vascodeName       = vascode["name"]
               vascodeStatus     = vascode["status"]
@@ -6703,9 +6703,9 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, c
        #Variable for count how much country positive and access code positive is out
        priorityOut   = priorityOutSMS
        if priorityOut >= len(countryPosData):
-              if getData == len(countryData):
+              if getData >= len(countryData):
                      getData = 0
-              if getVascode == len(mergedVascode):
+              if getVascode >= len(mergedVascode):
                      getVascode = 0
               country       = countryData[getData]
               countryName   = country["name"]
