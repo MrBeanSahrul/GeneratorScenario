@@ -6489,27 +6489,6 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
        random.shuffle(mergedVascode)
        print("Merged Vascode : ",mergedVascode)
        random.shuffle(mergedCountryData)
-       #Steps for reduce quota voice
-       getDataVoice         = 0
-       getVascodeVoice      = 0
-       countVoice           = 1
-       priorityOutVoice     = 0
-       #Steps for reduce quota sms
-       getDataSMS         = 0
-       getVascodeSMS      = 0
-       countSMS           = 1
-       priorityOutSMS     = 0
-       for strValidity in merged_data:
-              stepsConsumeVoice, QuotaVoice, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData)
-              stepsConsume.extend(stepsConsumeVoice)
-              stepsConsumeSMS, QuotaSMS, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS)
-              stepsConsume.extend(stepsConsumeSMS)
-       
-
-       return stepsConsume, QuotaVoice, QuotaSMS
-
-def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData):
-       stepsConsume         = []
        additionalNegatifCase = [
               "Create Voice Onnet 1 Min",
               "Create event 1 SMS onnet",
@@ -6518,9 +6497,36 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
               "Create Event Voice PSTN 5s",
               "Create Event Voice FWA 180s",
        ]
+       #Steps for reduce quota voice
+       getDataVoice         = 0
+       getVascodeVoice      = 0
+       countVoice           = 1
+       priorityOutVoice     = 0
+       MO_MT_Data           = [
+              {"Type" : "MO", "Data" : "home"},
+              {"Type" : "MO", "Data" : "local"},
+              {"Type" : "MO", "Data" : "other"},
+              {"Type" : "MT", "Data" : "home"},
+              {"Type" : "MT", "Data" : "local"},
+              {"Type" : "MT", "Data" : "other"}
+       ]
+       data_MO_MT           = 0
+       #Steps for reduce quota sms
+       getDataSMS         = 0
+       getVascodeSMS      = 0
+       countSMS           = 1
+       priorityOutSMS     = 0
+       for strValidity in merged_data:
+              stepsConsumeVoice, QuotaVoice, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
+              stepsConsume.extend(stepsConsumeVoice)
+              stepsConsumeSMS, QuotaSMS, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS, additionalNegatifCase = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS, additionalNegatifCase)
+              stepsConsume.extend(stepsConsumeSMS)
+       
 
-       MOAll  = ['home', 'local', 'other']
-       MTAll  = ['home', 'local', 'other']
+       return stepsConsume, QuotaVoice, QuotaSMS
+
+def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase):
+       stepsConsume         = []
 
        getData       = getDataVoice
        getVascode    = getVascodeVoice
@@ -6529,8 +6535,10 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        #Variable for count how much country positive and access code positive is out
        priorityOut   = priorityOutVoice
 
-       MOMT = ["MO","MT"]
-       MO_or_MT = random.choice(MOMT)
+       if MO_MT_Out >= len(MO_MT_Data):
+              MO_MT_Out = 0
+       
+       MO_or_MT = MO_MT_Data[MO_MT_Out]["Type"]
 
        if priorityOut >= len(countryPosData):
               if getData >= len(countryData):
@@ -6558,14 +6566,14 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        timeString    = timeNumber
 
        if MO_or_MT == 'MO':
-              MO_MT_Choice = random.choice(MOAll)
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
               MO_ELigible = MOEligible.lower().split(";")
               if MO_MT_Choice in MO_ELigible:
                      checked_MO_MT = True
               else:
                      checked_MO_MT = False
        else:
-              MO_MT_Choice = random.choice(MTAll)
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
               MT_ELigible = MTEligible.lower().split(";")
               if MO_MT_Choice in MT_ELigible:
                      checked_MO_MT = True
@@ -6683,18 +6691,10 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        count += 1
        getVascode += 1
 
-       return stepsConsume, QuotaVoice, getData, getVascode, count, priorityOut
+       return stepsConsume, QuotaVoice, getData, getVascode, count, priorityOut, additionalNegatifCase
 
-def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS):
+def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS, additionalNegatifCase):
        stepsConsume         = []
-       additionalNegatifCase = [
-              "Create Voice Onnet 1 Min",
-              "Create event 1 SMS onnet",
-              "Create event GPRS 1MB RG 50",
-              "Create Event Voice Offnet 5s",
-              "Create Event Voice PSTN 5s",
-              "Create Event Voice FWA 180s",
-       ]
 
        getData       = getDataSMS
        getVascode    = getVascodeSMS
@@ -6821,5 +6821,5 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, c
        count += 1
        getVascode += 1
 
-       return stepsConsume, QuotaSMS, getData, getVascode, count, priorityOut
+       return stepsConsume, QuotaSMS, getData, getVascode, count, priorityOut, additionalNegatifCase
 
