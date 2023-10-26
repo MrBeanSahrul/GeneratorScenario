@@ -6083,6 +6083,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
        itemId               = ''
        allowance            = ''
        timeband             = ''
+       quota                = ''
 
        for params in params:
               if "Card Type" in params:
@@ -6170,9 +6171,14 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               if "Vascode (for negatif test case)" in params:
                      vascodeNegatif = params["Vascode (for negatif test case)"]
               
+              if "Quota" in params:
+                     quota = params["Quota"]
+              
               if cardType == 'Prepaid':
                      if offerType == 'Offer Flexible':
                             steps = getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband)
+                     elif offerType == 'Offer Fix':
+                            steps = getStepOfferRoamingPrepaidFixOffer(offerName, PPName, preloadBonus, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota)
                      else:
                             print("Sorry, Scenario isn't ready yet")
                             exit('') 
@@ -6443,6 +6449,92 @@ def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eli
        steps.extend(stepCase4)
        steps.extend(stepCase5)
        steps.extend(stepCase6)
+
+       return steps
+
+def getStepOfferRoamingPrepaidFixOffer(offerName, PPName, preloadBonus, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota):
+       steps                = []
+       stepConsumePreload   = None
+       start_hour, end_hour = map(int, timeband.split('-'))
+       
+       allowanceSplit       = quota.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice) if allowanceVoice != 0 else 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       firstQuotaSMS        = QuotaSMS
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+bonusDesc
+              bonusVoice     = str(firstQuotaVoice)+" Min "+bonusDesc
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+bonusDesc
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+bonusDesc
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonusDesc, start_hour, end_hour, validity, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+              
+
+       #Case 1 = Positif Case
+       stepCase1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+              ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+
+       stepCase1.extend(stepsConsumeBonus)
+       stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 5 = Multiple Attach (6x)
+       bonus6x = ""
+       if firstQuotaVoice > 0:
+              totalVoice    = firstQuotaVoice*6
+              bonus6x       = str(totalVoice)+" Min "+bonusDesc
+       
+       if firstQuotaSMS > 0:
+              totalSMS      = firstQuotaSMS*6
+              if bonus6x != '':
+                     bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+bonusDesc
+              else:
+                     bonus6x = str(totalSMS)+" SMS "+bonusDesc
+
+       stepCase5 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check 889","Checked",bonus6x],
+              ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check PI on Indira","Success","No Bonus"]
+       ]
+
+       steps.extend(stepCase1)
+       steps.extend(stepCase5)
 
        return steps
 

@@ -1156,7 +1156,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Voice (in minutes);SMS",
-                     "conditions"         : ["Offer Fix", "Offer TM"],
+                     "conditions"         : ["Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "Bonus Description" : {
@@ -1166,7 +1166,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "MO Eligible" : {
@@ -1177,7 +1177,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "MT Eligible" : {
@@ -1188,7 +1188,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "Vascode (for positif test case)" : {
@@ -1199,7 +1199,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "Vascode (for negatif test case)" : {
@@ -1210,7 +1210,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "Country (for positif test case)" : {
@@ -1221,7 +1221,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "Country (for negatif test case)" : {
@@ -1232,7 +1232,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible"],
+                     "conditions"         : ["Offer Flexible", "Offer Fix"],
                      "determiningParam"   : "Offer Type"
               },
               "Validity" : {
