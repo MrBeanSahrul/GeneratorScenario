@@ -6579,7 +6579,6 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
               merged_data = [firstDate] + [lastDate]
        
        random.shuffle(mergedVascode)
-       print("Merged Vascode : ",mergedVascode)
        random.shuffle(mergedCountryData)
        additionalNegatifCase = [
               "Create Voice Onnet 1 Min",
@@ -6782,8 +6781,9 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        getData += 1
        count += 1
        getVascode += 1
+       MO_MT_Out += 1
 
-       return stepsConsume, QuotaVoice, getData, getVascode, count, priorityOut, additionalNegatifCase
+       return stepsConsume, QuotaVoice, getData, getVascode, count, priorityOut, MO_MT_Out, additionalNegatifCase
 
 def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS, additionalNegatifCase):
        stepsConsume         = []
