@@ -4869,23 +4869,23 @@ def stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, star
 
        if eligible == 'Voice':
               UOM = 'V'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;'
        elif eligible == 'SMS':
               UOM = 'S'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$;'
        elif eligible == 'Voice & SMS':
               UOMV = 'V'
               UOMS = 'S'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidityBack}235959$'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidityBack}235959$'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$'
 
 
        stringBonusAll       = ''
@@ -5109,10 +5109,10 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
 
        if eligible == 'Voice':
               UOM = 'V'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;'
 
 
        stringBonusAll       = ''
@@ -6295,23 +6295,23 @@ def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eli
 
        if eligible == 'Voice':
               UOM = 'V'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;'
        elif eligible == 'SMS':
               UOM = 'S'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$;'
        elif eligible == 'Voice & SMS':
               UOMV = 'V'
               UOMS = 'S'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidityBack}235959$'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidityBack}235959$'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$'
 
 
        stringBonusAll       = ''
@@ -6594,25 +6594,19 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
        countVoice           = 1
        priorityOutVoice     = 0
        MO_MT_Data           = [
-              {"Type" : "MO", "Data" : "home"},
-              {"Type" : "MO", "Data" : "local"},
-              {"Type" : "MO", "Data" : "other"},
-              {"Type" : "MT", "Data" : "home"},
-              {"Type" : "MT", "Data" : "local"},
-              {"Type" : "MT", "Data" : "other"}
+              {"Type" : "MO", "Data" : "Home"},
+              {"Type" : "MO", "Data" : "Local"},
+              {"Type" : "MO", "Data" : "Other"},
+              {"Type" : "MT", "Data" : "Home"},
+              {"Type" : "MT", "Data" : "Local"},
+              {"Type" : "MT", "Data" : "Other"}
        ]
        data_MO_MT           = 0
-       #Steps for reduce quota sms
-       getDataSMS         = 0
-       getVascodeSMS      = 0
-       countSMS           = 1
-       priorityOutSMS     = 0
        for strValidity in merged_data:
               stepsConsumeVoice, QuotaVoice, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
               stepsConsume.extend(stepsConsumeVoice)
-              stepsConsumeSMS, QuotaSMS, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS, additionalNegatifCase = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS, additionalNegatifCase)
+              stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase)
               stepsConsume.extend(stepsConsumeSMS)
-       
 
        return stepsConsume, QuotaVoice, QuotaSMS
 
@@ -6659,26 +6653,29 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        if MO_or_MT == 'MO':
               MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
               MO_ELigible = MOEligible.lower().split(";")
-              if MO_MT_Choice in MO_ELigible:
+              if MO_MT_Choice.lower() in MO_ELigible:
                      checked_MO_MT = True
               else:
                      checked_MO_MT = False
        else:
               MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
               MT_ELigible = MTEligible.lower().split(";")
-              if MO_MT_Choice in MT_ELigible:
+              if MO_MT_Choice.lower() in MT_ELigible:
                      checked_MO_MT = True
               else:
                      checked_MO_MT = False
 
-       if MO_MT_Choice == 'home':
+       if MO_MT_Choice == 'Home':
               String_MO_MT = f'From {countryName}'
-       elif MO_MT_Choice == 'local':
+       elif MO_MT_Choice == 'Local':
               String_MO_MT = f'In {countryName}'
        else:
               countryNeg    = random.choice(countryNegatifData)
               countryTo     = countryNeg["name"]
-              String_MO_MT  = f'{countryName} To {countryTo}'
+              if MO_or_MT == 'MO':
+                     String_MO_MT  = f'In {countryName} To {countryTo}'
+              else:
+                     String_MO_MT  = f'In {countryName} From {countryTo}'
        
        if checked_MO_MT:
               if "status" in country:
@@ -6725,7 +6722,7 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
               eventString = decreasingQuotaVoice
        else:
               eventString = '1'
-              consumeOrCharged = 'Charged | Voice Cond 7'
+              # consumeOrCharged = 'Charged'
 
        if int(timeString) > 12:
               timeString = str(int(timeString) - 12) + 'PM'
@@ -6785,81 +6782,52 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
 
        return stepsConsume, QuotaVoice, getData, getVascode, count, priorityOut, MO_MT_Out, additionalNegatifCase
 
-def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataSMS, getVascodeSMS, countSMS, priorityOutSMS, additionalNegatifCase):
+def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase):
        stepsConsume         = []
 
-       getData       = getDataSMS
-       getVascode    = getVascodeSMS
-       count         = countSMS
-
-       #Variable for count how much country positive and access code positive is out
-       priorityOut   = priorityOutSMS
-       if priorityOut >= len(countryPosData):
-              if getData >= len(countryData):
-                     getData = 0
-              if getVascode >= len(mergedVascode):
-                     getVascode = 0
-              country       = countryData[getData]
-              countryName   = country["name"]
-              vascode           = mergedVascode[getVascode]
-              vascodeName       = vascode["name"]
-              vascodeStatus     = vascode["status"]
-              vascodeUsed       = vascodeName
-       else:
-              country       = countryPosData[priorityOut]
-              countryName   = country["name"]
-
-              vascode           = random.choice(vascodePosData)
-              vascodeName       = vascode["name"]
-              vascodeStatus     = vascode["status"]
-              vascodeUsed       = vascodeName
-
-              priorityOut += 1
+       vascode           = random.choice(mergedVascode)
+       vascodeName       = vascode["name"]
+       vascodeStatus     = vascode["status"]
+       vascodeUsed       = vascodeName
        
        timeNumber    = random.randint(start_hour, end_hour)
        timeString    = timeNumber
-       
-       if "status" in country:
-              if vascodeStatus == 'Positif':
-                     if day < validity:
-                            if start_hour <= end_hour:
-                                   # Time range does not span midnight
-                                   if start_hour <= timeNumber <= end_hour:
-                                          # Number is within the time range Timeband
-                                          consumeOrCharged     = 'Consume Bonus'
-                                          reduceOrNot          = True
-                                   else:
-                                          # Number is not within the time range Timeband
-                                          consumeOrCharged     = 'Charged | SMS Cond 1'
-                                          reduceOrNot          = False
+
+       if vascodeStatus == 'Positif':
+              if day < validity:
+                     if start_hour <= end_hour:
+                            # Time range does not span midnight
+                            if start_hour <= timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged     = 'Consume Bonus'
+                                   reduceOrNot          = True
                             else:
-                                   # Time range spans midnight
-                                   if timeNumber >= start_hour or timeNumber <= end_hour:
-                                          # Number is within the time range Timeband
-                                          consumeOrCharged     = 'Consume Bonus'
-                                          reduceOrNot          = True
-                                   else:
-                                          # Number is not within the time range Timeband
-                                          consumeOrCharged     = 'Charged | SMS Cond 2'
-                                          reduceOrNot          = False
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged     = 'Charged | SMS Cond 1'
+                                   reduceOrNot          = False
                      else:
-                            consumeOrCharged     = 'Charged | SMS Cond 3'
-                            reduceOrNot          = False
+                            # Time range spans midnight
+                            if timeNumber >= start_hour or timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged     = 'Consume Bonus'
+                                   reduceOrNot          = True
+                            else:
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged     = 'Charged | SMS Cond 2'
+                                   reduceOrNot          = False
               else:
-                     consumeOrCharged     = 'Charged | SMS Cond 4'
+                     consumeOrCharged     = 'Charged | SMS Cond 3'
                      reduceOrNot          = False
        else:
-              consumeOrCharged     = 'Charged | SMS Cond 5'
+              consumeOrCharged     = 'Charged | SMS Cond 4'
               reduceOrNot          = False
-              vascodeUsed       = firstVascodePos
        
        if QuotaSMS > 0 and reduceOrNot:
               decreasingQuotaSMS = 1
               QuotaSMS -= decreasingQuotaSMS
-              eventString = decreasingQuotaSMS
        else:
-              eventString = '1'
-              consumeOrCharged = 'Charged | SMS Cond 6'
+              # consumeOrCharged = 'Charged | SMS Cond 6'
+              test = 'a'
 
        if int(timeString) > 12:
               timeString = str(int(timeString) - 12) + 'PM'
@@ -6901,17 +6869,13 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, merged_data, c
                      stepsConsume.append(stepAdd)
                      additionalNegatifCase.remove(selected_value)
        
-       if count == len(merged_data):
+       if day == validity:
               stepLast = [
                      f"Create event direct debit with vascode {vascodeUsed} {timeString} D+{day}",
                      "Charged",
                      restBonus
               ]
               stepsConsume.append(stepLast)
-                     
-       getData += 1
-       count += 1
-       getVascode += 1
 
-       return stepsConsume, QuotaSMS, getData, getVascode, count, priorityOut, additionalNegatifCase
+       return stepsConsume, QuotaSMS, additionalNegatifCase
 
