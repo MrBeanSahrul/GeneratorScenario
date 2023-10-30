@@ -6603,18 +6603,17 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
        ]
        data_MO_MT           = 0
        for strValidity in merged_data:
-              stepsConsumeVoice, QuotaVoice, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPositifData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
+              stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
               stepsConsume.extend(stepsConsumeVoice)
               stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase)
               stepsConsume.extend(stepsConsumeSMS)
 
        return stepsConsume, QuotaVoice, QuotaSMS
 
-def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, mergedVascode, start_hour, end_hour, validity, bonDesc, firstCountryPos, firstVascodePos, countryPosData, vascodePosData, MOEligible, MTEligible, getDataVoice, getVascodeVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase):
+def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPosData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase):
        stepsConsume         = []
 
        getData       = getDataVoice
-       getVascode    = getVascodeVoice
        count         = countVoice
 
        #Variable for count how much country positive and access code positive is out
@@ -6628,22 +6627,11 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        if priorityOut >= len(countryPosData):
               if getData >= len(countryData):
                      getData = 0
-              if getVascode >= len(mergedVascode):
-                     getVascode = 0
               country       = countryData[getData]
               countryName   = country["name"]
-              vascode           = mergedVascode[getVascode]
-              vascodeName       = vascode["name"]
-              vascodeStatus     = vascode["status"]
-              vascodeUsed       = vascodeName
        else:
               country       = countryPosData[priorityOut]
               countryName   = country["name"]
-
-              vascode           = random.choice(vascodePosData)
-              vascodeName       = vascode["name"]
-              vascodeStatus     = vascode["status"]
-              vascodeUsed       = vascodeName
 
               priorityOut += 1
        
@@ -6679,42 +6667,36 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        
        if checked_MO_MT:
               if "status" in country:
-                     if vascodeStatus == 'Positif':
-                            if day < validity:
-                                   if start_hour <= end_hour:
-                                          # Time range does not span midnight
-                                          if start_hour <= timeNumber <= end_hour:
-                                                 # Number is within the time range Timeband
-                                                 consumeOrCharged     = 'Consume Bonus'
-                                                 reduceOrNot          = True
-                                          else:
-                                                 # Number is not within the time range Timeband
-                                                 consumeOrCharged     = 'Charged | Voice Cond 1'
-                                                 reduceOrNot          = False
+                     if day < validity:
+                            if start_hour <= end_hour:
+                                   # Time range does not span midnight
+                                   if start_hour <= timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged     = 'Consume Bonus'
+                                          reduceOrNot          = True
                                    else:
-                                          # Time range spans midnight
-                                          if timeNumber >= start_hour or timeNumber <= end_hour:
-                                                 # Number is within the time range Timeband
-                                                 consumeOrCharged     = 'Consume Bonus'
-                                                 reduceOrNot          = True
-                                          else:
-                                                 # Number is not within the time range Timeband
-                                                 consumeOrCharged     = 'Charged | Voice Cond 2'
-                                                 reduceOrNot          = False
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged     = 'Charged | Voice Cond 1'
+                                          reduceOrNot          = False
                             else:
-                                   consumeOrCharged     = 'Charged | Voice Cond 3'
-                                   reduceOrNot          = False
+                                   # Time range spans midnight
+                                   if timeNumber >= start_hour or timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged     = 'Consume Bonus'
+                                          reduceOrNot          = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged     = 'Charged | Voice Cond 2'
+                                          reduceOrNot          = False
                      else:
-                            consumeOrCharged     = 'Charged | Voice Cond 4'
+                            consumeOrCharged     = 'Charged | Voice Cond 3'
                             reduceOrNot          = False
               else:
-                     consumeOrCharged     = 'Charged | Voice Cond 5'
+                     consumeOrCharged     = 'Charged | Voice Cond 4'
                      reduceOrNot          = False
-                     vascodeUsed       = firstVascodePos
        else:
-              consumeOrCharged     = 'Charged | Voice Cond 6'
+              consumeOrCharged     = 'Charged | Voice Cond 5'
               reduceOrNot          = False
-              vascodeUsed          = firstVascodePos
        
        if QuotaVoice > 0 and reduceOrNot:
               decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
@@ -6777,10 +6759,9 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
                      
        getData += 1
        count += 1
-       getVascode += 1
        MO_MT_Out += 1
 
-       return stepsConsume, QuotaVoice, getData, getVascode, count, priorityOut, MO_MT_Out, additionalNegatifCase
+       return stepsConsume, QuotaVoice, getData, count, priorityOut, MO_MT_Out, additionalNegatifCase
 
 def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase):
        stepsConsume         = []
