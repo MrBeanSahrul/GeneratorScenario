@@ -6064,6 +6064,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
 
        cardType             = ''
        offerType            = ''
+       offerTypePostpaid    = ''
        offerName            = ''
        PPName               = ''
        preloadBonus         = ''
@@ -6084,6 +6085,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
        allowance            = ''
        timeband             = ''
        quota                = ''
+       cls                  = ''
 
        for params in params:
               if "Card Type" in params:
@@ -6091,10 +6093,15 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               else:
                      cardType = ''
 
-              if "Offer Type" in params:
-                     offerType = params['Offer Type'][0]
+              if "Offer Type Prepaid" in params:
+                     offerType = params['Offer Type Prepaid'][0]
               else:
                      offerType = ''
+              
+              if "Offer Type Postpaid" in params:
+                     offerTypePostpaid = params['Offer Type Postpaid'][0]
+              else:
+                     offerTypePostpaid = ''
               
               if "Offer Name" in params:
                      offerName = params['Offer Name']
@@ -6111,6 +6118,9 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               
               if "Bonus Description" in params:
                      bonusDesc = params["Bonus Description"]
+              
+              if "Credit Limit Service" in params:
+                     cls = params["Credit Limit Service"]
               
               if "Eligible" in params:
                      dataEligible = {
@@ -6183,8 +6193,11 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
                             print("Sorry, Scenario isn't ready yet")
                             exit('') 
               else:
-                     print("Sorry, Scenario isn't ready yet")
-                     exit('')
+                     if offerTypePostpaid == 'Offer Fix':
+                            steps = getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota)
+                     else:
+                            print("Sorry, Scenario isn't ready yet")
+                            exit('')
 
               # Write Header Row
               header = [f'{eventName} | {offerName}']
@@ -6538,6 +6551,96 @@ def getStepOfferRoamingPrepaidFixOffer(offerName, PPName, preloadBonus, bonusDes
 
        return steps
 
+def getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota):
+       steps                = []
+       stepConsumePreload   = None
+       start_hour, end_hour = map(int, timeband.split('-'))
+       
+       allowanceSplit       = quota.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice) if allowanceVoice != 0 else 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       firstQuotaSMS        = QuotaSMS
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+bonusDesc
+              bonusVoice     = str(firstQuotaVoice)+" Min "+bonusDesc
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+bonusDesc
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+bonusDesc
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonusDesc, start_hour, end_hour, validity, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+              
+
+       #Case 1 = Positif Case
+       stepCase1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update parameter Init activation date", "Updated", "No Bonus"],
+              ["Update Exp Date","Updated","No Bonus"],
+              [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+              [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+              ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+              ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+
+       stepCase1.extend(stepsConsumeBonus)
+       stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 5 = Multiple Attach (6x)
+       bonus6x = ""
+       if firstQuotaVoice > 0:
+              totalVoice    = firstQuotaVoice*6
+              bonus6x       = str(totalVoice)+" Min "+bonusDesc
+       
+       if firstQuotaSMS > 0:
+              totalSMS      = firstQuotaSMS*6
+              if bonus6x != '':
+                     bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+bonusDesc
+              else:
+                     bonus6x = str(totalSMS)+" SMS "+bonusDesc
+
+       stepCase5 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check 889","Checked",bonus6x],
+              ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check PI on Indira","Success","No Bonus"],
+              ["Do Offline event", "", ""]
+       ]
+
+       steps.extend(stepCase1)
+       steps.extend(stepCase5)
+
+       return steps
+
 def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, end_hour, validity, MO, MT, vascodePositif, vascodeNegatif, countryPositif, countryNegatif):
        stepsConsume         = []
        dayString            = 0
@@ -6590,7 +6693,6 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
        ]
        #Steps for reduce quota voice
        getDataVoice         = 0
-       getVascodeVoice      = 0
        countVoice           = 1
        priorityOutVoice     = 0
        MO_MT_Data           = [
@@ -6676,7 +6778,7 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
                                           reduceOrNot          = True
                                    else:
                                           # Number is not within the time range Timeband
-                                          consumeOrCharged     = 'Charged | Voice Cond 1'
+                                          consumeOrCharged     = 'Charged'
                                           reduceOrNot          = False
                             else:
                                    # Time range spans midnight
@@ -6686,16 +6788,16 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
                                           reduceOrNot          = True
                                    else:
                                           # Number is not within the time range Timeband
-                                          consumeOrCharged     = 'Charged | Voice Cond 2'
+                                          consumeOrCharged     = 'Charged'
                                           reduceOrNot          = False
                      else:
-                            consumeOrCharged     = 'Charged | Voice Cond 3'
+                            consumeOrCharged     = 'Charged'
                             reduceOrNot          = False
               else:
-                     consumeOrCharged     = 'Charged | Voice Cond 4'
+                     consumeOrCharged     = 'Charged'
                      reduceOrNot          = False
        else:
-              consumeOrCharged     = 'Charged | Voice Cond 5'
+              consumeOrCharged     = 'Charged'
               reduceOrNot          = False
        
        if QuotaVoice > 0 and reduceOrNot:
@@ -6703,8 +6805,8 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
               QuotaVoice -= decreasingQuotaVoice
               eventString = decreasingQuotaVoice
        else:
-              eventString = '1'
-              # consumeOrCharged = 'Charged'
+              eventString          = '1'
+              consumeOrCharged     = 'Charged'
 
        if int(timeString) > 12:
               timeString = str(int(timeString) - 12) + 'PM'
@@ -6784,7 +6886,7 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode,
                                    reduceOrNot          = True
                             else:
                                    # Number is not within the time range Timeband
-                                   consumeOrCharged     = 'Charged | SMS Cond 1'
+                                   consumeOrCharged     = 'Charged'
                                    reduceOrNot          = False
                      else:
                             # Time range spans midnight
@@ -6794,21 +6896,20 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode,
                                    reduceOrNot          = True
                             else:
                                    # Number is not within the time range Timeband
-                                   consumeOrCharged     = 'Charged | SMS Cond 2'
+                                   consumeOrCharged     = 'Charged'
                                    reduceOrNot          = False
               else:
-                     consumeOrCharged     = 'Charged | SMS Cond 3'
+                     consumeOrCharged     = 'Charged'
                      reduceOrNot          = False
        else:
-              consumeOrCharged     = 'Charged | SMS Cond 4'
+              consumeOrCharged     = 'Charged'
               reduceOrNot          = False
        
        if QuotaSMS > 0 and reduceOrNot:
               decreasingQuotaSMS = 1
               QuotaSMS -= decreasingQuotaSMS
        else:
-              # consumeOrCharged = 'Charged | SMS Cond 6'
-              test = 'a'
+              consumeOrCharged     = 'Charged'
 
        if int(timeString) > 12:
               timeString = str(int(timeString) - 12) + 'PM'

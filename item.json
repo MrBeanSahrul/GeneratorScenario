@@ -1095,7 +1095,7 @@
                             "Prepaid"
                      ]
               },
-              "Offer Type" : {
+              "Offer Type Prepaid" : {
                      "type" : "option",
                      "multiple" :"false",
                      "canOthers" : "false",
@@ -1103,7 +1103,24 @@
                      "value" : [
                             "Offer Fix",
                             "Offer Flexible"
-                     ]
+                     ],
+                     "conditions"  : {
+                            "Card Type" : ["Prepaid"]
+                     },
+                     "determiningParam" : ["Card Type"] 
+              },
+              "Offer Type Postpaid" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Offer Fix"
+                     ],
+                     "conditions"  : {
+                            "Card Type" : ["Postpaid"]
+                     },
+                     "determiningParam" : ["Card Type"] 
               },
               "Offer Name" : {
                      "type"               : "input",
@@ -1112,8 +1129,11 @@
                      "delimiter"          : "|",
                      "canOthers"          : "true",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Price Plan Name" : {
                      "type"               : "input",
@@ -1122,8 +1142,11 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Preload Bonus" : {
                      "type"               : "input",
@@ -1132,8 +1155,23 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Fix", "Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Credit Limit Service" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : {
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Postpaid"]
               },
               "Eligible" : {
                      "type"               : "option",
@@ -1145,8 +1183,10 @@
                                                  "SMS",
                                                  "Voice & SMS"
                                           ],
-                     "conditions"         : ["Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
               },
               "Quota" : {
                      "type"               : "input",
@@ -1156,8 +1196,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Voice (in minutes);SMS",
-                     "conditions"         : ["Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Bonus Description" : {
                      "type"               : "input",
@@ -1166,8 +1209,11 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "conditions"         : ["Offer Flexible", "Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "MO Eligible" : {
                      "type"               : "input",
@@ -1177,8 +1223,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
-                     "conditions"         : ["Offer Flexible", "Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "MT Eligible" : {
                      "type"               : "input",
@@ -1188,8 +1237,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
-                     "conditions"         : ["Offer Flexible", "Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Vascode (for positif test case)" : {
                      "type"               : "input",
@@ -1199,8 +1251,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible", "Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Vascode (for negatif test case)" : {
                      "type"               : "input",
@@ -1210,8 +1265,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible", "Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Country (for positif test case)" : {
                      "type"               : "input",
@@ -1221,8 +1279,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible", "Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Country (for negatif test case)" : {
                      "type"               : "input",
@@ -1232,8 +1293,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Use ; as delimiter if the country more than 1",
-                     "conditions"         : ["Offer Flexible", "Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Validity" : {
                      "type"               : "input",
@@ -1243,8 +1307,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "in days",
-                     "conditions"         : ["Offer Fix"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               },
               "Start Date Validity" : {
                      "type"               : "input",
@@ -1254,8 +1321,10 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
               },
               "End Date Validity" : {
                      "type"               : "input",
@@ -1265,8 +1334,10 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
               },
               "End Date Validity For More Than 60 Days" : {
                      "type"               : "input",
@@ -1276,8 +1347,10 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
               },
               "End Date Validity For Back Date" : {
                      "type"               : "input",
@@ -1287,8 +1360,10 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
-                     "conditions"         : ["Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
               },
               "Item ID" : {
                      "type"               : "input",
@@ -1298,8 +1373,10 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Voice;SMS",
-                     "conditions"         : ["Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
               },
               "Allowance" : {
                      "type"               : "input",
@@ -1309,8 +1386,10 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Voice(in seconds);SMS",
-                     "conditions"         : ["Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
               },
               "Timeband" : {
                      "type"               : "input",
@@ -1320,8 +1399,11 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "24 hours format [ex:00-23]",
-                     "conditions"         : ["Offer Fix", "Offer Flexible"],
-                     "determiningParam"   : "Offer Type"
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
               }
        }
   }
