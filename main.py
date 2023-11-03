@@ -164,7 +164,7 @@ if function is not None and callable(function):
                                           if stringParam == '':
                                                  stringParam = key
                                           else: 
-                                                 stringParam = stringParam+" | "+key
+                                                 stringParam = stringParam+"|"+key
                                           
                                           detailsKey = ''
                                           if "details" in needParam:

@@ -6591,7 +6591,6 @@ def getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bo
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
               stepConsumePreload,
               ["Update parameter Init activation date", "Updated", "No Bonus"],
-              ["Update Exp Date","Updated","No Bonus"],
               [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
               [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
               ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
@@ -6692,10 +6691,11 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
               "Create Event Voice FWA 180s",
        ]
        #Steps for reduce quota voice
-       getDataVoice         = 0
-       countVoice           = 1
-       priorityOutVoice     = 0
-       MO_MT_Data           = [
+       getDataVoice                = 0
+       countVoice                  = 1
+       priorityOutVoice            = 0
+       negatifCaseOutTimeband      = True
+       MO_MT_Data                  = [
               {"Type" : "MO", "Data" : "Home"},
               {"Type" : "MO", "Data" : "Local"},
               {"Type" : "MO", "Data" : "Other"},
@@ -6705,14 +6705,14 @@ def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, e
        ]
        data_MO_MT           = 0
        for strValidity in merged_data:
-              stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
+              stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase, negatifCaseOutTimeband = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase, negatifCaseOutTimeband)
               stepsConsume.extend(stepsConsumeVoice)
-              stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase)
+              stepsConsumeSMS, QuotaSMS, additionalNegatifCase, negatifCaseOutTimeband = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase, negatifCaseOutTimeband)
               stepsConsume.extend(stepsConsumeSMS)
 
        return stepsConsume, QuotaVoice, QuotaSMS
 
-def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPosData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase):
+def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPosData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase, negatifCaseOutTimeband):
        stepsConsume         = []
 
        getData       = getDataVoice
@@ -6737,8 +6737,15 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
 
               priorityOut += 1
        
-       timeNumber    = random.randint(start_hour, end_hour)
-       timeString    = timeNumber
+       showOrNotOutTimeband = random.randint(0,1)
+       if showOrNotOutTimeband == 1 and negatifCaseOutTimeband and end_hour <= 22:
+              start_hour_out_timeband     = int(end_hour)+1
+              timeNumber                  = random.randint(start_hour_out_timeband, 23)
+              timeString                  = timeNumber
+              negatifCaseOutTimeband      = False
+       else:
+              timeNumber    = random.randint(start_hour, end_hour)
+              timeString    = timeNumber
 
        if MO_or_MT == 'MO':
               MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
@@ -6863,9 +6870,9 @@ def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data,
        count += 1
        MO_MT_Out += 1
 
-       return stepsConsume, QuotaVoice, getData, count, priorityOut, MO_MT_Out, additionalNegatifCase
+       return stepsConsume, QuotaVoice, getData, count, priorityOut, MO_MT_Out, additionalNegatifCase, negatifCaseOutTimeband
 
-def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase):
+def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase, negatifCaseOutTimeband):
        stepsConsume         = []
 
        vascode           = random.choice(mergedVascode)
@@ -6873,8 +6880,15 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode,
        vascodeStatus     = vascode["status"]
        vascodeUsed       = vascodeName
        
-       timeNumber    = random.randint(start_hour, end_hour)
-       timeString    = timeNumber
+       showOrNotOutTimeband = random.randint(0,1)
+       if showOrNotOutTimeband == 1 and negatifCaseOutTimeband and end_hour <= 22:
+              start_hour_out_timeband     = int(end_hour)+1
+              timeNumber                  = random.randint(start_hour_out_timeband, 23)
+              timeString                  = timeNumber
+              negatifCaseOutTimeband      = False
+       else:
+              timeNumber    = random.randint(start_hour, end_hour)
+              timeString    = timeNumber
 
        if vascodeStatus == 'Positif':
               if day < validity:
