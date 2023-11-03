@@ -1361,7 +1361,11 @@ def getStepsForRCOffer(RCType, offerName, offerDesc, rate, chargeCode, strProrat
                             ]
                             lastQuota = f"{stringBonus} {QuotaVoice} minutes{stringQuotaSMS}"
                             stepsConsumeVoice.append(step)
-              stepNextBCVoice = ["Create event voice onnet "+str(tenPercentVoice)+" minutes after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentVoice)+" minutes, "+ stringBonus + ' ' + str(firstQuotaSMS)+" sms"]
+              
+              if QuotaSMS > 0:
+                     stepNextBCVoice = ["Create event voice onnet "+str(tenPercentVoice)+" minutes after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentVoice)+" minutes, "+ stringBonus + ' ' + str(firstQuotaSMS)+" sms"]
+              else:
+                     stepNextBCVoice = ["Create event voice onnet "+str(tenPercentVoice)+" minutes after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentVoice)+" minutes"]
 
        if QuotaSMS > 0:
               tenPercentSMS = round(QuotaSMS*0.1)
@@ -1467,8 +1471,11 @@ def getStepsForRCOffer(RCType, offerName, offerDesc, rate, chargeCode, strProrat
                             ]
                             lastQuota = f"{stringQuotaVoice} {stringBonus} {QuotaSMS} sms"
                             stepsConsumeSMS.append(step)
-              stepNextBCSMS = ["Create event "+str(tenPercentSMS)+" sms offnet after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentVoice)+" minutes, "+ stringBonus + ' ' + str(useTenPercentSMS)+" sms"]
 
+              if QuotaVoice > 0:
+                     stepNextBCSMS = ["Create event "+str(tenPercentSMS)+" sms offnet after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentVoice)+" minutes, "+ stringBonus + ' ' + str(useTenPercentSMS)+" sms"]
+              else:
+                     stepNextBCSMS = ["Create event "+str(tenPercentSMS)+" sms offnet after next bc","Consume Bonus",stringBonus + ' ' + str(useTenPercentSMS)+" sms"]
        steps = []
        firstStep = [
               ["Create & Activate new subscriber PP KartuHalo Bebas Abonemen","Check active period","No Bonus"],
