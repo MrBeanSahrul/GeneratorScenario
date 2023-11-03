@@ -6973,5 +6973,5 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode,
               ]
               stepsConsume.append(stepLast)
 
-       return stepsConsume, QuotaSMS, additionalNegatifCase
+       return stepsConsume, QuotaSMS, additionalNegatifCase, negatifCaseOutTimeband
 
