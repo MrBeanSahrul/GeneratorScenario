@@ -6086,6 +6086,9 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
        timeband             = ''
        quota                = ''
        cls                  = ''
+       scenarioChoosen      = ''
+       RCIndicator          = ''
+       validityEndDate      = ''
 
        for params in params:
               if "Card Type" in params:
@@ -6184,6 +6187,15 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               if "Quota" in params:
                      quota = params["Quota"]
               
+              if "Scenario" in params:
+                     scenarioChoosen = params["Scenario"]
+              
+              if "RC Indicator" in params:
+                     RCIndicator = params["RC Indicator"]
+              
+              if "Validity End Date" in params:
+                     validityEndDate = params["Validity End Date"]
+              
               if cardType == 'Prepaid':
                      if offerType == 'Offer Flexible':
                             steps = getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband)
@@ -6195,6 +6207,8 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               else:
                      if offerTypePostpaid == 'Offer Fix':
                             steps = getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota)
+                     if offerTypePostpaid == 'Offer Flexible':
+                            steps = getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, startDateValidity, allowance, scenarioChoosen, RCIndicator, validityEndDate, endDateValidityBack)
                      else:
                             print("Sorry, Scenario isn't ready yet")
                             exit('')
@@ -6621,8 +6635,6 @@ def getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bo
        stepCase5 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
               stepConsumePreload,
-              ["Update Exp Date","Updated","No Bonus"],
-              ["Update Balance 1000000","Balance Updated","No Bonus"],
               [f"Attach offer {offerName}","Offer attached",stringBonusAll],
               [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll],
               [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
@@ -6637,6 +6649,318 @@ def getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bo
 
        steps.extend(stepCase1)
        steps.extend(stepCase5)
+
+       return steps
+
+def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, startDateValidity, allowance, scenarioChoosen, RCIndicator, validityEndDate, endDateValidityBack):
+       steps                = []
+       stepConsumePreload   = None
+       preloadBonusString   = "No Bonus"
+       scenarioChoosed      = scenarioChoosen.split(',')
+       validityEndDate      = validityEndDate.split(';')
+       date_object          = datetime.strptime(endDateValidityBack, "%Y%m%d")
+       date_with_time       = date_object.replace(hour=17, minute=0, second=0)
+       endDateValidityBack  = date_with_time.strftime("%Y-%m-%d %H:%M:%S")
+       
+       allowanceSplit       = allowance.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice/60) if allowanceVoice != 0 else 0
+       QuotaVoiceNegatif    = 0
+       QuotaVoiceCase2      = 0
+       QuotaVoiceCase3      = 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       QuotaSMSCase2        = 0
+       QuotaSMSNegatif      = 0
+       QuotaSMSCase3        = 0
+       firstQuotaSMS        = QuotaSMS
+
+       if eligible == 'Voice':
+              UOM = 'V'
+              attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|S|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
+       elif eligible == 'SMS':
+              UOM = 'S'
+              attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceSMS}|{UOM}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceSMS}|V|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
+       elif eligible == 'Voice & SMS':
+              UOMV = 'V'
+              UOMS = 'S'
+              attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOMV}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String;{allowanceSMS}|{UOMS}|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|O|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String;{allowanceSMS}|O|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOMV}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String;{allowanceSMS}|{UOMS}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
+
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+bonusDesc
+              bonusVoice     = str(firstQuotaVoice)+" Min "+bonusDesc
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+bonusDesc
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+bonusDesc
+       
+       #Case 1 = Negatif Attach offer without parameter
+       if "1" in scenarioChoosed or "11" in scenarioChoosed:
+              stepsConsumeBonusCase1 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceNegatif, QuotaSMSNegatif, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase1 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer {offerName}","Rejected","No Bonus"],
+                     #Reduce Allowance
+              ]
+              stepCase1.extend(stepsConsumeBonusCase1)
+              stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+       
+       #Case 2 = Negatif (Berdasarkan UOM)
+       if "2" in scenarioChoosed or "11" in scenarioChoosed:
+              stepsConsumeBonusCase2 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceCase2, QuotaSMSCase2, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase2 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferStringCase2,"Offer attached","No Bonus"],
+                     #Reduce Allowance
+              ]
+              stepCase2.extend(stepsConsumeBonusCase2)
+              stepCase2.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 3 = Negatif (Backdate)
+       if "3" in scenarioChoosed or "11" in scenarioChoosed:
+              stepsConsumeBonusCase3 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceCase3, QuotaSMSCase3, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase3 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferStringCase3,"Offer attached","No Bonus"],
+                     #Reduce Allowance
+              ]
+              stepCase3.extend(stepsConsumeBonusCase3)
+              stepCase3.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 4 = Positif Case RC Indicator -1 (Historycal)
+       if "4" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase4 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, -1, startDateValidity, "1960-01-01 19:50:00")
+              stepCase4 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "-1").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+                     #Reduce Allowance
+              ]
+
+              stepCase4.extend(stepsConsumeBonusCase4)
+              stepCase4.extend([["Check PI on Indira","Success","No Bonus"]])
+       
+       #Case 5 = Positif Case RC Indicator -1 (Non Historycal)
+       if "5" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase5 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, -1, startDateValidity, validityEndDate[0])
+              stepCase5 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "-1").replace("variable_for_historycal", validityEndDate[0]),"Offer attached",stringBonusAll],
+                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+                     #Reduce Allowance
+              ]
+
+              stepCase5.extend(stepsConsumeBonusCase5)
+              stepCase5.extend([["Check PI on Indira","Success","No Bonus"]])
+       
+       #Case 6 = Positif Case RC Indicator 0 (Historycal)
+       if "6" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase6 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase6 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+                     #Reduce Allowance
+              ]
+
+              stepCase6.extend(stepsConsumeBonusCase6)
+              stepCase6.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 7 = Positif Case RC Indicator 0 (Non Historycal)
+       if "7" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase7 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, validityEndDate[1])
+              stepCase7 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", validityEndDate[1]),"Offer attached",stringBonusAll],
+                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+                     #Reduce Allowance
+              ]
+
+              stepCase7.extend(stepsConsumeBonusCase7)
+              stepCase7.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 8 = Positif Case RC Indicator more than 0 (Historycal)
+       if "8" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase8 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDateValidity, "1960-01-01 19:50:00")
+              stepCase8 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", RCIndicator).replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+                     #Reduce Allowance
+              ]
+
+              stepCase8.extend(stepsConsumeBonusCase8)
+              stepCase8.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 9 = Positif Case RC Indicator more than 0 (Non Historycal)
+       if "9" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase9 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDateValidity, validityEndDate[2])
+              stepCase9 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", RCIndicator).replace("variable_for_historycal", validityEndDate[2]),"Offer attached",stringBonusAll],
+                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+                     #Reduce Allowance
+              ]
+
+              stepCase9.extend(stepsConsumeBonusCase9)
+              stepCase9.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 10 = Multiple Attach (6x)
+       if "10" in scenarioChoosed or "11" in scenarioChoosed:
+              bonus6x = ""
+              if firstQuotaVoice > 0:
+                     totalVoice    = firstQuotaVoice*6
+                     bonus6x       = str(totalVoice)+" Min "+bonusDesc
+              
+              if firstQuotaSMS > 0:
+                     totalSMS      = firstQuotaSMS*6
+                     if bonus6x != '':
+                            bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+bonusDesc
+                     else:
+                            bonus6x = str(totalSMS)+" SMS "+bonusDesc
+
+              stepCase10 = [
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString,"Offer attached",stringBonusAll],
+                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     ["Check 889","Checked",bonus6x],
+                     ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     ["Check PI on Indira","Success","No Bonus"],
+                     ["Do Offline event", "", ""]
+              ]
+
+       #Case BSZ
+       stepCaseBSZ = [
+              [f"{offerName} SCN For check BSZ Extract | D-2", "", "", "", ""],
+              [f"Create & Activate new subscriber PP {PPName}", "Success", preloadBonusString],
+              stepConsumePreload,
+              [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+              [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+              ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+              [attachOfferString, "Offer attached", stringBonusAll],
+              ["Check notification after add offer", "Success", "Checked"],
+              ["Check Offer Name & Description", "Success", offerName],
+              ["Check GetBonusInfo and validity", "Success", "Checked"],
+              ["Check Bonus 889 and bonus description", "Success", "Checked"],
+              ["Check PRIT Name", "Success", "Success"],
+              ["Create event vas with eligible vascode param_vascode", "Success", "Success"],
+              ["Check notification after first event consume", "Success", "Success"],
+              ["Create event voice Onnet 60s", "Success", "Success"],
+              ["run adjustment so it will expired by today -2", "Success", "No Bonus"],
+              ["check bonus info (bonus should be gone)", "Success", "No Bonus"],
+              ["check 888", "Success", "No Bonus"],
+              ["run BSZ eod, and check bsz seizure", "Success", "No Bonus"],
+       ]
+
+       if "1" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase1)
+
+       if "2" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase2)
+       
+       if "3" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase3)
+       
+       if "4" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase4)
+       
+       if "5" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase5)
+       
+       if "6" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase6)
+       
+       if "7" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase7)
+       
+       if "8" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase8)
+       
+       if "9" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase9)
+       
+       if "10" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase10)
 
        return steps
 
@@ -6974,4 +7298,294 @@ def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode,
               stepsConsume.append(stepLast)
 
        return stepsConsume, QuotaSMS, additionalNegatifCase, negatifCaseOutTimeband
+
+def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDesc, MO, MT, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDate, endDate):
+       stepsConsume         = []
+       countryPositifSplit  = countryPositif.split(';')
+       countryPositifData   = [{"name": name, "status": "Positif"} for name in countryPositifSplit]
+       countryNegatifSplit  = countryNegatif.split(';') 
+       countryNegatifData   = [{"name": name} for name in countryNegatifSplit] 
+       mergedCountryData    = countryPositifData + countryNegatifData
+       vascodePosSplit      = vascodePositif.split(";")
+       vascodePosData       = [{"name": name, "status": "Positif"} for name in vascodePosSplit]
+       vascodeNegSplit      = vascodeNegatif.split(";")
+       vascodeNegData       = [{"name": name, "status": "Negatif"} for name in vascodeNegSplit]
+       mergedVascode        = vascodePosData + vascodeNegData
+       MOEligible           = MO
+       MTEligible           = MT
+       firstQuotaVoice      = QuotaVoice
+       firstQuotaSMS        = QuotaSMS
+       RCIndicator          = int(RCIndicator)
+       
+       # Generate a shuffled list of numbers from dayString to validity - 1
+       random.shuffle(mergedVascode)
+       random.shuffle(mergedCountryData)
+       additionalNegatifCase = [
+              "Create Voice Onnet 1 Min",
+              "Create event 1 SMS onnet",
+              "Create event GPRS 1MB RG 50",
+              "Create Event Voice Offnet 5s",
+              "Create Event Voice PSTN 5s",
+              "Create Event Voice FWA 180s",
+       ]
+       #Steps for reduce quota voice
+       getDataVoice                = 0
+       countVoice                  = 1
+       priorityOutVoice            = 0
+       MO_MT_Data                  = [
+              {"Type" : "MO", "Data" : "Home"},
+              {"Type" : "MO", "Data" : "Local"},
+              {"Type" : "MO", "Data" : "Other"},
+              {"Type" : "MT", "Data" : "Home"},
+              {"Type" : "MT", "Data" : "Local"},
+              {"Type" : "MT", "Data" : "Other"}
+       ]
+       data_MO_MT           = 0
+
+       param                = 0
+       count                = 0
+       
+       if endDate != '1960-01-01 19:50:00':
+              start_date_str = startDate
+              start_date = datetime.strptime(start_date_str, "%Y%m%d")
+
+              # End date
+              end_date_str = endDate
+              end_date = datetime.strptime(end_date_str, "%Y%m%d")
+
+              # Loop through dates with an additional parameter
+              current_date = start_date
+              while current_date <= end_date:
+
+                     if RCIndicator == -1:
+                            if current_date.day == 1:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+                     elif RCIndicator >= 0:
+                            if count == RCIndicator:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+
+                     stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedCountryData, bonDesc, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeVoice)
+                     
+                     stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeSMS)
+                     
+                     current_date += timedelta(days=1)
+
+                     count += 1
+       else:
+              start_date_str = startDate
+              current_date = datetime.strptime(start_date_str, "%Y%m%d")
+              
+              while True:
+
+                     if RCIndicator == -1:
+                            if current_date.day == 1:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+                     elif RCIndicator > 0:
+                            if count == RCIndicator:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+                                   
+                     stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedCountryData, bonDesc, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeVoice)
+                     
+                     stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeSMS)
+
+                     current_date += timedelta(days=1)
+
+                     if RCIndicator == -1 or RCIndicator > 0:
+                            count += 1
+
+                            if count == RCIndicator and RCIndicator > 0:
+                                   param += 1
+                                   count = 0
+                            else:
+                                   if current_date.day == 1:
+                                          param += 1
+                     
+                            # Check if the parameter reaches a certain value (e.g., 5) to break out of the loop
+                            if param >= 5:
+                                   break
+                     else:
+                            if QuotaVoice <= 0 and QuotaSMS <= 0:
+                                   break
+                     
+
+       return stepsConsume
+
+def validateStepNormalVoiceInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, day, countryData, bonDesc, countryPosData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase):
+       stepsConsume  = []
+       day           = day.strftime("%d-%m-%Y")
+       getData       = getDataVoice
+       count         = countVoice
+
+       #Variable for count how much country positive and access code positive is out
+       priorityOut   = priorityOutVoice
+
+       if MO_MT_Out >= len(MO_MT_Data):
+              MO_MT_Out = 0
+       
+       MO_or_MT = MO_MT_Data[MO_MT_Out]["Type"]
+
+       if priorityOut >= len(countryPosData):
+              if getData >= len(countryData):
+                     getData = 0
+              country       = countryData[getData]
+              countryName   = country["name"]
+       else:
+              country       = countryPosData[priorityOut]
+              countryName   = country["name"]
+
+              priorityOut += 1
+
+       if MO_or_MT == 'MO':
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
+              MO_ELigible = MOEligible.lower().split(";")
+              if MO_MT_Choice.lower() in MO_ELigible:
+                     checked_MO_MT = True
+              else:
+                     checked_MO_MT = False
+       else:
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
+              MT_ELigible = MTEligible.lower().split(";")
+              if MO_MT_Choice.lower() in MT_ELigible:
+                     checked_MO_MT = True
+              else:
+                     checked_MO_MT = False
+
+       if MO_MT_Choice == 'Home':
+              String_MO_MT = f'From {countryName}'
+       elif MO_MT_Choice == 'Local':
+              String_MO_MT = f'In {countryName}'
+       else:
+              countryNeg    = random.choice(countryNegatifData)
+              countryTo     = countryNeg["name"]
+              if MO_or_MT == 'MO':
+                     String_MO_MT  = f'In {countryName} To {countryTo}'
+              else:
+                     String_MO_MT  = f'In {countryName} From {countryTo}'
+       
+       if checked_MO_MT:
+              if "status" in country:       
+                     consumeOrCharged     = 'Consume Bonus'
+                     reduceOrNot          = True
+              else:
+                     consumeOrCharged     = 'Charged'
+                     reduceOrNot          = False
+       else:
+              consumeOrCharged     = 'Charged'
+              reduceOrNot          = False
+       
+       if QuotaVoice > 0 and reduceOrNot:
+              decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
+              if decreasingQuotaVoice == 0:
+                     decreasingQuotaVoice = QuotaVoice
+              QuotaVoice -= decreasingQuotaVoice
+              eventString = decreasingQuotaVoice
+       else:
+              eventString          = '1'
+              consumeOrCharged     = 'Charged'
+
+       
+       QuotaVoice    = int(QuotaVoice)
+       if QuotaVoice > 0 and QuotaSMS <= 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}"
+       elif QuotaVoice > 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}, {QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS <= 0:
+              restBonus = "No Bonus" 
+
+       #{Create} {event} {voice} {MO/MT Home/Local/Other} {Home = from, Local = in, Other = Country 1 to Country 2} {timeString} {eventString}Min D+{day}
+       #Create event voice {MO_or_MT} {MO_MT_Choice} {String_MO_MT} {timeString} {EventString}Min D+{day}
+       # eventLabel = f"Create event voice IDD to {countryName} using access code {vascodeUsed} {timeString} {eventString}Min D+{day}"
+       eventLabel = f"Create event voice {MO_or_MT} {MO_MT_Choice} {String_MO_MT} {eventString}Min {day}"
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       stepsConsume.append(step)
+
+       if len(additionalNegatifCase) > 0:
+              showOrNot = random.randint(0,1)
+              if showOrNot == 1:
+                     selected_value = random.choice(additionalNegatifCase)
+                     stepAdd = [
+                            str(selected_value)+" "+str(day),
+                            "Charged",
+                            restBonus
+                     ]
+                     stepsConsume.append(stepAdd)
+                     additionalNegatifCase.remove(selected_value)
+                     
+       getData += 1
+       count += 1
+       MO_MT_Out += 1
+
+       return stepsConsume, QuotaVoice, getData, count, priorityOut, MO_MT_Out, additionalNegatifCase
+
+def validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, day, mergedVascode, bonDesc, additionalNegatifCase):
+       stepsConsume         = []
+
+       vascode           = random.choice(mergedVascode)
+       vascodeName       = vascode["name"]
+       vascodeStatus     = vascode["status"]
+       vascodeUsed       = vascodeName
+
+       if vascodeStatus == 'Positif':
+              consumeOrCharged     = 'Consume Bonus'
+              reduceOrNot          = True
+       else:
+              consumeOrCharged     = 'Charged'
+              reduceOrNot          = False
+       
+       if QuotaSMS > 0 and reduceOrNot:
+              decreasingQuotaSMS = 1
+              QuotaSMS -= decreasingQuotaSMS
+       else:
+              consumeOrCharged     = 'Charged'
+       
+       QuotaSMS    = int(QuotaSMS)
+       if QuotaVoice > 0 and QuotaSMS <= 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}"
+       elif QuotaVoice > 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}, {QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS <= 0:
+              restBonus = "No Bonus" 
+
+       eventLabel = f"Create event direct debit with vascode {vascodeUsed} {day}"
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       stepsConsume.append(step)
+
+       if len(additionalNegatifCase) > 0:
+              showOrNot = random.randint(0,1)
+              if showOrNot == 1:
+                     selected_value = random.choice(additionalNegatifCase)
+                     stepAdd = [
+                            str(selected_value)+" "+str(day),
+                            "Charged",
+                            restBonus
+                     ]
+                     stepsConsume.append(stepAdd)
+                     additionalNegatifCase.remove(selected_value)
+       
+
+       return stepsConsume, QuotaSMS, additionalNegatifCase
 

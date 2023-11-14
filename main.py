@@ -60,7 +60,7 @@ if function is not None and callable(function):
 
               details = ''
               if "details" in param:
-                     details = "("+param['details']+")"
+                     details = "("+param['details'].replace("\\n", "\n")+")"
               print("\n" + str(key) + " "+details+": ")
 
               if param['multiple'] == 'true':
