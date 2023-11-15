@@ -6284,7 +6284,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
        print("Testing Scenario Successfully Generated")
        
        # Save Excel File
-       wb.save('Result/Scenario '+str(eventName)+' '+str(offerType)+'.xlsx')
+       wb.save('Result/Scenario '+str(eventName)+' '+str(cardType)+' '+str(offerTypePostpaid)+' '+str(offerType)+'.xlsx')
 
 def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband):
        steps                = []
@@ -6681,19 +6681,19 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
        if eligible == 'Voice':
               UOM = 'V'
               attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String'
-              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|S|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|S|1960-01-01 19:50:00|0|String|String|String|String'
               attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
        elif eligible == 'SMS':
               UOM = 'S'
               attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceSMS}|{UOM}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String'
-              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceSMS}|V|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
-              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceSMS}|V|1960-01-01 19:50:00|0|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|{endDateValidityBack}|0|String|String|String|String'
        elif eligible == 'Voice & SMS':
               UOMV = 'V'
               UOMS = 'S'
               attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOMV}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String;{allowanceSMS}|{UOMS}|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
-              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|O|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String;{allowanceSMS}|O|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
-              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOMV}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String;{allowanceSMS}|{UOMS}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|O|1960-01-01 19:50:00|0|String|String|String|String;{allowanceSMS}|O|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOMV}|{endDateValidityBack}|0|String|String|String|String;{allowanceSMS}|{UOMS}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
 
 
        stringBonusAll       = ''
@@ -6897,12 +6897,12 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
                      [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
                      ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
-                     [attachOfferString,"Offer attached",stringBonusAll],
-                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll],
-                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
-                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
-                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
-                     [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
                      ["Check 889","Checked",bonus6x],
                      ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
                      ["Check PI on Indira","Success","No Bonus"],
@@ -7396,12 +7396,13 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                      stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
                      stepsConsume.extend(stepsConsumeSMS)
 
-                     current_date += timedelta(days=1)
+                     plusDay       = random.randint(1,4)
+                     current_date += timedelta(days=plusDay)
 
                      if RCIndicator == -1 or RCIndicator > 0:
-                            count += 1
+                            count += plusDay
 
-                            if count == RCIndicator and RCIndicator > 0:
+                            if count >= RCIndicator and RCIndicator > 0:
                                    param += 1
                                    count = 0
                             else:
