@@ -6783,10 +6783,6 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
                      [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
                      ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
                      [attachOfferString.replace("variable_for_RC_Indicator", "-1").replace("variable_for_historycal", validityEndDate[0]),"Offer attached",stringBonusAll],
-                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
-                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
-                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
                      #Reduce Allowance
               ]
 
@@ -6804,10 +6800,6 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
                      [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
                      ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
                      [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
-                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
-                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
-                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
                      #Reduce Allowance
               ]
 
@@ -6825,10 +6817,6 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
                      [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
                      ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
                      [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", validityEndDate[1]),"Offer attached",stringBonusAll],
-                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
-                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
-                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
                      #Reduce Allowance
               ]
 
@@ -6846,10 +6834,6 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
                      [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
                      ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
                      [attachOfferString.replace("variable_for_RC_Indicator", RCIndicator).replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
-                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
-                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
-                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
                      #Reduce Allowance
               ]
 
@@ -6867,10 +6851,6 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
                      [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
                      ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
                      [attachOfferString.replace("variable_for_RC_Indicator", RCIndicator).replace("variable_for_historycal", validityEndDate[2]),"Offer attached",stringBonusAll],
-                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
-                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
-                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
-                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
                      #Reduce Allowance
               ]
 
