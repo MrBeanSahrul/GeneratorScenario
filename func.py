@@ -7362,7 +7362,7 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                                    QuotaVoice    = firstQuotaVoice
                                    QuotaSMS      = firstQuotaSMS
                      elif RCIndicator >= 0:
-                            if count == RCIndicator:
+                            if count >= RCIndicator:
                                    QuotaVoice    = firstQuotaVoice
                                    QuotaSMS      = firstQuotaSMS
 
@@ -7372,9 +7372,10 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                      stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
                      stepsConsume.extend(stepsConsumeSMS)
                      
-                     current_date += timedelta(days=1)
+                     plusDay       = random.randint(1,10)
+                     current_date += timedelta(days=plusDay)
 
-                     count += 1
+                     count += plusDay
        else:
               start_date_str = startDate
               current_date = datetime.strptime(start_date_str, "%Y%m%d")
