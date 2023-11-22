@@ -6710,6 +6710,7 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
        if "1" in scenarioChoosed or "11" in scenarioChoosed:
               stepsConsumeBonusCase1 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceNegatif, QuotaSMSNegatif, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
               stepCase1 = [
+                     ["Case Attach offer without parameter", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6725,6 +6726,7 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
        if "2" in scenarioChoosed or "11" in scenarioChoosed:
               stepsConsumeBonusCase2 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceCase2, QuotaSMSCase2, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
               stepCase2 = [
+                     ["Case Negatif (Berdasarkan UOM)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6740,6 +6742,7 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
        if "3" in scenarioChoosed or "11" in scenarioChoosed:
               stepsConsumeBonusCase3 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceCase3, QuotaSMSCase3, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
               stepCase3 = [
+                     ["Case Backdate", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6751,11 +6754,12 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
               stepCase3.extend(stepsConsumeBonusCase3)
               stepCase3.extend([["Check PI on Indira","Success","No Bonus"]])
 
-       #Case 4 = Positif Case RC Indicator -1 (Historycal)
+       #Case 4 = Positif Case RC Indicator -1 (Historical)
        if "4" in scenarioChoosed or "11" in scenarioChoosed:
               if firstQuotaVoice > 0 or firstQuotaSMS > 0:
                      stepsConsumeBonusCase4 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, -1, startDateValidity, "1960-01-01 19:50:00")
               stepCase4 = [
+                     ["Case RC Indicator -1 (Historical)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6772,11 +6776,12 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
               stepCase4.extend(stepsConsumeBonusCase4)
               stepCase4.extend([["Check PI on Indira","Success","No Bonus"]])
        
-       #Case 5 = Positif Case RC Indicator -1 (Non Historycal)
+       #Case 5 = Positif Case RC Indicator -1 (Non Historical)
        if "5" in scenarioChoosed or "11" in scenarioChoosed:
               if firstQuotaVoice > 0 or firstQuotaSMS > 0:
                      stepsConsumeBonusCase5 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, -1, startDateValidity, validityEndDate[0])
               stepCase5 = [
+                     ["Case RC Indicator -1 (Non Historical)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6789,11 +6794,12 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
               stepCase5.extend(stepsConsumeBonusCase5)
               stepCase5.extend([["Check PI on Indira","Success","No Bonus"]])
        
-       #Case 6 = Positif Case RC Indicator 0 (Historycal)
+       #Case 6 = Positif Case RC Indicator 0 (Historical)
        if "6" in scenarioChoosed or "11" in scenarioChoosed:
               if firstQuotaVoice > 0 or firstQuotaSMS > 0:
                      stepsConsumeBonusCase6 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
               stepCase6 = [
+                     ["Case RC Indicator 0 (Historical)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6811,6 +6817,7 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
               if firstQuotaVoice > 0 or firstQuotaSMS > 0:
                      stepsConsumeBonusCase7 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, validityEndDate[1])
               stepCase7 = [
+                     ["Case RC Indicator 0 (Non Historical)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6823,11 +6830,12 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
               stepCase7.extend(stepsConsumeBonusCase7)
               stepCase7.extend([["Check PI on Indira","Success","No Bonus"]])
 
-       #Case 8 = Positif Case RC Indicator more than 0 (Historycal)
+       #Case 8 = Positif Case RC Indicator more than 0 (Historical)
        if "8" in scenarioChoosed or "11" in scenarioChoosed:
               if firstQuotaVoice > 0 or firstQuotaSMS > 0:
                      stepsConsumeBonusCase8 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDateValidity, "1960-01-01 19:50:00")
               stepCase8 = [
+                     ["Case RC Indicator More Than 0 (Historical)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6845,6 +6853,7 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
               if firstQuotaVoice > 0 or firstQuotaSMS > 0:
                      stepsConsumeBonusCase9 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDateValidity, validityEndDate[2])
               stepCase9 = [
+                     ["Case RC Indicator More Than 0 (Non Historical)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -6872,6 +6881,7 @@ def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, b
                             bonus6x = str(totalSMS)+" SMS "+bonusDesc
 
               stepCase10 = [
+                     ["Case Multiple Attach (6x)", "", "", "", ""],
                      [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
                      stepConsumePreload,
                      [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
@@ -7354,6 +7364,11 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                      
                      monthBefore   = current_date.month
                      plusDay       = random.randint(1,10)
+                     
+                     if RCIndicator > 0:
+                            if plusDay > RCIndicator:
+                                   plusDay = int(RCIndicator)
+
                      current_date += timedelta(days=plusDay)
 
                      if monthBefore != current_date.month:
@@ -7382,7 +7397,12 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                      stepsConsume.extend(stepsConsumeSMS)
 
                      monthBefore   = current_date.month
-                     plusDay       = random.randint(1,4)
+                     plusDay       = random.randint(1,10)
+
+                     if RCIndicator > 0:
+                            if plusDay > RCIndicator:
+                                   plusDay = RCIndicator
+
                      current_date += timedelta(days=plusDay)
 
                      if monthBefore != current_date.month:
