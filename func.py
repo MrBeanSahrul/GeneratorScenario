@@ -7352,8 +7352,12 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                      stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
                      stepsConsume.extend(stepsConsumeSMS)
                      
+                     monthBefore   = current_date.month
                      plusDay       = random.randint(1,10)
                      current_date += timedelta(days=plusDay)
+
+                     if monthBefore != current_date.month:
+                            current_date.replace(day=1)
 
                      count += plusDay
        else:
@@ -7377,8 +7381,12 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                      stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
                      stepsConsume.extend(stepsConsumeSMS)
 
+                     monthBefore   = current_date.month
                      plusDay       = random.randint(1,4)
                      current_date += timedelta(days=plusDay)
+
+                     if monthBefore != current_date.month:
+                            current_date.replace(day=1)
 
                      if RCIndicator == -1 or RCIndicator > 0:
                             count += plusDay
@@ -7391,7 +7399,7 @@ def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDes
                                           param += 1
                      
                             # Check if the parameter reaches a certain value (e.g., 5) to break out of the loop
-                            if param >= 5:
+                            if param >= 2:
                                    break
                      else:
                             if QuotaVoice <= 0 and QuotaSMS <= 0:
@@ -7517,7 +7525,7 @@ def validateStepNormalVoiceInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, d
 
 def validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, day, mergedVascode, bonDesc, additionalNegatifCase):
        stepsConsume         = []
-
+       day                  = day.strftime("%d-%m-%Y")
        vascode           = random.choice(mergedVascode)
        vascodeName       = vascode["name"]
        vascodeStatus     = vascode["status"]
