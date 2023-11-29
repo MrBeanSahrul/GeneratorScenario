@@ -6089,7 +6089,6 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
        scenarioChoosen      = ''
        RCIndicator          = ''
        validityEndDate      = ''
-
        for params in params:
               if "Card Type" in params:
                      cardType = params['Card Type'][0]
@@ -6207,7 +6206,7 @@ def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
               else:
                      if offerTypePostpaid == 'Offer Fix':
                             steps = getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota)
-                     if offerTypePostpaid == 'Offer Flexible':
+                     elif offerTypePostpaid == 'Offer Flexible':
                             steps = getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, startDateValidity, allowance, scenarioChoosen, RCIndicator, validityEndDate, endDateValidityBack)
                      else:
                             print("Sorry, Scenario isn't ready yet")
@@ -7599,3 +7598,292 @@ def validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, day
 
        return stepsConsume, QuotaSMS, additionalNegatifCase
 
+def exportExcelANPS(eventName, params=None, neededParams = None):
+       wb = Workbook()
+       ws = wb.active
+
+       offerName            = ''
+       PPName               = ''
+       preloadBonus         = ''
+       wordingAddOffer      = ''
+       wordingReachTreshold = ''
+       dropCallOnnet        = 'N'
+       dropCallOffnet       = 'N'
+       threshold            = ''
+
+       for params in params:
+              if "Offer Name" in params:
+                     offerName = params["Offer Name"]
+              
+              if "Price Plan Name" in params:
+                     PPName = params["Price Plan Name"]
+              
+              if "Preload Bonus" in params:
+                     preloadBonus = params["Preload Bonus"]
+              
+              if "Wording add offer" in params:
+                     wordingAddOffer = params["Wording add offer"]
+
+              if "Wording reach treshold" in params:
+                     wordingReachTreshold = params["Wording reach treshold"]
+              
+              if "Drop Call Onnet" in params:
+                     dropCallOnnet = params["Drop Call Onnet"]
+              
+              if "Drop Call Offnet" in params:
+                     dropCallOffnet = params["Drop Call Offnet"]
+              
+              if "Threshold" in params:
+                     threshold = params["Threshold"]
+              
+              steps = stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold)
+              
+
+              # Write Header Row
+              header = [f'{eventName} | {offerName}']
+              ws.append(header)
+
+              # Merge Header Cells
+              startColumnIndex = 3  # Example of a dynamic column index
+              startColumn = chr(ord("A") + startColumnIndex)  # Calculate the start column dynamically
+              endColumn = "E"
+              startRow = 1
+              endRow = 1
+              cellRange = f"{startColumn}{startRow}:{endColumn}{endRow}"
+              ws.merge_cells(cellRange)
+
+              headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
+              ws.append(headerRow)
+
+              no = 1
+              for num, step in enumerate(steps, start=1):
+                     if isinstance(step, str):
+                            row = [
+                                   no,
+                                   step,
+                                   "Success",
+                                   "No Bonus",
+                                   "XYZ"
+                            ]
+                            no = no+1
+                     else:
+                            if step is None:
+                                   continue
+                            else:
+                                   if len(step) == 5:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 step[4]
+                                          ]
+                                   elif len(step) == 4:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 "XYZ"
+                                          ]
+                                   elif len(step) == 3:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                                   else:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 "No Bonus",
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                     ws.append(row)
+
+       print("Testing Scenario Successfully Generated")
+       
+       # Save Excel File
+       wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
+
+def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold):
+       stepConsumePreload   = None
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+       
+       if dropCallOnnet == "Y":
+              dropOnnet = f"Charged {threshold} IDR"
+       else:
+              dropOnnet = f"Charged Not {threshold} IDR"
+       
+       if dropCallOffnet == "Y":
+              dropOffnet = f"Charged {threshold} IDR"
+       else:
+              dropOffnet = f"Charged Not {threshold} IDR"
+
+       steps = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              ["Update Balance 1000K","Balance Updated",preloadBonusString],
+              ["Update exp date","Updated",preloadBonusString],
+              [stepConsumePreload],
+              ["Create event 80s voice onnet 9am D+0 zone ID =  2","Charged 2310 IDR","50 min Tsel"],
+              [f"Attach Offer {offerName}","Offer Attached","50 min Tsel"],
+              ["Check notifikasi & Wording",wordingAddOffer,"50 min Tsel"],
+              ["Check Offername",offerName,"50 min Tsel"],
+              ["Create Event Voice Onnet 1800s 1pm on Zone 19","Consume Bonus","20 min Tsel"],
+              ["Create Event Voice Offnet 2s 1pm on Zone 18 Check rounded 15s","Charged 750 IDR","20 min Tsel"],
+              ["Create Event 10 SMS Onnet 1pm on Zone 11","Charge 3500 IDR","20 min Tsel"],
+              ["Create Event Voice PSTN 15s 3pm on Zone 48 Check rounded 15s","Charged 750 IDR","20 min Tsel"],
+              ["Create Event Voice FWA 28s 1pm on Zone 6 Check rounded 30s","Charged 1500 IDR","20 min Tsel, 20000000 sec Tsel"],
+              ["Check notifikasi & Wording",wordingReachTreshold,"20 min Tsel, 20000000 sec Tsel"],
+              ["Create Event Voice Onnet 6000s 3pm on Zone 7","Consume Bonus","20 min Tsel, 19994000 sec Tsel"],
+              ["Create Event Voice Offnet 10s 3pm on Zone 14","Charged 462/ Back to Rate PP","20 min Tsel, 19994000 sec Tsel"],
+              ["Check Rounded Above Event Voice","Rounded Should be not 15s","20 min Tsel, 19994000 sec Tsel"],
+              ["Create Event Voice Onnet 6000s 3pm on Zone 14","Consume Bonus","20 min Tsel, 19988000 sec Tsel"],
+              ["Create Event Voice PSTN 10s 3pm on Zone 48","Charge 56 IDR/ Back to rate PP","20 min Tsel, 19988000 sec Tsel"],
+              ["Create Event Voice FWA 16s 3pm on Zone 44","Charged 462/ Back to Rate PP","20 min Tsel, 19988000 sec Tsel"],
+              ["Create event 10 sms onnet 10am on zone 46 D+1","Charge 3850 IDR","No Bonus"],
+              ["Create Event Voice Offnet 7s 11am on Zone 36 D+1","Charged 750 IDR","No Bonus"],
+              ["Create Event Voice Onnet 13s 1pm on Zone 46 D+1 Rate ANPS","Charged 750 IDR","No Bonus"],
+              ["Create Event voice Offnet Initial 2pm D+1 on Zone 5 Rate ANPS","Initial Success","No bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 2pm D+1 on Zone 5","Intermediate Succes","No bonus"],
+              ["Create Event Voice Offnet Terminate 0s 2pm D+1 on Zone 5 charge > threshold XgetY","Charged not 1500 IDR","20000000 sec Tsel"],
+              ["Check Pricing Item ID and It's Name rate ANPS charge PP Voice Offnet - Flat rate","Checked","20000000 sec Tsel"],
+              ["Create event 10 sms onnet 10am on zone 46 D+10","Charge 3850 IDR","No Bonus"],
+              ["Create Event Voice FWA 7s 11am on Zone 36 D+10 Rate ANPS","Charged 750 IDR","No Bonus"],
+              ["Create Event Voice Onnet 60s 1pm on Zone 46 D+10 Cross Threshold","Charged 3000 IDR","20000000 sec Tsel"],
+              ["Create Event Voice Offnet 75s 1pm on Zone 30 D+10 Rate ANPS - Tarif flat tanpa rate 0","Charged not 2250 IDR","20000000 sec Tsel"],
+              ["Create Event Voice Offnet 10s 3pm on Zone 14 D+10 Rounded should be not 15s","Charged 462/ Back to Rate PP","20000000 sec Tsel"],
+              ["Create Event Voice Offnet Initial 11am D+30 on Zone 10","Initial Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success | Drop Call | Is Reversed = YES","No Bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Rejected 4012","No Bonus"],
+              ["Create Event Voice Offnet Terminate 0s 11am D+30 on Zone 10",dropOffnet,"20000000 sec Tsel"],
+              ["Create Event Voice Onnet 6000s 3pm D+30 on Zone 14","Consume Bonus","19994000 sec Tsel"],
+              ["Create Event Voice PSTN 10s 3pm D+30 on Zone 48 | Check rounded should be not 15s","Charge 56 IDR/ Back to rate PP","19994000 sec Tsel"],
+              ["Create Event Direct Debit with vascode cst_digi_350 3pm D+30","Charged","19994000 sec Tsel"],
+              ["Create Event Voice PSTN 60s 7pm 2022-12-31 on Zone 51","Charged 3000 IDR","20000000 sec Tsel"],
+              ["Create Event Voice Onnet 37s 1pm 2023-01-01 on Zone 20 Check rounded should be 45s","Charged 2250 IDR","No Bonus"],
+              ["Create Event GPRS 1MB RG 50 7pm 2023-01-01 on Zone 2","Charged","No Bonus"],
+              ["Create Event Voice Offnet 5s 10pm 2023-01-01 on Zone 27 Check rounded should be 15s","Charged 750 IDR","20000000 sec Tsel"],
+              [f"Remove Offer {offerName}","Offer Removed","No Bonus"],
+              ["Create Event Voice Onnet 60s 1pm on Zone 14 Rate PP Voice Onnet","Charged not 3000 IDR","60 Min Tsel"],
+              ["Checkd Indira","Checked","60 Min Tsel"],
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              ["Update Balance 1000K","Balance Updated",preloadBonusString],
+              ["Update exp date 2023-12-31","Updated",preloadBonusString],
+              [stepConsumePreload],
+              ["Create event 80s voice onnet 9am D+0 zone ID =  2","Charged 2310 IDR","50 min Tsel"],
+              [f"Attach Offer {offerName}","Offer Attached","50 min Tsel"],
+              ["Check notifikasi & Wording",wordingAddOffer,"50 min Tsel"],
+              ["Create Event Voice Onnet 3000s 1pm on Zone 19","Consume Bonus","Akumulasi 2310 monetary"],
+              ["Create Event Voice Onnet 2s 1pm on Zone 18 Check rounded should be 15s","Charged 750 IDR","Akumulasi 2310 monetary"],
+              ["Create Event 10 SMS Onnet 1pm on Zone 11","Charge 3850 IDR","Akumulasi 2310 monetary"],
+              ["Create Event Voice Offnet 18s 1pm on Zone 48 Check rounded should be 30s","Charged 1500 IDR","Akumulasi 2310 monetary"],
+              ["Create Event Voice Onnet 5s 1pm on Zone 6 Check rounded should be 15s","Charged 750 IDR","20000000 sec Tsel, Akumulasi 2310 monetary"],
+              ["Check notifikasi & Wording",wordingReachTreshold,"20000000 sec Tsel, Akumulasi 2310 monetary"],
+              ["Create Event Voice Onnet 6000s 3pm on Zone 7","Consume Bonus","19994000 min Tsel, Akumulasi 2310 monetary"],
+              ["Create Event Voice Onnet Initial 11am D+30 on Zone 10","Initial Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Success | Drop Call | Is Reversed = YES","No Bonus"],
+              ["Create Event Voice Onnet Intermediate 180s 11am D+30 on Zone 10","Intermediate Rejected 4012","No Bonus"],
+              ["Create Event Voice Onnet Terminate 0s 11am D+30 on Zone 10",dropOnnet,"20000000 sec Tsel"],
+              ["Create Event voice Offnet Initial 2pm D+31 on Zone 6 Rate ANPS","Initial Success","No bonus"],
+              ["Create Event Voice Offnet Intermediate 180s 2pm D+31 on Zone 6","Intermediate Succes","No bonus"],
+              ["Create Event Voice Offnet Terminate 0s 2pm D+31 on Zone 6 charge > threshold XgetY",dropOffnet,"20000000 sec Tsel"],
+              ["Create Event Voice Onnet 60s 7pm 2022-12-31 on Zone 51","Charged 3000 IDR","20000000 sec Tsel"],
+              ["Create Event Voice Onnet 27s 1pm 2023-01-01 on Zone 19","Charged 1500 IDR","No Bonus"],
+              ["Create Event GPRS 1MB RG 50 7pm 2023-01-01 on Zone 2","Charged","No Bonus"],
+              ["Create Event Voice PSTN 18s 3pm 2023-01-01 on Zone 27","Charged 1500 IDR","20000000 sec Tsel"],
+              [f"Remove Offer {offerName}","Offer Removed","No Bonus"],
+              ["Create Event Voice Onnet 60s 1pm on Zone 14 Rate PP Voice","Charged not 3000 IDR","30 Min Tsel"],
+              ["Create Event Voice Offnet 60s 1pm on Zone 10 Rate PP Voice","Charged not 3000 IDR","30 Min Tsel"],
+              ["Create Event Voice PSTN 60s 1pm on Zone 23 Rate PP Voice","Charged not 3000 IDR","30 Min Tsel"],
+              ["Create Event Voice FWA 60s 1pm on Zone 31 Rate PP Voice","Charged not 3000 IDR","30 Min Tsel"],
+              ["Check Indira","Checked","No Bonus"]
+       ]
+
+       return steps
