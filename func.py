@@ -7766,7 +7766,7 @@ def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTresh
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
               ["Update Balance 1000K","Balance Updated",preloadBonusString],
               ["Update exp date","Updated",preloadBonusString],
-              [stepConsumePreload],
+              stepConsumePreload,
               [f"Create event {XPP} voice onnet 9am D+0 zone ID = {zoneSelected}","Charged | should be used rate PP",YPP],
               [f"Attach Offer {offerName}","Offer Attached",YPP],
               ["Check notifikasi & Wording",wordingAddOffer,YPP],
@@ -7811,7 +7811,7 @@ def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTresh
               [f"Create Event voice Offnet Initial 2pm D+1 on Zone {zoneSelected} Rate ANPS","Initial Success","No bonus"],
               [f"Create Event Voice Offnet Intermediate 180s 2pm D+1 on Zone {zoneSelected}","Intermediate Succes","No bonus"],
               [f"Create Event Voice Offnet Terminate 0s 2pm D+1 on Zone 5 charge > threshold XgetY",dropOffnet,allowanceString],
-              [f"Check Pricing Item ID and It's Name rate ANPS charge PP Voice Offnet - Flat rate","Checked",allowanceString]
+              [f"Check Pricing Item ID and It's Name rate ANPS charge PP Voice Offnet - Flat rate","Checked",allowanceString],
               [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
               [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
               [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
@@ -7865,7 +7865,7 @@ def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTresh
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
               ["Update Balance 1000K","Balance Updated",preloadBonusString],
               ["Update exp date 2023-12-31","Updated",preloadBonusString],
-              [stepConsumePreload],
+              stepConsumePreload,
               [f"Create event {XPP} voice onnet 9am D+0 zone ID = {zoneSelected}","Charged | should be used rate PP",YPP],
               [f"Attach Offer {offerName}","Offer Attached",YPP],
               ["Check notifikasi & Wording",wordingAddOffer,YPP],
@@ -7940,11 +7940,12 @@ def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTresh
        steps.extend(step4)
        steps.extend(stepGenerateToReachThreshold1)
        steps.extend(step5)
-
+       
        return steps
 
 def getStepReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, usedRate, Zone, Threshold):
        stepsConsume         = []
+       usedRate             = int(usedRate)
        dataEvent            = [
               {
                      "Name" : 'Onnet',
@@ -7978,7 +7979,7 @@ def getStepReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, us
               },
        ]
 
-       while usedRate < Threshold
+       while int(usedRate) < int(Threshold):
               stepConsume, usedRate       = getStepChargedToReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, dataEvent, usedRate, Zone)
               stepsConsume.extend(stepConsume)
              
@@ -7998,12 +7999,12 @@ def getStepChargedToReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateO
        if event_param == 'Onnet':
               eventSeconds         = random.randint(0,roundedOnnetDouble)
               eventString          = eventSeconds
-              charged              = math.ceil(eventSeconds/roundedOnnet)*rateOnnet
+              charged              = math.ceil(eventSeconds/int(roundedOnnet))*rateOnnet
               consumeOrCharged     = f"Charged {charged} IDR"
        elif event_param == 'Offnet':
               eventSeconds         = random.randint(0,roundedOffnetDouble)
               eventString          = eventSeconds
-              charged              = math.ceil(eventSeconds/rateOffnet)*rateOnnet
+              charged              = math.ceil(eventSeconds/int(roundedOffnet))*rateOffnet
               consumeOrCharged     = f"Charged {charged} IDR"
        else:
               eventSeconds         = "1"
@@ -8029,7 +8030,7 @@ def getStepChargedToReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateO
               restBonus
        ]
 
-       usedRate += charged
+       usedRate += int(charged)
 
        return step, usedRate
 
@@ -8075,14 +8076,15 @@ def getStepRecudeQuotaANPS(QuotaVoiceOnnet, QuotaVoiceOffnet, Zone):
        return stepsConsume, QuotaVoiceOnnet, QuotaVoiceOffnet
 
 def getStepConsumeVoiceANPS(QuotaVoiceOnnet, QuotaVoiceOffnet, Zone, data):
- 
        random_event  = data
        event_name    = random_event["Name"]
        event_param   = random_event["Param"]
        event_show    = random_event["ShowEvent"]
+       QuotaVoiceOnnet = int(QuotaVoiceOnnet) if QuotaVoiceOnnet != '' else 0
+       QuotaVoiceOffnet = int(QuotaVoiceOffnet) if QuotaVoiceOffnet != '' else 0
 
        if event_param == 'Onnet':
-              eventSeconds         = round((QuotaVoiceOnnet * 0.5) / 4)
+              eventSeconds         = round((int(QuotaVoiceOnnet) * 0.5) / 4)
               QuotaVoiceOnnet      -= eventSeconds
               eventString          = eventSeconds
               consumeOrCharged     = f"Consume Bonus"
