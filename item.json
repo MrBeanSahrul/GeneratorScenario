@@ -1479,6 +1479,15 @@
                      "canOthers"          : "false",
                      "dataType"           : "array"
               },
+              "X get Y PP (X,Y)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Ex : 80s,50 Min Tsel"
+              },
               "Wording add offer" : {
                      "type"               : "input",
                      "value"              : [],
@@ -1487,7 +1496,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array"
               },
-              "Wording reach treshold" : {
+              "Wording reach threshold" : {
                      "type"               : "input",
                      "value"              : [],
                      "multiple"           : "true",
@@ -1520,6 +1529,33 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array"
+              },
+              "Zone" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Please use comma if zone more than 1"
+              },
+              "Rate Offer" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Onnet/Rounded,Offnet/Rounded"
+              },
+              "Y Allowance" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice Onnet,Voice Offnet"
               }
        }
   }
