@@ -7803,10 +7803,13 @@ def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTresh
        
        stepReduceAllowance1, allowanceOnnet, allowanceOffnet = getStepRecudeQuotaANPS(allowanceOnnet, allowanceOffnet, random.choice(zone))
        
+       chargedOnnet = math.ceil(7/int(roundedOnnet))*int(rateOnnet)
+       chargedOffnet = math.ceil(13/int(roundedOffnet))*int(rateOffnet)
+
        step3 = [
               [f"Create event 10 sms onnet 10am on zone {random.choice(zone)} D+1","Charged","No Bonus"],
-              [f"Create Event Voice Offnet 7s 11am on Zone {random.choice(zone)} D+1","Charged","No Bonus"],
-              [f"Create Event Voice Onnet 13s 1pm on Zone {random.choice(zone)} D+1 Rate ANPS","Charged","No Bonus"],
+              [f"Create Event Voice Offnet 7s 11am on Zone {random.choice(zone)} D+1",f"Charged {chargedOnnet} IDR","No Bonus"],
+              [f"Create Event Voice Onnet 13s 1pm on Zone {random.choice(zone)} D+1 Rate ANPS",f"Charged {chargedOffnet} IDR","No Bonus"],
               [f"Create Event voice Offnet Initial 2pm D+1 on Zone {random.choice(zone)} Rate ANPS","Initial Success","No bonus"],
               [f"Create Event Voice Offnet Intermediate 180s 2pm D+1 on Zone {random.choice(zone)}","Intermediate Succes","No bonus"],
               [f"Create Event Voice Offnet Terminate 0s 2pm D+1 on Zone 5 charge > threshold XgetY",dropOffnet,allowanceString],
@@ -7984,7 +7987,7 @@ def getStepReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, us
               },
        ]
 
-       while int(usedRate) < int(Threshold):
+       while int(usedRate) <= int(Threshold):
               stepConsume, usedRate       = getStepChargedToReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, dataEvent, usedRate, Zone, Threshold, allowanceString)
               stepsConsume.append(stepConsume)
              
