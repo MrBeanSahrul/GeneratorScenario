@@ -8075,7 +8075,7 @@ def getStepRecudeQuotaANPS(QuotaVoiceOnnet, QuotaVoiceOffnet, Zone):
                      "ShowEvent" : False
               },
               {
-                     "Name" : 'Direct Debit bank_digi_250 ',
+                     "Name" : 'Direct Debit bank_digi_250',
                      "Param" : "Unknown",
                      "ShowEvent" : False
               },
@@ -8146,3 +8146,403 @@ def getStepConsumeVoiceANPS(QuotaVoiceOnnet, QuotaVoiceOffnet, Zone, data):
        ]
 
        return step, QuotaVoiceOnnet, QuotaVoiceOffnet
+
+def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
+       wb = Workbook()
+       ws = wb.active
+
+       offerName            = ''
+       offerDesc            = ''
+       PPName               = ''
+       preloadBonus         = ''
+       roundedType          = ''
+       ratePP               = ''
+       rateOffer            = ''
+       rateDescription      = ''
+
+       for params in params:
+              if "Offer Name" in params:
+                     offerName = params["Offer Name"]
+              
+              if "Offer Description" in params:
+                     offerDesc = params["Offer Description"]
+              
+              if "Price Plan Name" in params:
+                     PPName = params["Price Plan Name"]
+              
+              if "Preload Bonus" in params:
+                     preloadBonus = params["Preload Bonus"]
+              
+              if "Rounded Type" in params:
+                     roundedType = params["Rounded Type"]
+
+              if "Rate PP" in params:
+                     ratePP = params["Rate PP"]
+              
+              if "Rate Offer" in params:
+                     rateOffer = params["Rate Offer"]
+              
+              if "Rate Description" in params:
+                     rateDescription = params["Rate Description"]
+              
+              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription)
+              
+              # Write Header Row
+              header = [f'{eventName} | {offerName}']
+              ws.append(header)
+
+              # Merge Header Cells
+              startColumnIndex = 3  # Example of a dynamic column index
+              startColumn = chr(ord("A") + startColumnIndex)  # Calculate the start column dynamically
+              endColumn = "E"
+              startRow = 1
+              endRow = 1
+              cellRange = f"{startColumn}{startRow}:{endColumn}{endRow}"
+              ws.merge_cells(cellRange)
+
+              headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
+              ws.append(headerRow)
+
+              no = 1
+              for num, step in enumerate(steps, start=1):
+                     if isinstance(step, str):
+                            row = [
+                                   no,
+                                   step,
+                                   "Success",
+                                   "No Bonus",
+                                   "XYZ"
+                            ]
+                            no = no+1
+                     else:
+                            if step is None:
+                                   continue
+                            else:
+                                   if len(step) == 5:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 step[4]
+                                          ]
+                                   elif len(step) == 4:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 "XYZ"
+                                          ]
+                                   elif len(step) == 3:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                                   else:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 "No Bonus",
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                     ws.append(row)
+
+       print("Testing Scenario Successfully Generated")
+       
+       # Save Excel File
+       wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
+
+def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription):
+       steps = []
+       stepConsumePreload   = None
+       rateDescription      = rateDescription[0]
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+
+       ratePP = ratePP.split(",")
+       
+       ratePPForOnnet = ratePP[0].split("/")
+       ratePPOnnet = ratePPForOnnet[0]
+       roundedPPOnnet = ratePPForOnnet[1]
+
+       ratePPForOffnet = ratePP[1].split("/")
+       ratePPOffnet = ratePPForOffnet[0]
+       roundedPPOffnet = ratePPForOffnet[1]
+
+       rateOffer = rateOffer.split(",")
+       
+       rateOfferForOnnet = rateOffer[0].split("/")
+       rateOfferOnnet = rateOfferForOnnet[0]
+       roundedOfferOnnet = rateOfferForOnnet[1]
+
+       rateOfferForOffnet = rateOffer[1].split("/")
+       rateOfferOffnet = rateOfferForOffnet[0]
+       roundedOfferOffnet = rateOfferForOffnet[1]
+
+       step1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              ["Update Parameter Init Activation Date","Success",preloadBonusString],
+              ["Attach offer New CLS 10000000","Offer Attached",preloadBonusString],
+              stepConsumePreload
+       ]
+
+       stepGenerateEventRatePP = generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, 20)
+
+       step2 = [
+              [f"Attach Offer {offerName}","Offer Attached","No Bonus"],
+              ["Check 888","Same with 888 before attach","No Bonus"],
+              ["Check offer name and offer description",f"{offerName}|{offerDesc}","No Bonus"],
+       ]
+
+       stepGenerateEventRateOffer = generateEventRateOffer(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, 10)
+
+       step3 = [
+              [f"Remove Offer {offerName}", "Offer Removed", "No Bonus"]
+       ]
+
+       stepGenerateEventRatePPLast = generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, 5)
+
+       step4 = [
+              ["Check Charge Code  on XML","Checked","No Bonus"],
+              ["Check Service Filter on XML and RE","Checked","No Bonus"],
+              ["Check Indira","Checked","No Bonus"],
+              ["Check AMDD Charge code ","Checked","No Bonus"],
+              ["Check Rated Event | Charge before tax 11%","Checked","No Bonus"],
+              ["Check table error on trb1_subs_errs","No Error","No Bonus"],
+              ["Invoicing"," ","No Bonus"]
+       ]
+
+       steps.extend(step1)
+       steps.extend(stepGenerateEventRatePP)
+       steps.extend(step2)
+       steps.extend(stepGenerateEventRateOffer)
+       steps.extend(step3)
+       steps.extend(stepGenerateEventRatePPLast)
+       steps.extend(step4)
+
+       return steps
+
+def generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, countEvent):
+       steps = []
+       ratePPOnnet          = int(ratePPOnnet)
+       roundedPPOnnet       = int(roundedPPOnnet)
+       ratePPOffnet         = int(ratePPOffnet)
+       roundedPPOffnet      = int(roundedPPOffnet)
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet',
+                     "Param" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Offnet',
+                     "Param" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA',
+                     "Param" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'PSTN',
+                     "Param" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : "Unknown",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50',
+                     "Param" : "Unknown",
+                     "ShowEvent" : False
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250',
+                     "Param" : "Unknown",
+                     "ShowEvent" : False
+              },
+       ]
+
+       numberLoop = list(range(0, countEvent))
+       for data in numberLoop:
+              random_event  = random.choice(dataEvent)
+              event_name    = random_event["Name"]
+              event_param   = random_event["Param"]
+              event_show    = random_event["ShowEvent"]
+
+              if event_param == 'Onnet':
+                     if roundedType == 'Seconds':
+                            eventString          = random.randint(0,300)
+                     else:
+                            eventString          = random.randint(0,10)
+                     charged              = math.ceil(eventString/roundedPPOnnet)*ratePPOnnet
+                     consumeOrCharged     = f"Charged {charged} IDR"
+              elif event_param == 'Offnet':
+                     if roundedType == 'Seconds':
+                            eventString          = random.randint(0,300)
+                     else:
+                            eventString          = random.randint(0,10)
+                     charged              = math.ceil(eventString/roundedPPOffnet)*ratePPOffnet
+                     consumeOrCharged     = f"Charged {charged} IDR"
+              else:
+                     eventString          = "1"
+                     consumeOrCharged     = "Charged"
+              
+              timeNumber    = random.randint(0, 23)
+              timeString    = timeNumber
+              if int(timeString) > 12:
+                     timeString = str(int(timeString) - 12) + 'PM'
+              else:
+                     timeString = str(timeString) + "AM"
+
+              if event_show:
+                     eventLabel = f"Create event {eventString} {roundedType} voice {event_name} {timeString}"
+              else:
+                     eventLabel = f"Create event {event_name}"
+
+              restBonus      = 'No Bonus'
+
+              step = [
+                     eventLabel,
+                     consumeOrCharged,
+                     restBonus
+              ]
+
+              steps.append(step)
+
+
+       return steps
+
+def generateEventRateOffer(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, countEvent):
+       steps = []
+       
+       ratePPOnnet          = int(ratePPOnnet)
+       roundedPPOnnet       = int(roundedPPOnnet)
+       ratePPOffnet         = int(ratePPOffnet)
+       roundedPPOffnet      = int(roundedPPOffnet)
+
+       rateOfferOnnet          = int(rateOfferOnnet)
+       roundedOfferOnnet       = int(roundedOfferOnnet)
+       rateOfferOffnet         = int(rateOfferOffnet)
+       roundedOfferOffnet      = int(roundedOfferOffnet)
+
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet',
+                     "Param" : ["All Opr", "Tsel (Onnet, Onbrand for Loop)"],
+                     "Type" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Offnet',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"],
+                     "Type" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"],
+                     "Type" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'PSTN',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"],
+                     "Type" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : [],
+                     "Type" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50 ',
+                     "Param" : [],
+                     "Type" : "Onnet",
+                     "ShowEvent" : False
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250 ',
+                     "Param" : [],
+                     "Type" : "Onnet",
+                     "ShowEvent" : False
+              },
+       ]
+
+       numberLoop = list(range(0, countEvent))
+       for data in numberLoop:
+              random_event  = random.choice(dataEvent)
+              event_name    = random_event["Name"]
+              event_type    = random_event["Type"]
+              event_param   = random_event["Param"]
+              event_show    = random_event["ShowEvent"]
+
+              if event_type == 'Onnet':
+                     if roundedType == 'Seconds':
+                            eventString          = random.randint(0,300)
+                     else:
+                            eventString          = random.randint(0,10)
+                     
+                     if rateDescription in event_param:
+                            charged              = math.ceil(eventString/roundedOfferOnnet)*rateOfferOnnet
+                     else:
+                            charged              = math.ceil(eventString/roundedPPOnnet)*ratePPOnnet
+
+                     consumeOrCharged     = f"Charged {charged} IDR"
+
+              elif event_type == 'Offnet':
+                     if roundedType == 'Seconds':
+                            eventString          = random.randint(0,300)
+                     else:
+                            eventString          = random.randint(0,10)
+
+                     if rateDescription in event_param:
+                            charged              = math.ceil(eventString/roundedOfferOffnet)*rateOfferOffnet
+                     else:
+                            charged              = math.ceil(eventString/roundedPPOffnet)*ratePPOffnet
+
+                     consumeOrCharged     = f"Charged {charged} IDR"
+              else:
+                     eventString          = "1"
+                     consumeOrCharged     = "Charged"
+              
+              timeNumber    = random.randint(0, 23)
+              timeString    = timeNumber
+              if int(timeString) > 12:
+                     timeString = str(int(timeString) - 12) + 'PM'
+              else:
+                     timeString = str(timeString) + "AM"
+
+              if event_show:
+                     eventLabel = f"Create event {eventString} {roundedType} voice {event_name} {timeString}"
+              else:
+                     eventLabel = f"Create event {event_name}"
+
+              restBonus      = 'No Bonus'
+
+              step = [
+                     eventLabel,
+                     consumeOrCharged,
+                     restBonus
+              ]
+
+              steps.append(step)
+
+
+       return steps

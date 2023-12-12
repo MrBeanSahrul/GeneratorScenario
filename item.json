@@ -1558,5 +1558,85 @@
                      "details"            : "Voice Onnet,Voice Offnet"
               }
        }
+  },
+  {
+       "ItemName" : "Offer Tarif Postpaid",
+       "EventName" : "Offer Tarif Postpaid",
+       "FunctionName" : "exportExcelTarifPostpaid",
+       "Params": {
+              "Offer Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "true",
+                     "dataType"           : "array"
+              },
+              "Offer Description" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Price Plan Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Preload Bonus" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Rounded Type" : {
+                     "type"               : "option",
+                     "multiple"           :"false",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "value" : [
+                           "Seconds",
+                           "Minutes"
+                     ]
+              },
+              "Rate PP" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Onnet/Rounded, Offnet/Rounded"
+              },
+              "Rate Offer" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Onnet/Rounded, Offnet/Rounded"
+              },
+              "Rate Description" : {
+                     "type"               : "option",
+                     "value"              : [
+                                                 "All Opr",
+                                                 "Tsel (Onnet, Onbrand for Loop)",
+                                                 "Opr Lain (Include fwa,pstn)",
+                                                 "Opr Lain (Exclude fwa,pstn)"
+                                          ],
+                     "multiple"           : "false",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              }
+       }
   }
 ]
