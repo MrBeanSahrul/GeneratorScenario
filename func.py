@@ -7615,6 +7615,7 @@ def exportExcelANPS(eventName, params=None, neededParams = None):
        zone                 = ''
        rate                 = ''
        YAllowance           = ''
+       BonDescPP            = ''
 
        for params in params:
               if "Offer Name" in params:
@@ -7641,10 +7642,11 @@ def exportExcelANPS(eventName, params=None, neededParams = None):
               if "Threshold" in params:
                      threshold = params["Threshold"]
               
-              if "X get Y PP (X,Y)" in params:
-                     XgetYPP = params["X get Y PP (X,Y)"].split(",")
-                     XPP    = XgetYPP[0]
-                     YPP    = XgetYPP[1]
+              if "X get Y PP (X,Bonus Description,Y)" in params:
+                     XgetYPP = params["X get Y PP (X,Bonus Description,Y)"].split(",")
+                     XPP           = XgetYPP[0]
+                     BonDescPP     = XgetYPP[1]
+                     YPP           = XgetYPP[2]
               
               if "Zone" in params:
                      zone = params["Zone"]
@@ -7655,7 +7657,7 @@ def exportExcelANPS(eventName, params=None, neededParams = None):
               if "Y Allowance" in params:
                      YAllowance = params["Y Allowance"]
               
-              steps = stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold, XPP, YPP, zone, rate, YAllowance)
+              steps = stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold, XPP, BonDescPP, YPP, zone, rate, YAllowance)
               
 
               # Write Header Row
@@ -7730,7 +7732,7 @@ def exportExcelANPS(eventName, params=None, neededParams = None):
        # Save Excel File
        wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
 
-def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold, XPP, YPP, zone, rate, YAllowance):
+def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold, XPP, BonDescPP, YPP, zone, rate, YAllowance):
        stepConsumePreload   = None
 
        if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
@@ -7738,6 +7740,17 @@ def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTresh
               preloadBonusString = preloadBonus
        else:
               preloadBonusString = "No Bonus"
+       
+       stepXgetYPP2 = None
+       if BonDescPP == 'Onnet':
+              stepXgetYPP = [f"Create event {XPP} voice onnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+       elif BonDescPP == 'Offnet':
+              stepXgetYPP = [f"Create event {XPP} voice Offnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+       elif BonDescPP == 'All Opr':
+              stepXgetYPP = [f"Create event {XPP} voice onnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+              stepXgetYPP2 = [f"Create event {XPP} voice Offnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+       else:
+              stepXgetYPP = None
        
        if dropCallOnnet == "Y":
               dropOnnet = f"Charged {threshold} IDR"
@@ -7767,7 +7780,8 @@ def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTresh
               ["Update Balance 1000K","Balance Updated",preloadBonusString],
               ["Update exp date","Updated",preloadBonusString],
               stepConsumePreload,
-              [f"Create event {XPP} voice onnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP],
+              stepXgetYPP,
+              stepXgetYPP2,
               [f"Attach Offer {offerName}","Offer Attached",YPP],
               ["Check notifikasi & Wording",wordingAddOffer,YPP],
               ["Check Offername",offerName,YPP],
@@ -8174,7 +8188,17 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
                      preloadBonus = params["Preload Bonus"]
               
               if "Rounded Type" in params:
-                     roundedType = params["Rounded Type"]
+                     dataRoundedType = {
+                            "1" : "Seconds",
+                            "2" : "Minutes"
+                     }
+                     if isinstance(params["Rounded Type"], list):
+                            roundedType = params["Rounded Type"][0]
+                     else:
+                            if params["Rounded Type"].isnumeric():
+                                   roundedType = dataRoundedType[params["Rounded Type"]]
+                            else:
+                                   roundedType = params["Rounded Type"]
 
               if "Rate PP" in params:
                      ratePP = params["Rate PP"]
@@ -8184,6 +8208,19 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
               
               if "Rate Description" in params:
                      rateDescription = params["Rate Description"]
+                     dataRateDescription = {
+                           "1" : "All Opr",
+                           "2" : "Tsel (Onnet, Onbrand for Loop)",
+                           "3" : "Opr Lain (Include fwa,pstn)",
+                           "4" : "Opr Lain (Exclude fwa,pstn)"
+                     }
+                     if isinstance(params["Rate Description"], list):
+                            rateDescription = params["Rate Description"][0]
+                     else:
+                            if params["Rate Description"].isnumeric():
+                                   rateDescription = dataRateDescription[params["Rate Description"]]
+                            else:
+                                   rateDescription = params["Rate Description"]
               
               steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription)
               
@@ -8262,7 +8299,6 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
 def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription):
        steps = []
        stepConsumePreload   = None
-       rateDescription      = rateDescription[0]
 
        if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
               stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]

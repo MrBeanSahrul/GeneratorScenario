@@ -1479,14 +1479,14 @@
                      "canOthers"          : "false",
                      "dataType"           : "array"
               },
-              "X get Y PP (X,Y)" : {
+              "X get Y PP (X,Bonus Description,Y)" : {
                      "type"               : "input",
                      "value"              : [],
                      "multiple"           : "true",
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "details"            : "Ex : 80s,50 Min Tsel"
+                     "details"            : "Ex : 80s,[Onnet/Offnet/All Opr],50 Min Tsel"
               },
               "Wording add offer" : {
                      "type"               : "input",
