@@ -8170,6 +8170,8 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
        PPName               = ''
        preloadBonus         = ''
        roundedType          = ''
+       roundedTypePP        = ''
+       timeUnit             = ''
        ratePP               = ''
        rateOffer            = ''
        rateDescription      = ''
@@ -8187,18 +8189,34 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
               if "Preload Bonus" in params:
                      preloadBonus = params["Preload Bonus"]
               
-              if "Rounded Type" in params:
+              if "Rounded Type Offer" in params:
                      dataRoundedType = {
                             "1" : "Seconds",
                             "2" : "Minutes"
                      }
-                     if isinstance(params["Rounded Type"], list):
-                            roundedType = params["Rounded Type"][0]
+                     if isinstance(params["Rounded Type Offer"], list):
+                            roundedType = params["Rounded Type Offer"][0]
                      else:
-                            if params["Rounded Type"].isnumeric():
-                                   roundedType = dataRoundedType[params["Rounded Type"]]
+                            if params["Rounded Type Offer"].isnumeric():
+                                   roundedType = dataRoundedType[params["Rounded Type Offer"]]
                             else:
-                                   roundedType = params["Rounded Type"]
+                                   roundedType = params["Rounded Type Offer"]
+              
+              if "Rounded Type Existing PP" in params:
+                     dataRoundedType = {
+                            "1" : "Seconds",
+                            "2" : "Minutes"
+                     }
+                     if isinstance(params["Rounded Type Existing PP"], list):
+                            roundedTypePP = params["Rounded Type Existing PP"][0]
+                     else:
+                            if params["Rounded Type Existing PP"].isnumeric():
+                                   roundedTypePP = dataRoundedType[params["Rounded Type Existing PP"]]
+                            else:
+                                   roundedTypePP = params["Rounded Type Existing PP"]
+              
+              if "Time Unit Existing PP" in params:
+                     timeUnit = params["Time Unit Existing PP"]
 
               if "Rate PP" in params:
                      ratePP = params["Rate PP"]
@@ -8222,7 +8240,7 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
                             else:
                                    rateDescription = params["Rate Description"]
               
-              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription)
+              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit)
               
               # Write Header Row
               header = [f'{eventName} | {offerName}']
@@ -8296,7 +8314,7 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
        # Save Excel File
        wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
 
-def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription):
+def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit):
        steps = []
        stepConsumePreload   = None
 

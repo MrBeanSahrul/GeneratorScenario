@@ -1596,7 +1596,7 @@
                      "canOthers"          : "false",
                      "dataType"           : "array"
               },
-              "Rounded Type" : {
+              "Rounded Type Existing PP" : {
                      "type"               : "option",
                      "multiple"           :"false",
                      "canOthers"          : "false",
@@ -1606,6 +1606,15 @@
                            "Minutes"
                      ]
               },
+              "Time Unit Existing PP" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Local,Non Local"
+              },
               "Rate PP" : {
                      "type"               : "input",
                      "value"              : [],
@@ -1613,7 +1622,17 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "details"            : "Onnet/Rounded, Offnet/Rounded"
+                     "details"            : "Onnet Local/Rounded,Onnet Non Local/Rounded,Offnet Local/Rounded,Offnet Non Local/Rounded"
+              },
+              "Rounded Type Offer" : {
+                     "type"               : "option",
+                     "multiple"           :"false",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "value" : [
+                           "Seconds",
+                           "Minutes"
+                     ]
               },
               "Rate Offer" : {
                      "type"               : "input",
@@ -1622,7 +1641,7 @@
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array",
-                     "details"            : "Onnet/Rounded, Offnet/Rounded"
+                     "details"            : "Onnet/Rounded,Offnet/Rounded"
               },
               "Rate Description" : {
                      "type"               : "option",
