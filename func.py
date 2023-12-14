@@ -8325,14 +8325,26 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
               preloadBonusString = "No Bonus"
 
        ratePP = ratePP.split(",")
-       
-       ratePPForOnnet = ratePP[0].split("/")
-       ratePPOnnet = ratePPForOnnet[0]
-       roundedPPOnnet = ratePPForOnnet[1]
+       timeUnit = timeUnit.split(",")
 
-       ratePPForOffnet = ratePP[1].split("/")
-       ratePPOffnet = ratePPForOffnet[0]
-       roundedPPOffnet = ratePPForOffnet[1]
+       timeUnitLocal = timeUnit[0]
+       timeUnitNonLocal = timeUnit[1]
+       
+       ratePPForOnnetLocal = ratePP[0].split("/")
+       ratePPOnnetLocal = ratePPForOnnetLocal[0]
+       roundedPPOnnetLocal = ratePPForOnnetLocal[1]
+
+       ratePPForOnnetNonLocal = ratePP[1].split("/")
+       ratePPOnnetNonLocal = ratePPForOnnetNonLocal[0]
+       roundedPPOnnetNonLocal = ratePPForOnnetNonLocal[1]
+
+       ratePPForOffnetLocal = ratePP[2].split("/")
+       ratePPOffnetLocal = ratePPForOffnetLocal[0]
+       roundedPPOffnetLocal = ratePPForOffnetLocal[1]
+
+       ratePPForOffnetNonLocal = ratePP[3].split("/")
+       ratePPOffnetNonLocal = ratePPForOffnetNonLocal[0]
+       roundedPPOffnetNonLocal = ratePPForOffnetNonLocal[1]
 
        rateOffer = rateOffer.split(",")
        
@@ -8351,7 +8363,7 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
               stepConsumePreload
        ]
 
-       stepGenerateEventRatePP = generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, 20)
+       stepGenerateEventRatePP = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 20)
 
        step2 = [
               [f"Attach Offer {offerName}","Offer Attached","No Bonus"],
@@ -8359,13 +8371,13 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
               ["Check offer name and offer description",f"{offerName}|{offerDesc}","No Bonus"],
        ]
 
-       stepGenerateEventRateOffer = generateEventRateOffer(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, 10)
+       stepGenerateEventRateOffer = generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnetLocal, roundedPPOnnetLocal, ratePPOffnetLocal, roundedPPOffnetLocal, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, 10)
 
        step3 = [
               [f"Remove Offer {offerName}", "Offer Removed", "No Bonus"]
        ]
 
-       stepGenerateEventRatePPLast = generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, 5)
+       stepGenerateEventRatePPLast = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 5)
 
        step4 = [
               ["Check Charge Code  on XML","Checked","No Bonus"],
@@ -8387,46 +8399,84 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
 
        return steps
 
-def generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, countEvent):
+def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, countEvent):
        steps = []
-       ratePPOnnet          = int(ratePPOnnet)
-       roundedPPOnnet       = int(roundedPPOnnet)
-       ratePPOffnet         = int(ratePPOffnet)
-       roundedPPOffnet      = int(roundedPPOffnet)
+       ratePPOnnetLocal            = int(ratePPOnnetLocal)
+       ratePPOnnetNonLocal         = int(ratePPOnnetNonLocal)
+       roundedPPOnnetLocal         = int(roundedPPOnnetLocal)
+       roundedPPOnnetNonLocal      = int(roundedPPOnnetNonLocal)
+       ratePPOffnetLocal           = int(ratePPOffnetLocal)
+       ratePPOffnetNonLocal        = int(ratePPOffnetNonLocal)
+       roundedPPOffnetLocal        = int(roundedPPOffnetLocal)
+       roundedPPOffnetNonLocal     = int(roundedPPOffnetNonLocal)
+       timeUnitLocal               = int(timeUnitLocal)
+       timeUnitNonLocal            = int(timeUnitNonLocal)
+
        dataEvent            = [
               {
-                     "Name" : 'Onnet',
+                     "Name" : 'Onnet Local',
                      "Param" : "Onnet",
+                     "Local" : True,
                      "ShowEvent" : True
               },
               {
-                     "Name" : 'Offnet',
-                     "Param" : "Offnet",
+                     "Name" : 'Onnet Non Local',
+                     "Param" : "Onnet",
+                     "Local" : False,
                      "ShowEvent" : True
               },
               {
-                     "Name" : 'FWA',
+                     "Name" : 'Offnet Local',
                      "Param" : "Offnet",
+                     "Local" : True,
                      "ShowEvent" : True
               },
               {
-                     "Name" : 'PSTN',
+                     "Name" : 'Offnet Non Local',
                      "Param" : "Offnet",
+                     "Local" : False,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA Local',
+                     "Param" : "Offnet",
+                     "Local" : True,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA Non Local',
+                     "Param" : "Offnet",
+                     "Local" : False,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'PSTN Local',
+                     "Param" : "Offnet",
+                     "Local" : True,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'PSTN Non Local',
+                     "Param" : "Offnet",
+                     "Local" : False,
                      "ShowEvent" : True
               },
               {
                      "Name" : 'International',
                      "Param" : "Unknown",
+                     "Local" : False,
                      "ShowEvent" : True
               },
               {
                      "Name" : 'GPRS 1MB RG 50',
                      "Param" : "Unknown",
+                     "Local" : False,
                      "ShowEvent" : False
               },
               {
                      "Name" : 'Direct Debit bank_digi_250',
                      "Param" : "Unknown",
+                     "Local" : False,
                      "ShowEvent" : False
               },
        ]
@@ -8437,20 +8487,35 @@ def generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, 
               event_name    = random_event["Name"]
               event_param   = random_event["Param"]
               event_show    = random_event["ShowEvent"]
+              event_local   = random_event["Local"]
 
               if event_param == 'Onnet':
-                     if roundedType == 'Seconds':
-                            eventString          = random.randint(0,300)
+                     if roundedTypePP == 'Seconds':
+                            eventString          = random.randint(1,300)
                      else:
-                            eventString          = random.randint(0,10)
-                     charged              = math.ceil(eventString/roundedPPOnnet)*ratePPOnnet
+                            eventString          = random.randint(1,10)
+
+                     if event_local:
+                            charged_rate         = round(ratePPOnnetLocal/roundedPPOnnetLocal)
+                            charged              = math.ceil(eventString/timeUnitLocal)*charged_rate
+                     else:
+                            charged_rate         = round(ratePPOnnetNonLocal/roundedPPOnnetNonLocal)
+                            charged              = math.ceil(eventString/timeUnitNonLocal)*charged_rate
+
                      consumeOrCharged     = f"Charged {charged} IDR"
               elif event_param == 'Offnet':
-                     if roundedType == 'Seconds':
-                            eventString          = random.randint(0,300)
+                     if roundedTypePP == 'Seconds':
+                            eventString          = random.randint(1,300)
                      else:
-                            eventString          = random.randint(0,10)
-                     charged              = math.ceil(eventString/roundedPPOffnet)*ratePPOffnet
+                            eventString          = random.randint(1,10)
+
+                     if event_local:
+                            charged_rate         = round(ratePPOffnetLocal/roundedPPOffnetLocal)
+                            charged              = math.ceil(eventString/timeUnitLocal)*charged_rate
+                     else:
+                            charged_rate         = round(ratePPOffnetNonLocal/roundedPPOffnetNonLocal)
+                            charged              = math.ceil(eventString/timeUnitNonLocal)*charged_rate
+
                      consumeOrCharged     = f"Charged {charged} IDR"
               else:
                      eventString          = "1"
@@ -8464,7 +8529,7 @@ def generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, 
                      timeString = str(timeString) + "AM"
 
               if event_show:
-                     eventLabel = f"Create event {eventString} {roundedType} voice {event_name} {timeString}"
+                     eventLabel = f"Create event {eventString} {roundedTypePP} voice {event_name} {timeString}"
               else:
                      eventLabel = f"Create event {event_name}"
 
@@ -8481,7 +8546,7 @@ def generateEventRatePP(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, 
 
        return steps
 
-def generateEventRateOffer(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, countEvent):
+def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, countEvent):
        steps = []
        
        ratePPOnnet          = int(ratePPOnnet)
@@ -8549,9 +8614,9 @@ def generateEventRateOffer(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffne
 
               if event_type == 'Onnet':
                      if roundedType == 'Seconds':
-                            eventString          = random.randint(0,300)
+                            eventString          = random.randint(1,300)
                      else:
-                            eventString          = random.randint(0,10)
+                            eventString          = random.randint(1,10)
                      
                      if rateDescription in event_param:
                             charged              = math.ceil(eventString/roundedOfferOnnet)*rateOfferOnnet
@@ -8562,9 +8627,9 @@ def generateEventRateOffer(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffne
 
               elif event_type == 'Offnet':
                      if roundedType == 'Seconds':
-                            eventString          = random.randint(0,300)
+                            eventString          = random.randint(1,300)
                      else:
-                            eventString          = random.randint(0,10)
+                            eventString          = random.randint(1,10)
 
                      if rateDescription in event_param:
                             charged              = math.ceil(eventString/roundedOfferOffnet)*rateOfferOffnet
