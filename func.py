@@ -8486,37 +8486,37 @@ def generateEventRateOffer(roundedType, ratePPOnnet, roundedPPOnnet, ratePPOffne
               {
                      "Name" : 'Offnet',
                      "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"],
-                     "Type" : "Onnet",
+                     "Type" : "Offnet",
                      "ShowEvent" : True
               },
               {
                      "Name" : 'FWA',
                      "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"],
-                     "Type" : "Onnet",
+                     "Type" : "Offnet",
                      "ShowEvent" : True
               },
               {
                      "Name" : 'PSTN',
                      "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"],
-                     "Type" : "Onnet",
+                     "Type" : "Offnet",
                      "ShowEvent" : True
               },
               {
                      "Name" : 'International',
                      "Param" : [],
-                     "Type" : "Onnet",
+                     "Type" : "Unknown",
                      "ShowEvent" : True
               },
               {
                      "Name" : 'GPRS 1MB RG 50 ',
                      "Param" : [],
-                     "Type" : "Onnet",
+                     "Type" : "Unknown",
                      "ShowEvent" : False
               },
               {
                      "Name" : 'Direct Debit bank_digi_250 ',
                      "Param" : [],
-                     "Type" : "Onnet",
+                     "Type" : "Unknown",
                      "ShowEvent" : False
               },
        ]
