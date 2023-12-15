@@ -1634,6 +1634,14 @@
                            "Minutes"
                      ]
               },
+              "Time Unit Offer" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
               "Rate Offer" : {
                      "type"               : "input",
                      "value"              : [],

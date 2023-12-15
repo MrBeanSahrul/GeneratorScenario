@@ -8172,6 +8172,7 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
        roundedType          = ''
        roundedTypePP        = ''
        timeUnit             = ''
+       timeUnitOffer        = ''
        ratePP               = ''
        rateOffer            = ''
        rateDescription      = ''
@@ -8217,6 +8218,9 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
               
               if "Time Unit Existing PP" in params:
                      timeUnit = params["Time Unit Existing PP"]
+              
+              if "Time Unit Offer" in params:
+                     timeUnitOffer = params["Time Unit Offer"]
 
               if "Rate PP" in params:
                      ratePP = params["Rate PP"]
@@ -8240,7 +8244,7 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
                             else:
                                    rateDescription = params["Rate Description"]
               
-              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit)
+              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer)
               
               # Write Header Row
               header = [f'{eventName} | {offerName}']
@@ -8314,7 +8318,7 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
        # Save Excel File
        wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
 
-def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit):
+def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer):
        steps = []
        stepConsumePreload   = None
 
@@ -8371,7 +8375,7 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
               ["Check offer name and offer description",f"{offerName}|{offerDesc}","No Bonus"],
        ]
 
-       stepGenerateEventRateOffer = generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnetLocal, roundedPPOnnetLocal, ratePPOffnetLocal, roundedPPOffnetLocal, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, 10)
+       stepGenerateEventRateOffer = generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnetLocal, roundedPPOnnetLocal, ratePPOffnetLocal, roundedPPOffnetLocal, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, timeUnitLocal, timeUnitOffer, 10)
 
        step3 = [
               [f"Remove Offer {offerName}", "Offer Removed", "No Bonus"]
@@ -8546,7 +8550,7 @@ def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, ro
 
        return steps
 
-def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, countEvent):
+def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, timeUnit, timeUnitOffer, countEvent):
        steps = []
        
        ratePPOnnet          = int(ratePPOnnet)
@@ -8558,6 +8562,9 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
        roundedOfferOnnet       = int(roundedOfferOnnet)
        rateOfferOffnet         = int(rateOfferOffnet)
        roundedOfferOffnet      = int(roundedOfferOffnet)
+
+       timeUnit      = int(timeUnit)
+       timeUnitOffer = int(timeUnitOffer)
 
        dataEvent            = [
               {
@@ -8619,9 +8626,16 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
                             eventString          = random.randint(1,10)
                      
                      if rateDescription in event_param:
-                            charged              = math.ceil(eventString/roundedOfferOnnet)*rateOfferOnnet
+                            charged_rate         = round(rateOfferOnnet/roundedOfferOnnet)
+                            charged              = math.ceil(eventString/timeUnitOffer)*charged_rate
                      else:
-                            charged              = math.ceil(eventString/roundedPPOnnet)*ratePPOnnet
+                            if roundedTypePP == 'Seconds':
+                                   eventString          = random.randint(1,300)
+                            else:
+                                   eventString          = random.randint(1,10)
+
+                            charged_rate         = round(ratePPOnnet/roundedPPOnnet)
+                            charged              = math.ceil(eventString/timeUnit)*charged_rate
 
                      consumeOrCharged     = f"Charged {charged} IDR"
 
@@ -8632,9 +8646,16 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
                             eventString          = random.randint(1,10)
 
                      if rateDescription in event_param:
-                            charged              = math.ceil(eventString/roundedOfferOffnet)*rateOfferOffnet
+                            charged_rate         = round(rateOfferOffnet/roundedOfferOffnet)
+                            charged              = math.ceil(eventString/timeUnitOffer)*charged_rate
                      else:
-                            charged              = math.ceil(eventString/roundedPPOffnet)*ratePPOffnet
+                            if roundedTypePP == 'Seconds':
+                                   eventString          = random.randint(1,300)
+                            else:
+                                   eventString          = random.randint(1,10)
+
+                            charged_rate         = round(ratePPOffnet/roundedPPOffnet)
+                            charged              = math.ceil(eventString/timeUnit)*charged_rate
 
                      consumeOrCharged     = f"Charged {charged} IDR"
               else:
