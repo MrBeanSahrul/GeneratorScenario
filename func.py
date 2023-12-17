@@ -8169,13 +8169,16 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
        offerDesc            = ''
        PPName               = ''
        preloadBonus         = ''
-       roundedType          = ''
-       roundedTypePP        = ''
+       roundedType          = 'Seconds'
+       roundedTypePP        = 'Seconds'
        timeUnit             = ''
        timeUnitOffer        = ''
        ratePP               = ''
        rateOffer            = ''
        rateDescription      = ''
+       chargeCode           = ''
+       serviceFilter        = ''
+       AMDDChargeCode       = ''
 
        for params in params:
               if "Offer Name" in params:
@@ -8228,6 +8231,15 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
               if "Rate Offer" in params:
                      rateOffer = params["Rate Offer"]
               
+              if "Charge Code" in params:
+                     chargeCode = params["Charge Code"]
+              
+              if "Service Filter" in params:
+                     serviceFilter = params["Service Filter"]
+              
+              if "AMDD Charge Code" in params:
+                     AMDDChargeCode = params["AMDD Charge Code"]
+              
               if "Rate Description" in params:
                      rateDescription = params["Rate Description"]
                      dataRateDescription = {
@@ -8244,7 +8256,7 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
                             else:
                                    rateDescription = params["Rate Description"]
               
-              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer)
+              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer, chargeCode, serviceFilter, AMDDChargeCode)
               
               # Write Header Row
               header = [f'{eventName} | {offerName}']
@@ -8318,7 +8330,7 @@ def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
        # Save Excel File
        wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
 
-def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer):
+def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer, chargeCode, serviceFilter, AMDDChargeCode):
        steps = []
        stepConsumePreload   = None
 
@@ -8356,9 +8368,13 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
        rateOfferOnnet = rateOfferForOnnet[0]
        roundedOfferOnnet = rateOfferForOnnet[1]
 
-       rateOfferForOffnet = rateOffer[1].split("/")
-       rateOfferOffnet = rateOfferForOffnet[0]
-       roundedOfferOffnet = rateOfferForOffnet[1]
+       if len(rateOffer) == '2':
+              rateOfferForOffnet = rateOffer[1].split("/")
+              rateOfferOffnet = rateOfferForOffnet[0]
+              roundedOfferOffnet = rateOfferForOffnet[1]
+       else:
+              rateOfferOffnet = 0
+              roundedOfferOffnet = 0
 
        step1 = [
               [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
@@ -8367,7 +8383,7 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
               stepConsumePreload
        ]
 
-       stepGenerateEventRatePP = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 20)
+       stepGenerateEventRatePP = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 20, True)
 
        step2 = [
               [f"Attach Offer {offerName}","Offer Attached","No Bonus"],
@@ -8381,13 +8397,13 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
               [f"Remove Offer {offerName}", "Offer Removed", "No Bonus"]
        ]
 
-       stepGenerateEventRatePPLast = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 5)
+       stepGenerateEventRatePPLast = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 5, False)
 
        step4 = [
-              ["Check Charge Code  on XML","Checked","No Bonus"],
-              ["Check Service Filter on XML and RE","Checked","No Bonus"],
+              ["Check Charge Code  on XML",f"Checked | {chargeCode}","No Bonus"],
+              ["Check Service Filter on XML and RE",f"Checked | {serviceFilter}","No Bonus"],
               ["Check Indira","Checked","No Bonus"],
-              ["Check AMDD Charge code ","Checked","No Bonus"],
+              ["Check AMDD Charge code ",f"Checked | {AMDDChargeCode}","No Bonus"],
               ["Check Rated Event | Charge before tax 11%","Checked","No Bonus"],
               ["Check table error on trb1_subs_errs","No Error","No Bonus"],
               ["Invoicing"," ","No Bonus"]
@@ -8403,7 +8419,7 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
 
        return steps
 
-def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, countEvent):
+def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, countEvent, randomize):
        steps = []
        ratePPOnnetLocal            = int(ratePPOnnetLocal)
        ratePPOnnetNonLocal         = int(ratePPOnnetNonLocal)
@@ -8485,13 +8501,24 @@ def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, ro
               },
        ]
 
-       numberLoop = list(range(0, countEvent))
+       numberLoop    = list(range(0, countEvent))
+       showEvent     = 0
        for data in numberLoop:
-              random_event  = random.choice(dataEvent)
-              event_name    = random_event["Name"]
-              event_param   = random_event["Param"]
-              event_show    = random_event["ShowEvent"]
-              event_local   = random_event["Local"]
+              if randomize:
+                     random_event  = random.choice(dataEvent)
+                     event_name    = random_event["Name"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
+                     event_local   = random_event["Local"]
+              else:
+                     if showEvent >= len(dataEvent):
+                            showEvent = 0
+                     random_event  = dataEvent[showEvent]
+                     event_name    = random_event["Name"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
+                     event_local   = random_event["Local"]
+                     showEvent     += 1
 
               if event_param == 'Onnet':
                      if roundedTypePP == 'Seconds':

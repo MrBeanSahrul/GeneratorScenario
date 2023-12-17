@@ -1596,16 +1596,6 @@
                      "canOthers"          : "false",
                      "dataType"           : "array"
               },
-              "Rounded Type Existing PP" : {
-                     "type"               : "option",
-                     "multiple"           :"false",
-                     "canOthers"          : "false",
-                     "dataType"           : "array",
-                     "value" : [
-                           "Seconds",
-                           "Minutes"
-                     ]
-              },
               "Time Unit Existing PP" : {
                      "type"               : "input",
                      "value"              : [],
@@ -1623,16 +1613,6 @@
                      "canOthers"          : "false",
                      "dataType"           : "array",
                      "details"            : "Onnet Local/Rounded,Onnet Non Local/Rounded,Offnet Local/Rounded,Offnet Non Local/Rounded"
-              },
-              "Rounded Type Offer" : {
-                     "type"               : "option",
-                     "multiple"           :"false",
-                     "canOthers"          : "false",
-                     "dataType"           : "array",
-                     "value" : [
-                           "Seconds",
-                           "Minutes"
-                     ]
               },
               "Time Unit Offer" : {
                      "type"               : "input",
@@ -1660,6 +1640,30 @@
                                                  "Opr Lain (Exclude fwa,pstn)"
                                           ],
                      "multiple"           : "false",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Charge Code" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Service Filter" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "AMDD Charge Code" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
                      "delimiter"          : "|",
                      "canOthers"          : "false",
                      "dataType"           : "array"
