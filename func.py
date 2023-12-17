@@ -8368,10 +8368,10 @@ def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, r
        rateOfferOnnet = rateOfferForOnnet[0]
        roundedOfferOnnet = rateOfferForOnnet[1]
 
-       if len(rateOffer) == '2':
+       if len(rateOffer) == 2:
               rateOfferForOffnet = rateOffer[1].split("/")
               rateOfferOffnet = rateOfferForOffnet[0]
-              roundedOfferOffnet = rateOfferForOffnet[1]
+              roundedOfferOffnet = rateOfferForOffnet[1]       
        else:
               rateOfferOffnet = 0
               roundedOfferOffnet = 0
