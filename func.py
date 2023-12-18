@@ -8638,13 +8638,46 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
               },
        ]
 
+       if rateDescription == "Tsel (Onnet, Onbrand for Loop)":
+              important_data_names = ['Onnet']
+       elif rateDescription == "Opr Lain (Include fwa,pstn)":
+              important_data_names = ['Offnet', 'FWA', 'PSTN']
+       elif rateDescription == "Opr Lain (Exclude fwa,pstn)":
+              important_data_names = ['Offnet']
+       elif rateDescription == "All Opr":
+              important_data_names = ['Onnet', 'Offnet', 'FWA', 'PSTN']
+       else:
+              important_data_names = []
+       
+       if len(important_data_names) > 0:
+              important_data = [d for d in dataEvent if d["Name"] in important_data_names]
+              selected_data = important_data.copy()
+              non_important_data = [d for d in dataEvent if d not in important_data]
+              selected_data.extend(random.sample(non_important_data, min(countEvent - len(important_data), len(non_important_data))))
+              remaining_count = max(0, countEvent - len(selected_data))
+              selected_data.extend(random.choices(important_data + non_important_data, k=remaining_count))
+       else:
+              selected_data = []
+
        numberLoop = list(range(0, countEvent))
+       no = 0
        for data in numberLoop:
-              random_event  = random.choice(dataEvent)
-              event_name    = random_event["Name"]
-              event_type    = random_event["Type"]
-              event_param   = random_event["Param"]
-              event_show    = random_event["ShowEvent"]
+
+              if len(selected_data) > 0:
+                     if no >= len(selected_data):
+                            no = 0
+                     random_event  = selected_data[no]
+                     event_name    = random_event["Name"]
+                     event_type    = random_event["Type"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
+                     no            += 1
+              else:
+                     random_event  = random.choice(dataEvent)
+                     event_name    = random_event["Name"]
+                     event_type    = random_event["Type"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
 
               if event_type == 'Onnet':
                      if roundedType == 'Seconds':
