@@ -8528,11 +8528,11 @@ def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, ro
 
                      if event_local:
                             charged_rate         = round(ratePPOnnetLocal/roundedPPOnnetLocal)
-                            charged              = math.ceil(eventString/timeUnitLocal)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnitLocal)*timeUnitLocal)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitLocal}s"
                      else:
                             charged_rate         = round(ratePPOnnetNonLocal/roundedPPOnnetNonLocal)
-                            charged              = math.ceil(eventString/timeUnitNonLocal)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnitNonLocal)*timeUnitNonLocal)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitNonLocal}s"
               elif event_param == 'Offnet':
                      if roundedTypePP == 'Seconds':
@@ -8542,11 +8542,11 @@ def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, ro
 
                      if event_local:
                             charged_rate         = round(ratePPOffnetLocal/roundedPPOffnetLocal)
-                            charged              = math.ceil(eventString/timeUnitLocal)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnitLocal)*timeUnitLocal)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitLocal}s"
                      else:
                             charged_rate         = round(ratePPOffnetNonLocal/roundedPPOffnetNonLocal)
-                            charged              = math.ceil(eventString/timeUnitNonLocal)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnitNonLocal)*timeUnitNonLocal)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitNonLocal}s"
               else:
                      eventString          = "1"
@@ -8687,7 +8687,7 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
                      
                      if rateDescription in event_param:
                             charged_rate         = round(rateOfferOnnet/roundedOfferOnnet)
-                            charged              = math.ceil(eventString/timeUnitOffer)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnitOffer)*timeUnitOffer)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitOffer}s"
                      else:
                             if roundedTypePP == 'Seconds':
@@ -8696,7 +8696,7 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
                                    eventString          = random.randint(1,10)
 
                             charged_rate         = round(ratePPOnnet/roundedPPOnnet)
-                            charged              = math.ceil(eventString/timeUnit)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnit)*timeUnit)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnit}s"
 
                      
@@ -8709,7 +8709,7 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
 
                      if rateDescription in event_param:
                             charged_rate         = round(rateOfferOffnet/roundedOfferOffnet)
-                            charged              = math.ceil(eventString/timeUnitOffer)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnitOffer)*timeUnitOffer)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitOffer}s"
                      else:
                             if roundedTypePP == 'Seconds':
@@ -8718,7 +8718,7 @@ def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnn
                                    eventString          = random.randint(1,10)
 
                             charged_rate         = round(ratePPOffnet/roundedPPOffnet)
-                            charged              = math.ceil(eventString/timeUnit)*charged_rate
+                            charged              = (math.ceil(eventString/timeUnit)*timeUnit)*charged_rate
                             consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnit}s"
                      
               else:
