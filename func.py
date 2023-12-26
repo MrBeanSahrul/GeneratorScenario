@@ -4876,23 +4876,23 @@ def stepOfferFlexible(offerName, PPName, preloadBonus, eligible, bonusDesc, star
 
        if eligible == 'Voice':
               UOM = 'V'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;'
        elif eligible == 'SMS':
               UOM = 'S'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$;'
        elif eligible == 'Voice & SMS':
               UOMV = 'V'
               UOMS = 'S'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity}235959$'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidityBack}235959$'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}235959${endDateValidity60}235959$'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidityBack}235959$'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$'
 
 
        stringBonusAll       = ''
@@ -5116,10 +5116,10 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
 
        if eligible == 'Voice':
               UOM = 'V'
-              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity}235959$;'
-              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidityBack}235959$;'
-              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}235959${endDateValidity60}235959$;'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;'
 
 
        stringBonusAll       = ''
@@ -5248,7 +5248,6 @@ def stepOfferVoiceIDDFlexible(offerName, PPName, preloadBonus, startDateValidity
        steps.extend(stepCase6)
 
        return steps
-
 
 def getStepReduceQuotaVoiceIDD(QuotaVoice, countryData, validity, start_hour, end_hour, bonDesc, mergedAccessCode, firstCountryPos, firstAccessCodePos, countryPosData, accessCodePosData):
        stepsConsume         = []
@@ -6065,3 +6064,2695 @@ def validateStepShortValidity(QuotaVoice, merged_data, countryDatas, mergedAcces
                      getAccessCode += 1
 
        return stepsConsume
+
+def exportExcelOfferRoaming(eventName, params=None, neededParams = None):
+       wb = Workbook()
+       ws = wb.active
+
+       cardType             = ''
+       offerType            = ''
+       offerTypePostpaid    = ''
+       offerName            = ''
+       PPName               = ''
+       preloadBonus         = ''
+       eligible             = ''
+       bonusDesc            = ''
+       MOEligible           = ''
+       MTEligible           = ''
+       vascodePositif       = ''
+       vascodeNegatif       = ''
+       countryPositif       = ''
+       countryNegatif       = ''
+       validity             = ''
+       startDateValidity    = ''
+       endDateValidity      = ''
+       endDateValidity60    = ''
+       endDateValidityBack  = ''
+       itemId               = ''
+       allowance            = ''
+       timeband             = ''
+       quota                = ''
+       cls                  = ''
+       scenarioChoosen      = ''
+       RCIndicator          = ''
+       validityEndDate      = ''
+       for params in params:
+              if "Card Type" in params:
+                     cardType = params['Card Type'][0]
+              else:
+                     cardType = ''
+
+              if "Offer Type Prepaid" in params:
+                     offerType = params['Offer Type Prepaid'][0]
+              else:
+                     offerType = ''
+              
+              if "Offer Type Postpaid" in params:
+                     offerTypePostpaid = params['Offer Type Postpaid'][0]
+              else:
+                     offerTypePostpaid = ''
+              
+              if "Offer Name" in params:
+                     offerName = params['Offer Name']
+              else:
+                     offerName = '' 
+              
+              if offerName == '':
+                     continue
+              
+              if "Price Plan Name" in params:
+                     PPName = params['Price Plan Name']
+              else:
+                     PPName = ''
+              
+              if "Bonus Description" in params:
+                     bonusDesc = params["Bonus Description"]
+              
+              if "Credit Limit Service" in params:
+                     cls = params["Credit Limit Service"]
+              
+              if "Eligible" in params:
+                     dataEligible = {
+                            "1" : "Voice",
+                            "2" : "SMS",
+                            "3" : "Voice & SMS"
+                     }
+                     if isinstance(params["Eligible"], list):
+                            eligible = params["Eligible"][0]
+                     else:
+                            if params["Eligible"].isnumeric():
+                                   eligible = dataEligible[params["Eligible"]]
+                            else:
+                                   eligible = params["Eligible"]
+              
+              if "Start Date Validity" in params:
+                     startDateValidity = params["Start Date Validity"]
+              
+              if "End Date Validity" in params:
+                     endDateValidity = params["End Date Validity"]
+              
+              if "End Date Validity For More Than 60 Days" in params:
+                     endDateValidity60 = params["End Date Validity For More Than 60 Days"]
+              
+              if "End Date Validity For Back Date" in params:
+                     endDateValidityBack = params["End Date Validity For Back Date"]
+              
+              if "Item ID" in params:
+                     itemId = params["Item ID"]
+              
+              if "Allowance" in params:
+                     allowance = params["Allowance"]
+              
+              if "Preload Bonus" in params:
+                     preloadBonus = params["Preload Bonus"]
+              
+              if "Validity" in params:
+                     validity = params["Validity"]
+
+              if "Timeband" in params:
+                     timeband = params["Timeband"]
+              
+              if "Country (for positif test case)" in params:
+                     countryPositif = params["Country (for positif test case)"]
+              
+              if "Country (for negatif test case)" in params:
+                     countryNegatif = params["Country (for negatif test case)"]
+              
+              if "MO Eligible" in params:
+                     MOEligible = params["MO Eligible"]
+              
+              if "MT Eligible" in params:
+                     MTEligible = params["MT Eligible"]
+              
+              if "Vascode (for positif test case)" in params:
+                     vascodePositif = params["Vascode (for positif test case)"]
+              
+              if "Vascode (for negatif test case)" in params:
+                     vascodeNegatif = params["Vascode (for negatif test case)"]
+              
+              if "Quota" in params:
+                     quota = params["Quota"]
+              
+              if "Scenario" in params:
+                     scenarioChoosen = params["Scenario"]
+              
+              if "RC Indicator" in params:
+                     RCIndicator = params["RC Indicator"]
+              
+              if "Validity End Date" in params:
+                     validityEndDate = params["Validity End Date"]
+              
+              if cardType == 'Prepaid':
+                     if offerType == 'Offer Flexible':
+                            steps = getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband)
+                     elif offerType == 'Offer Fix':
+                            steps = getStepOfferRoamingPrepaidFixOffer(offerName, PPName, preloadBonus, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota)
+                     else:
+                            print("Sorry, Scenario isn't ready yet")
+                            exit('') 
+              else:
+                     if offerTypePostpaid == 'Offer Fix':
+                            steps = getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota)
+                     elif offerTypePostpaid == 'Offer Flexible':
+                            steps = getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, startDateValidity, allowance, scenarioChoosen, RCIndicator, validityEndDate, endDateValidityBack)
+                     else:
+                            print("Sorry, Scenario isn't ready yet")
+                            exit('')
+
+              # Write Header Row
+              header = [f'{eventName} | {offerName}']
+              ws.append(header)
+
+              # Merge Header Cells
+              startColumnIndex = 3  # Example of a dynamic column index
+              startColumn = chr(ord("A") + startColumnIndex)  # Calculate the start column dynamically
+              endColumn = "E"
+              startRow = 1
+              endRow = 1
+              cellRange = f"{startColumn}{startRow}:{endColumn}{endRow}"
+              ws.merge_cells(cellRange)
+
+              headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
+              ws.append(headerRow)
+
+              no = 1
+              
+              for num, step in enumerate(steps, start=1):
+                     if isinstance(step, str):
+                            row = [
+                                   no,
+                                   step,
+                                   "Success",
+                                   "No Bonus",
+                                   "XYZ"
+                            ]
+                            no = no+1
+                     else:
+                            if step is None:
+                                   continue
+                            else:
+                                   if len(step) == 5:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 step[4]
+                                          ]
+                                   elif len(step) == 4:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 "XYZ"
+                                          ]
+                                   elif len(step) == 3:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                                   else:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 "No Bonus",
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                     ws.append(row)
+
+       print("Testing Scenario Successfully Generated")
+       
+       # Save Excel File
+       wb.save('Result/Scenario '+str(eventName)+' '+str(cardType)+' '+str(offerTypePostpaid)+' '+str(offerType)+'.xlsx')
+
+def getStepOfferRoamingPrepaidFlexibleOffer(offerName, PPName, preloadBonus, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, startDateValidity, endDateValidity, endDateValidity60, endDateValidityBack, itemId, allowance, timeband):
+       steps                = []
+       stepConsumePreload   = None
+       start_hour, end_hour = map(int, timeband.split('-'))
+
+       itemIDSplit   = itemId.split(';')
+       itemIDVoice   = itemIDSplit[0]
+       itemIDSMS     = 0
+       if len(itemIDSplit) > 1:
+              itemIDSMS = itemIDSplit[1]
+       
+       allowanceSplit       = allowance.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice/60) if allowanceVoice != 0 else 0
+       QuotaVoiceCase2      = 0
+       QuotaVoiceCase3      = 0
+       QuotaVoiceCase4      = int(allowanceVoice/60) if allowanceVoice != 0 else 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       QuotaSMSCase2        = 0
+       QuotaSMSCase3        = 0
+       QuotaSMSCase4        = allowanceSMS if allowanceSMS != 0 else 0
+       firstQuotaSMS        = QuotaSMS
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+       
+
+       if eligible == 'Voice':
+              UOM = 'V'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$S$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;'
+       elif eligible == 'SMS':
+              UOM = 'S'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}$V$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$;'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOM}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDSMS}${UOM}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$;'
+       elif eligible == 'Voice & SMS':
+              UOMV = 'V'
+              UOMS = 'S'
+              attachOfferString = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase2 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}$O$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity}235959$;{itemIDSMS}$O$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity}235959$'
+              attachOfferStringCase3 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidityBack}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidityBack}235959$'
+              attachOfferStringCase4 = f'Attach Offer {offerName} with param TransactionID|Product ID|Allow Item Level Cost and value Prod1|Trx1|{itemIDVoice}${UOMV}$0.3${allowanceVoice}${startDateValidity}000000${endDateValidity60}235959$;{itemIDSMS}${UOMS}$0.3${allowanceSMS}${startDateValidity}000000${endDateValidity60}235959$'
+
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+bonusDesc
+              bonusVoice     = str(firstQuotaVoice)+" Min "+bonusDesc
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+bonusDesc
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+bonusDesc
+       
+       start_datetime       = datetime.strptime(str(startDateValidity), '%Y%m%d')
+       end_datetime         = datetime.strptime(str(endDateValidity), '%Y%m%d')
+       end_datetimecase4    = datetime.strptime(str(endDateValidity60), '%Y%m%d')
+       
+       validity      = (end_datetime - start_datetime).days
+       validityCase4 = (end_datetimecase4 - start_datetime).days
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonusDesc, start_hour, end_hour, validity, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+              stepsConsumeBonusCase4, QuotaVoiceCase4, QuotaSMSCase4 = getStepReduceQuotaInternational(QuotaVoiceCase4, QuotaSMSCase4, bonusDesc, start_hour, end_hour, validityCase4, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+              
+
+       #Case 1 = Positif Case
+       stepCase1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferString,"Offer attached",stringBonusAll],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+              ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+
+       stepCase1.extend(stepsConsumeBonus)
+       stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 2 = Negatif (Berdasarkan UOM)
+       stepsConsumeBonusCase2, QuotaVoiceCase2, QuotaSMSCase2 = getStepReduceQuotaInternational(QuotaVoiceCase2, QuotaSMSCase2, bonusDesc, start_hour, end_hour, 1, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+       stepCase2 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferStringCase2,"Offer attached","No Bonus"],
+              #Reduce Allowance
+       ]
+       stepCase2.extend(stepsConsumeBonusCase2)
+       stepCase2.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 3 = Negatif (Backdate)
+       stepsConsumeBonusCase3, QuotaVoiceCase3, QuotaSMSCase3 = getStepReduceQuotaInternational(QuotaVoiceCase3, QuotaSMSCase3, bonusDesc, start_hour, end_hour, 1, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+       stepCase3 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferStringCase3,"Offer attached","No Bonus"],
+              #Reduce Allowance
+       ]
+       stepCase3.extend(stepsConsumeBonusCase3)
+       stepCase3.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 4 = Positif (Lebih dari 60 hari)
+       stepCase4 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferStringCase4,"Offer attached",stringBonusAll],
+              #Reduce Allowance
+       ]
+
+       stepCase4.extend(stepsConsumeBonusCase4)
+       stepCase4.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 5 = Multiple Attach (6x)
+       bonus6x = ""
+       if firstQuotaVoice > 0:
+              totalVoice    = firstQuotaVoice*6
+              bonus6x       = str(totalVoice)+" Min "+bonusDesc
+       
+       if firstQuotaSMS > 0:
+              totalSMS      = firstQuotaSMS*6
+              if bonus6x != '':
+                     bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+bonusDesc
+              else:
+                     bonus6x = str(totalSMS)+" SMS "+bonusDesc
+
+       stepCase5 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [attachOfferString,"Offer attached",stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [attachOfferString,"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check 889","Checked",bonus6x],
+              ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check PI on Indira","Success","No Bonus"]
+       ]
+
+       #Case 6
+       stepCase6 = [
+              [f"{offerName} SCN For check BSZ Extract | D-2", "", "", "", ""],
+              [f"Create & Activate new subscriber PP {PPName}", "Success", preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date", "Success", "No Bonus"],
+              ["Update Balance 10000000", "Balance Update", "No Bonus"],
+              [attachOfferString, "Offer attached", stringBonusAll],
+              ["Check notification after add offer", "Success", "Checked"],
+              ["Check Offer Name & Description", "Success", offerName],
+              ["Check GetBonusInfo and validity", "Success", "Checked"],
+              ["Check Bonus 889 and bonus description", "Success", "Checked"],
+              ["Check PRIT Name", "Success", "Success"],
+              ["Create event vas with eligible vascode param_vascode", "Success", "Success"],
+              ["Check notification after first event consume", "Success", "Success"],
+              ["Create event voice Onnet 60s", "Success", "Success"],
+              ["run adjustment so it will expired by today -2", "Success", "No Bonus"],
+              ["check bonus info (bonus should be gone)", "Success", "No Bonus"],
+              ["check 888", "Success", "No Bonus"],
+              ["run BSZ eod, and check bsz seizure", "Success", "No Bonus"],
+       ]
+
+       steps.extend(stepCase1)
+       steps.extend(stepCase2)
+       steps.extend(stepCase3)
+       steps.extend(stepCase4)
+       steps.extend(stepCase5)
+       steps.extend(stepCase6)
+
+       return steps
+
+def getStepOfferRoamingPrepaidFixOffer(offerName, PPName, preloadBonus, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota):
+       steps                = []
+       stepConsumePreload   = None
+       start_hour, end_hour = map(int, timeband.split('-'))
+       
+       allowanceSplit       = quota.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice) if allowanceVoice != 0 else 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       firstQuotaSMS        = QuotaSMS
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+bonusDesc
+              bonusVoice     = str(firstQuotaVoice)+" Min "+bonusDesc
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+bonusDesc
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+bonusDesc
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonusDesc, start_hour, end_hour, validity, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+              
+
+       #Case 1 = Positif Case
+       stepCase1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+              ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+
+       stepCase1.extend(stepsConsumeBonus)
+       stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 5 = Multiple Attach (6x)
+       bonus6x = ""
+       if firstQuotaVoice > 0:
+              totalVoice    = firstQuotaVoice*6
+              bonus6x       = str(totalVoice)+" Min "+bonusDesc
+       
+       if firstQuotaSMS > 0:
+              totalSMS      = firstQuotaSMS*6
+              if bonus6x != '':
+                     bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+bonusDesc
+              else:
+                     bonus6x = str(totalSMS)+" SMS "+bonusDesc
+
+       stepCase5 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update Exp Date","Updated","No Bonus"],
+              ["Update Balance 1000000","Balance Updated","No Bonus"],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check 889","Checked",bonus6x],
+              ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check PI on Indira","Success","No Bonus"]
+       ]
+
+       steps.extend(stepCase1)
+       steps.extend(stepCase5)
+
+       return steps
+
+def getStepOfferRoamingPostpaidFixOffer(offerName, PPName, preloadBonus, cls, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, validity, timeband, quota):
+       steps                = []
+       stepConsumePreload   = None
+       start_hour, end_hour = map(int, timeband.split('-'))
+       
+       allowanceSplit       = quota.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice) if allowanceVoice != 0 else 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       firstQuotaSMS        = QuotaSMS
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+bonusDesc
+              bonusVoice     = str(firstQuotaVoice)+" Min "+bonusDesc
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+bonusDesc
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+bonusDesc
+
+       if QuotaVoice > 0 or QuotaSMS > 0:
+              stepsConsumeBonus, QuotaVoice, QuotaSMS = getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonusDesc, start_hour, end_hour, validity, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif)
+              
+
+       #Case 1 = Positif Case
+       stepCase1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              ["Update parameter Init activation date", "Updated", "No Bonus"],
+              [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+              [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+              ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+              ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+              ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+              ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+              #Reduce Allowance
+       ]
+
+       stepCase1.extend(stepsConsumeBonus)
+       stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 5 = Multiple Attach (6x)
+       bonus6x = ""
+       if firstQuotaVoice > 0:
+              totalVoice    = firstQuotaVoice*6
+              bonus6x       = str(totalVoice)+" Min "+bonusDesc
+       
+       if firstQuotaSMS > 0:
+              totalSMS      = firstQuotaSMS*6
+              if bonus6x != '':
+                     bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+bonusDesc
+              else:
+                     bonus6x = str(totalSMS)+" SMS "+bonusDesc
+
+       stepCase5 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              stepConsumePreload,
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              [f"Attach offer {offerName}","Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check 889","Checked",bonus6x],
+              ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+              ["Check PI on Indira","Success","No Bonus"],
+              ["Do Offline event", "", ""]
+       ]
+
+       steps.extend(stepCase1)
+       steps.extend(stepCase5)
+
+       return steps
+
+def getStepOfferRoamingPostpaidFlexibleOffer(offerName, PPName, cls, eligible, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, startDateValidity, allowance, scenarioChoosen, RCIndicator, validityEndDate, endDateValidityBack):
+       steps                = []
+       stepConsumePreload   = None
+       preloadBonusString   = "No Bonus"
+       scenarioChoosed      = scenarioChoosen.split(',')
+       validityEndDate      = validityEndDate.split(';')
+       date_object          = datetime.strptime(endDateValidityBack, "%Y%m%d")
+       date_with_time       = date_object.replace(hour=17, minute=0, second=0)
+       endDateValidityBack  = date_with_time.strftime("%Y-%m-%d %H:%M:%S")
+       
+       allowanceSplit       = allowance.split(';')
+       allowanceVoice       = int(allowanceSplit[0])
+       QuotaVoice           = int(allowanceVoice/60) if allowanceVoice != 0 else 0
+       QuotaVoiceNegatif    = 0
+       QuotaVoiceCase2      = 0
+       QuotaVoiceCase3      = 0
+       firstQuotaVoice      = QuotaVoice
+       allowanceSMS         = 0
+       if len(allowanceSplit) > 1:
+              allowanceSMS  = int(allowanceSplit[1])
+       QuotaSMS             = allowanceSMS if allowanceSMS != 0 else 0
+       QuotaSMSCase2        = 0
+       QuotaSMSNegatif      = 0
+       QuotaSMSCase3        = 0
+       firstQuotaSMS        = QuotaSMS
+
+       if eligible == 'Voice':
+              UOM = 'V'
+              attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|S|1960-01-01 19:50:00|0|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
+       elif eligible == 'SMS':
+              UOM = 'S'
+              attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceSMS}|{UOM}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceSMS}|V|1960-01-01 19:50:00|0|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOM}|{endDateValidityBack}|0|String|String|String|String'
+       elif eligible == 'Voice & SMS':
+              UOMV = 'V'
+              UOMS = 'S'
+              attachOfferString = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOMV}|variable_for_historycal|variable_for_RC_Indicator|String|String|String|String;{allowanceSMS}|{UOMS}|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase2 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|O|1960-01-01 19:50:00|0|String|String|String|String;{allowanceSMS}|O|1960-01-01 19:50:00|variable_for_RC_Indicator|String|String|String|String'
+              attachOfferStringCase3 = f'Attach Offer {offerName} Quota|UOM|Validity end date|RC indicator|Invoice description|Quotation reference|External product id|TransactionID {allowanceVoice}|{UOMV}|{endDateValidityBack}|0|String|String|String|String;{allowanceSMS}|{UOMS}|{endDateValidityBack}|variable_for_RC_Indicator|String|String|String|String'
+
+
+       stringBonusAll       = ''
+       bonusVoice           = 'No Bonus'
+       bonusSMS             = 'No Bonus'
+       if firstQuotaVoice > 0:
+              stringBonusAll = str(firstQuotaVoice)+" Min "+bonusDesc
+              bonusVoice     = str(firstQuotaVoice)+" Min "+bonusDesc
+       if firstQuotaSMS > 0:
+              stringBonusAll = stringBonusAll+" "+str(firstQuotaSMS)+" SMS "+bonusDesc
+              bonusSMS       = str(firstQuotaSMS)+" SMS "+bonusDesc
+       
+       #Case 1 = Negatif Attach offer without parameter
+       if "1" in scenarioChoosed or "11" in scenarioChoosed:
+              stepsConsumeBonusCase1 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceNegatif, QuotaSMSNegatif, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase1 = [
+                     ["Case Attach offer without parameter", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer {offerName}","Rejected","No Bonus"],
+                     #Reduce Allowance
+              ]
+              stepCase1.extend(stepsConsumeBonusCase1)
+              stepCase1.extend([["Check PI on Indira","Success","No Bonus"]])
+       
+       #Case 2 = Negatif (Berdasarkan UOM)
+       if "2" in scenarioChoosed or "11" in scenarioChoosed:
+              stepsConsumeBonusCase2 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceCase2, QuotaSMSCase2, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase2 = [
+                     ["Case Negatif (Berdasarkan UOM)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferStringCase2,"Offer attached","No Bonus"],
+                     #Reduce Allowance
+              ]
+              stepCase2.extend(stepsConsumeBonusCase2)
+              stepCase2.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 3 = Negatif (Backdate)
+       if "3" in scenarioChoosed or "11" in scenarioChoosed:
+              stepsConsumeBonusCase3 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoiceCase3, QuotaSMSCase3, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase3 = [
+                     ["Case Backdate", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferStringCase3,"Offer attached","No Bonus"],
+                     #Reduce Allowance
+              ]
+              stepCase3.extend(stepsConsumeBonusCase3)
+              stepCase3.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 4 = Positif Case RC Indicator -1 (Historical)
+       if "4" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase4 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, -1, startDateValidity, "1960-01-01 19:50:00")
+              stepCase4 = [
+                     ["Case RC Indicator -1 (Historical)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "-1").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     ["Check Bonus 889*1","Bonus Checked","No Bonus"],
+                     ["Check Bonus 889*2","Bonus Checked",bonusVoice],
+                     ["Check Bonus 889*3","Bonus Checked",bonusSMS],
+                     ["Check Bonus 889*4","Bonus Checked","No Bonus"],
+                     #Reduce Allowance
+              ]
+
+              stepCase4.extend(stepsConsumeBonusCase4)
+              stepCase4.extend([["Check PI on Indira","Success","No Bonus"]])
+       
+       #Case 5 = Positif Case RC Indicator -1 (Non Historical)
+       if "5" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase5 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, -1, startDateValidity, validityEndDate[0])
+              stepCase5 = [
+                     ["Case RC Indicator -1 (Non Historical)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "-1").replace("variable_for_historycal", validityEndDate[0]),"Offer attached",stringBonusAll],
+                     #Reduce Allowance
+              ]
+
+              stepCase5.extend(stepsConsumeBonusCase5)
+              stepCase5.extend([["Check PI on Indira","Success","No Bonus"]])
+       
+       #Case 6 = Positif Case RC Indicator 0 (Historical)
+       if "6" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase6 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, "1960-01-01 19:50:00")
+              stepCase6 = [
+                     ["Case RC Indicator 0 (Historical)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     #Reduce Allowance
+              ]
+
+              stepCase6.extend(stepsConsumeBonusCase6)
+              stepCase6.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 7 = Positif Case RC Indicator 0 (Non Historycal)
+       if "7" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase7 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, 0, startDateValidity, validityEndDate[1])
+              stepCase7 = [
+                     ["Case RC Indicator 0 (Non Historical)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", validityEndDate[1]),"Offer attached",stringBonusAll],
+                     #Reduce Allowance
+              ]
+
+              stepCase7.extend(stepsConsumeBonusCase7)
+              stepCase7.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 8 = Positif Case RC Indicator more than 0 (Historical)
+       if "8" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase8 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDateValidity, "1960-01-01 19:50:00")
+              stepCase8 = [
+                     ["Case RC Indicator More Than 0 (Historical)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", RCIndicator).replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     #Reduce Allowance
+              ]
+
+              stepCase8.extend(stepsConsumeBonusCase8)
+              stepCase8.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 9 = Positif Case RC Indicator more than 0 (Non Historycal)
+       if "9" in scenarioChoosed or "11" in scenarioChoosed:
+              if firstQuotaVoice > 0 or firstQuotaSMS > 0:
+                     stepsConsumeBonusCase9 = getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonusDesc, MOEligible, MTEligible, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDateValidity, validityEndDate[2])
+              stepCase9 = [
+                     ["Case RC Indicator More Than 0 (Non Historical)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", RCIndicator).replace("variable_for_historycal", validityEndDate[2]),"Offer attached",stringBonusAll],
+                     #Reduce Allowance
+              ]
+
+              stepCase9.extend(stepsConsumeBonusCase9)
+              stepCase9.extend([["Check PI on Indira","Success","No Bonus"]])
+
+       #Case 10 = Multiple Attach (6x)
+       if "10" in scenarioChoosed or "11" in scenarioChoosed:
+              bonus6x = ""
+              if firstQuotaVoice > 0:
+                     totalVoice    = firstQuotaVoice*6
+                     bonus6x       = str(totalVoice)+" Min "+bonusDesc
+              
+              if firstQuotaSMS > 0:
+                     totalSMS      = firstQuotaSMS*6
+                     if bonus6x != '':
+                            bonus6x = str(bonus6x)+", "+str(totalSMS)+" SMS "+bonusDesc
+                     else:
+                            bonus6x = str(totalSMS)+" SMS "+bonusDesc
+
+              stepCase10 = [
+                     ["Case Multiple Attach (6x)", "", "", "", ""],
+                     [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+                     stepConsumePreload,
+                     [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+                     [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+                     ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     [attachOfferString.replace("variable_for_RC_Indicator", "0").replace("variable_for_historycal", "1960-01-01 19:50:00"),"Offer attached",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     ["Check 889","Checked",bonus6x],
+                     ["Check on database","Success",stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll+" , "+stringBonusAll],
+                     ["Check PI on Indira","Success","No Bonus"],
+                     ["Do Offline event", "", ""]
+              ]
+
+       #Case BSZ
+       stepCaseBSZ = [
+              [f"{offerName} SCN For check BSZ Extract | D-2", "", "", "", ""],
+              [f"Create & Activate new subscriber PP {PPName}", "Success", preloadBonusString],
+              stepConsumePreload,
+              [f"Attach Offer New Credit Limit Service {cls} | 3669334", "Offer Attached", "No Bonus"],
+              [f"Attach Offer New CLS Roaming {cls} | 3669354", "Offer Attached", "No Bonus"],
+              ["Attach Offer International Roaming | 36327", "Offer Attached", "No Bonus"],
+              [attachOfferString, "Offer attached", stringBonusAll],
+              ["Check notification after add offer", "Success", "Checked"],
+              ["Check Offer Name & Description", "Success", offerName],
+              ["Check GetBonusInfo and validity", "Success", "Checked"],
+              ["Check Bonus 889 and bonus description", "Success", "Checked"],
+              ["Check PRIT Name", "Success", "Success"],
+              ["Create event vas with eligible vascode param_vascode", "Success", "Success"],
+              ["Check notification after first event consume", "Success", "Success"],
+              ["Create event voice Onnet 60s", "Success", "Success"],
+              ["run adjustment so it will expired by today -2", "Success", "No Bonus"],
+              ["check bonus info (bonus should be gone)", "Success", "No Bonus"],
+              ["check 888", "Success", "No Bonus"],
+              ["run BSZ eod, and check bsz seizure", "Success", "No Bonus"],
+       ]
+
+       if "1" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase1)
+
+       if "2" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase2)
+       
+       if "3" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase3)
+       
+       if "4" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase4)
+       
+       if "5" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase5)
+       
+       if "6" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase6)
+       
+       if "7" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase7)
+       
+       if "8" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase8)
+       
+       if "9" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase9)
+       
+       if "10" in scenarioChoosed or "11" in scenarioChoosed:
+              steps.extend(stepCase10)
+
+       return steps
+
+def getStepReduceQuotaInternational(QuotaVoice, QuotaSMS, bonDesc, start_hour, end_hour, validity, MO, MT, vascodePositif, vascodeNegatif, countryPositif, countryNegatif):
+       stepsConsume         = []
+       dayString            = 0
+       validity             = int(validity)
+       maxValidity          = validity+1
+       countryPositifSplit  = countryPositif.split(';')
+       firstCountryPos      = countryPositifSplit[0]
+       countryPositifData   = [{"name": name, "status": "Positif"} for name in countryPositifSplit]
+       countryNegatifSplit  = countryNegatif.split(';') 
+       countryNegatifData   = [{"name": name} for name in countryNegatifSplit] 
+       mergedCountryData    = countryPositifData + countryNegatifData
+       vascodePosSplit      = vascodePositif.split(";")
+       firstVascodePos      = vascodePosSplit[0]
+       vascodePosData       = [{"name": name, "status": "Positif"} for name in vascodePosSplit]
+       vascodeNegSplit      = vascodeNegatif.split(";")
+       vascodeNegData       = [{"name": name, "status": "Negatif"} for name in vascodeNegSplit]
+       mergedVascode        = vascodePosData + vascodeNegData
+       MOEligible           = MO
+       MTEligible           = MT
+       
+       # Generate a shuffled list of numbers from dayString to validity - 1
+       days          = list(range(dayString, maxValidity))
+       firstDate     = days[0]
+       lastDate      = days[len(days) - 1]
+
+       if validity > 1:
+              # Choose a random number of elements to select from data
+              num_elements = random.randint(1, len(days) - 2)
+
+              # Randomly select elements from data
+              selected_data = random.sample(days[1:-1], num_elements)
+
+              # Sort selected_data based on the index in the original data list
+              selected_data = sorted(selected_data, key=lambda x: days.index(x))
+
+              # Merge variables into a single list
+              merged_data = [firstDate] + selected_data + [lastDate]
+       else:
+              merged_data = [firstDate] + [lastDate]
+       
+       random.shuffle(mergedVascode)
+       random.shuffle(mergedCountryData)
+       additionalNegatifCase = [
+              "Create Voice Onnet 1 Min",
+              "Create event 1 SMS onnet",
+              "Create event GPRS 1MB RG 50",
+              "Create Event Voice Offnet 5s",
+              "Create Event Voice PSTN 5s",
+              "Create Event Voice FWA 180s",
+       ]
+       #Steps for reduce quota voice
+       getDataVoice                = 0
+       countVoice                  = 1
+       priorityOutVoice            = 0
+       negatifCaseOutTimeband      = True
+       MO_MT_Data                  = [
+              {"Type" : "MO", "Data" : "Home"},
+              {"Type" : "MO", "Data" : "Local"},
+              {"Type" : "MO", "Data" : "Other"},
+              {"Type" : "MT", "Data" : "Home"},
+              {"Type" : "MT", "Data" : "Local"},
+              {"Type" : "MT", "Data" : "Other"}
+       ]
+       data_MO_MT           = 0
+       for strValidity in merged_data:
+              stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase, negatifCaseOutTimeband = validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, strValidity, merged_data, mergedCountryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase, negatifCaseOutTimeband)
+              stepsConsume.extend(stepsConsumeVoice)
+              stepsConsumeSMS, QuotaSMS, additionalNegatifCase, negatifCaseOutTimeband = validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, strValidity, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase, negatifCaseOutTimeband)
+              stepsConsume.extend(stepsConsumeSMS)
+
+       return stepsConsume, QuotaVoice, QuotaSMS
+
+def validateStepNormalVoiceInternational(QuotaVoice, QuotaSMS, day, merged_data, countryData, start_hour, end_hour, validity, bonDesc, firstCountryPos, countryPosData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase, negatifCaseOutTimeband):
+       stepsConsume         = []
+
+       getData       = getDataVoice
+       count         = countVoice
+
+       #Variable for count how much country positive and access code positive is out
+       priorityOut   = priorityOutVoice
+
+       if MO_MT_Out >= len(MO_MT_Data):
+              MO_MT_Out = 0
+       
+       MO_or_MT = MO_MT_Data[MO_MT_Out]["Type"]
+
+       if priorityOut >= len(countryPosData):
+              if getData >= len(countryData):
+                     getData = 0
+              country       = countryData[getData]
+              countryName   = country["name"]
+       else:
+              country       = countryPosData[priorityOut]
+              countryName   = country["name"]
+
+              priorityOut += 1
+       
+       showOrNotOutTimeband = random.randint(0,1)
+       if showOrNotOutTimeband == 1 and negatifCaseOutTimeband and end_hour <= 22:
+              start_hour_out_timeband     = int(end_hour)+1
+              timeNumber                  = random.randint(start_hour_out_timeband, 23)
+              timeString                  = timeNumber
+              negatifCaseOutTimeband      = False
+       else:
+              timeNumber    = random.randint(start_hour, end_hour)
+              timeString    = timeNumber
+
+       if MO_or_MT == 'MO':
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
+              MO_ELigible = MOEligible.lower().split(";")
+              if MO_MT_Choice.lower() in MO_ELigible:
+                     checked_MO_MT = True
+              else:
+                     checked_MO_MT = False
+       else:
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
+              MT_ELigible = MTEligible.lower().split(";")
+              if MO_MT_Choice.lower() in MT_ELigible:
+                     checked_MO_MT = True
+              else:
+                     checked_MO_MT = False
+
+       if MO_MT_Choice == 'Home':
+              String_MO_MT = f'From {countryName}'
+       elif MO_MT_Choice == 'Local':
+              String_MO_MT = f'In {countryName}'
+       else:
+              countryNeg    = random.choice(countryNegatifData)
+              countryTo     = countryNeg["name"]
+              if MO_or_MT == 'MO':
+                     String_MO_MT  = f'In {countryName} To {countryTo}'
+              else:
+                     String_MO_MT  = f'In {countryName} From {countryTo}'
+       
+       if checked_MO_MT:
+              if "status" in country:
+                     if day < validity:
+                            if start_hour <= end_hour:
+                                   # Time range does not span midnight
+                                   if start_hour <= timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged     = 'Consume Bonus'
+                                          reduceOrNot          = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged     = 'Charged'
+                                          reduceOrNot          = False
+                            else:
+                                   # Time range spans midnight
+                                   if timeNumber >= start_hour or timeNumber <= end_hour:
+                                          # Number is within the time range Timeband
+                                          consumeOrCharged     = 'Consume Bonus'
+                                          reduceOrNot          = True
+                                   else:
+                                          # Number is not within the time range Timeband
+                                          consumeOrCharged     = 'Charged'
+                                          reduceOrNot          = False
+                     else:
+                            consumeOrCharged     = 'Charged'
+                            reduceOrNot          = False
+              else:
+                     consumeOrCharged     = 'Charged'
+                     reduceOrNot          = False
+       else:
+              consumeOrCharged     = 'Charged'
+              reduceOrNot          = False
+       
+       if QuotaVoice > 0 and reduceOrNot:
+              decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
+              QuotaVoice -= decreasingQuotaVoice
+              eventString = decreasingQuotaVoice
+       else:
+              eventString          = '1'
+              consumeOrCharged     = 'Charged'
+
+       if int(timeString) > 12:
+              timeString = str(int(timeString) - 12) + 'PM'
+       else:
+              timeString = str(timeString) + "AM"
+       
+       QuotaVoice    = int(QuotaVoice)
+       if QuotaVoice > 0 and QuotaSMS <= 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}"
+       elif QuotaVoice > 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}, {QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS <= 0:
+              restBonus = "No Bonus" 
+
+       if int(day) >= validity:
+              restBonus = "No Bonus"
+
+       #{Create} {event} {voice} {MO/MT Home/Local/Other} {Home = from, Local = in, Other = Country 1 to Country 2} {timeString} {eventString}Min D+{day}
+       #Create event voice {MO_or_MT} {MO_MT_Choice} {String_MO_MT} {timeString} {EventString}Min D+{day}
+       # eventLabel = f"Create event voice IDD to {countryName} using access code {vascodeUsed} {timeString} {eventString}Min D+{day}"
+       eventLabel = f"Create event voice {MO_or_MT} {MO_MT_Choice} {String_MO_MT} {timeString} {eventString}Min D+{day}"
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       stepsConsume.append(step)
+
+       if len(additionalNegatifCase) > 0:
+              showOrNot = random.randint(0,1)
+              if showOrNot == 1:
+                     selected_value = random.choice(additionalNegatifCase)
+                     stepAdd = [
+                            str(selected_value)+" "+str(timeString)+" D+"+str(day),
+                            "Charged",
+                            restBonus
+                     ]
+                     stepsConsume.append(stepAdd)
+                     additionalNegatifCase.remove(selected_value)
+       
+       if count == len(merged_data):
+              stepLast = [
+                     f"Create event voice {MO_or_MT} {MO_MT_Choice} {firstCountryPos} {timeString} {eventString}Min D+{day}",
+                     "Charged",
+                     restBonus
+              ]
+              stepsConsume.append(stepLast)
+                     
+       getData += 1
+       count += 1
+       MO_MT_Out += 1
+
+       return stepsConsume, QuotaVoice, getData, count, priorityOut, MO_MT_Out, additionalNegatifCase, negatifCaseOutTimeband
+
+def validateStepNormalSMSInternational(QuotaVoice, QuotaSMS, day, mergedVascode, start_hour, end_hour, validity, bonDesc, additionalNegatifCase, negatifCaseOutTimeband):
+       stepsConsume         = []
+
+       vascode           = random.choice(mergedVascode)
+       vascodeName       = vascode["name"]
+       vascodeStatus     = vascode["status"]
+       vascodeUsed       = vascodeName
+       
+       showOrNotOutTimeband = random.randint(0,1)
+       if showOrNotOutTimeband == 1 and negatifCaseOutTimeband and end_hour <= 22:
+              start_hour_out_timeband     = int(end_hour)+1
+              timeNumber                  = random.randint(start_hour_out_timeband, 23)
+              timeString                  = timeNumber
+              negatifCaseOutTimeband      = False
+       else:
+              timeNumber    = random.randint(start_hour, end_hour)
+              timeString    = timeNumber
+
+       if vascodeStatus == 'Positif':
+              if day < validity:
+                     if start_hour <= end_hour:
+                            # Time range does not span midnight
+                            if start_hour <= timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged     = 'Consume Bonus'
+                                   reduceOrNot          = True
+                            else:
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged     = 'Charged'
+                                   reduceOrNot          = False
+                     else:
+                            # Time range spans midnight
+                            if timeNumber >= start_hour or timeNumber <= end_hour:
+                                   # Number is within the time range Timeband
+                                   consumeOrCharged     = 'Consume Bonus'
+                                   reduceOrNot          = True
+                            else:
+                                   # Number is not within the time range Timeband
+                                   consumeOrCharged     = 'Charged'
+                                   reduceOrNot          = False
+              else:
+                     consumeOrCharged     = 'Charged'
+                     reduceOrNot          = False
+       else:
+              consumeOrCharged     = 'Charged'
+              reduceOrNot          = False
+       
+       if QuotaSMS > 0 and reduceOrNot:
+              decreasingQuotaSMS = 1
+              QuotaSMS -= decreasingQuotaSMS
+       else:
+              consumeOrCharged     = 'Charged'
+
+       if int(timeString) > 12:
+              timeString = str(int(timeString) - 12) + 'PM'
+       else:
+              timeString = str(timeString) + "AM"
+       
+       QuotaSMS    = int(QuotaSMS)
+       if QuotaVoice > 0 and QuotaSMS <= 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}"
+       elif QuotaVoice > 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}, {QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS <= 0:
+              restBonus = "No Bonus" 
+
+       if int(day) >= validity:
+              restBonus = "No Bonus"
+
+       eventLabel = f"Create event direct debit with vascode {vascodeUsed} {timeString} D+{day}"
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       stepsConsume.append(step)
+
+       if len(additionalNegatifCase) > 0:
+              showOrNot = random.randint(0,1)
+              if showOrNot == 1:
+                     selected_value = random.choice(additionalNegatifCase)
+                     stepAdd = [
+                            str(selected_value)+" "+str(timeString)+" D+"+str(day),
+                            "Charged",
+                            restBonus
+                     ]
+                     stepsConsume.append(stepAdd)
+                     additionalNegatifCase.remove(selected_value)
+       
+       if day == validity:
+              stepLast = [
+                     f"Create event direct debit with vascode {vascodeUsed} {timeString} D+{day}",
+                     "Charged",
+                     restBonus
+              ]
+              stepsConsume.append(stepLast)
+
+       return stepsConsume, QuotaSMS, additionalNegatifCase, negatifCaseOutTimeband
+
+def getStepReduceQuotaInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, bonDesc, MO, MT, vascodePositif, vascodeNegatif, countryPositif, countryNegatif, RCIndicator, startDate, endDate):
+       stepsConsume         = []
+       countryPositifSplit  = countryPositif.split(';')
+       countryPositifData   = [{"name": name, "status": "Positif"} for name in countryPositifSplit]
+       countryNegatifSplit  = countryNegatif.split(';') 
+       countryNegatifData   = [{"name": name} for name in countryNegatifSplit] 
+       mergedCountryData    = countryPositifData + countryNegatifData
+       vascodePosSplit      = vascodePositif.split(";")
+       vascodePosData       = [{"name": name, "status": "Positif"} for name in vascodePosSplit]
+       vascodeNegSplit      = vascodeNegatif.split(";")
+       vascodeNegData       = [{"name": name, "status": "Negatif"} for name in vascodeNegSplit]
+       mergedVascode        = vascodePosData + vascodeNegData
+       MOEligible           = MO
+       MTEligible           = MT
+       firstQuotaVoice      = QuotaVoice
+       firstQuotaSMS        = QuotaSMS
+       RCIndicator          = int(RCIndicator)
+       
+       # Generate a shuffled list of numbers from dayString to validity - 1
+       random.shuffle(mergedVascode)
+       random.shuffle(mergedCountryData)
+       additionalNegatifCase = [
+              "Create Voice Onnet 1 Min",
+              "Create event 1 SMS onnet",
+              "Create event GPRS 1MB RG 50",
+              "Create Event Voice Offnet 5s",
+              "Create Event Voice PSTN 5s",
+              "Create Event Voice FWA 180s",
+       ]
+       #Steps for reduce quota voice
+       getDataVoice                = 0
+       countVoice                  = 1
+       priorityOutVoice            = 0
+       MO_MT_Data                  = [
+              {"Type" : "MO", "Data" : "Home"},
+              {"Type" : "MO", "Data" : "Local"},
+              {"Type" : "MO", "Data" : "Other"},
+              {"Type" : "MT", "Data" : "Home"},
+              {"Type" : "MT", "Data" : "Local"},
+              {"Type" : "MT", "Data" : "Other"}
+       ]
+       data_MO_MT           = 0
+
+       param                = 0
+       count                = 0
+       
+       if endDate != '1960-01-01 19:50:00':
+              start_date_str = startDate
+              start_date = datetime.strptime(start_date_str, "%Y%m%d")
+
+              # End date
+              end_date_str = endDate
+              end_date = datetime.strptime(end_date_str, "%Y%m%d")
+
+              # Loop through dates with an additional parameter
+              current_date = start_date
+              while current_date <= end_date:
+
+                     if RCIndicator == -1:
+                            if current_date.day == 1:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+                     elif RCIndicator >= 0:
+                            if count >= RCIndicator:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+
+                     stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedCountryData, bonDesc, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeVoice)
+                     
+                     stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeSMS)
+                     
+                     monthBefore   = current_date.month
+                     plusDay       = random.randint(1,10)
+                     
+                     if RCIndicator > 0:
+                            if plusDay > RCIndicator:
+                                   plusDay = int(RCIndicator)
+
+                     current_date += timedelta(days=plusDay)
+
+                     if monthBefore != current_date.month:
+                            current_date.replace(day=1)
+
+                     count += plusDay
+       else:
+              start_date_str = startDate
+              current_date = datetime.strptime(start_date_str, "%Y%m%d")
+              
+              while True:
+
+                     if RCIndicator == -1:
+                            if current_date.day == 1:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+                     elif RCIndicator > 0:
+                            if count == RCIndicator:
+                                   QuotaVoice    = firstQuotaVoice
+                                   QuotaSMS      = firstQuotaSMS
+                                   
+                     stepsConsumeVoice, QuotaVoice, getDataVoice, countVoice, priorityOutVoice, data_MO_MT, additionalNegatifCase = validateStepNormalVoiceInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedCountryData, bonDesc, countryPositifData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, data_MO_MT, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeVoice)
+                     
+                     stepsConsumeSMS, QuotaSMS, additionalNegatifCase = validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, current_date, mergedVascode, bonDesc, additionalNegatifCase)
+                     stepsConsume.extend(stepsConsumeSMS)
+
+                     monthBefore   = current_date.month
+                     plusDay       = random.randint(1,10)
+
+                     if RCIndicator > 0:
+                            if plusDay > RCIndicator:
+                                   plusDay = RCIndicator
+
+                     current_date += timedelta(days=plusDay)
+
+                     if monthBefore != current_date.month:
+                            current_date.replace(day=1)
+
+                     if RCIndicator == -1 or RCIndicator > 0:
+                            count += plusDay
+
+                            if count >= RCIndicator and RCIndicator > 0:
+                                   param += 1
+                                   count = 0
+                            else:
+                                   if current_date.day == 1:
+                                          param += 1
+                     
+                            # Check if the parameter reaches a certain value (e.g., 5) to break out of the loop
+                            if param >= 2:
+                                   break
+                     else:
+                            if QuotaVoice <= 0 and QuotaSMS <= 0:
+                                   break
+                     
+
+       return stepsConsume
+
+def validateStepNormalVoiceInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, day, countryData, bonDesc, countryPosData, MOEligible, MTEligible, getDataVoice, countVoice, priorityOutVoice, countryNegatifData, MO_MT_Data, MO_MT_Out, additionalNegatifCase):
+       stepsConsume  = []
+       day           = day.strftime("%d-%m-%Y")
+       getData       = getDataVoice
+       count         = countVoice
+
+       #Variable for count how much country positive and access code positive is out
+       priorityOut   = priorityOutVoice
+
+       if MO_MT_Out >= len(MO_MT_Data):
+              MO_MT_Out = 0
+       
+       MO_or_MT = MO_MT_Data[MO_MT_Out]["Type"]
+
+       if priorityOut >= len(countryPosData):
+              if getData >= len(countryData):
+                     getData = 0
+              country       = countryData[getData]
+              countryName   = country["name"]
+       else:
+              country       = countryPosData[priorityOut]
+              countryName   = country["name"]
+
+              priorityOut += 1
+
+       if MO_or_MT == 'MO':
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
+              MO_ELigible = MOEligible.lower().split(";")
+              if MO_MT_Choice.lower() in MO_ELigible:
+                     checked_MO_MT = True
+              else:
+                     checked_MO_MT = False
+       else:
+              MO_MT_Choice = MO_MT_Data[MO_MT_Out]["Data"]
+              MT_ELigible = MTEligible.lower().split(";")
+              if MO_MT_Choice.lower() in MT_ELigible:
+                     checked_MO_MT = True
+              else:
+                     checked_MO_MT = False
+
+       if MO_MT_Choice == 'Home':
+              String_MO_MT = f'From {countryName}'
+       elif MO_MT_Choice == 'Local':
+              String_MO_MT = f'In {countryName}'
+       else:
+              countryNeg    = random.choice(countryNegatifData)
+              countryTo     = countryNeg["name"]
+              if MO_or_MT == 'MO':
+                     String_MO_MT  = f'In {countryName} To {countryTo}'
+              else:
+                     String_MO_MT  = f'In {countryName} From {countryTo}'
+       
+       if checked_MO_MT:
+              if "status" in country:       
+                     consumeOrCharged     = 'Consume Bonus'
+                     reduceOrNot          = True
+              else:
+                     consumeOrCharged     = 'Charged'
+                     reduceOrNot          = False
+       else:
+              consumeOrCharged     = 'Charged'
+              reduceOrNot          = False
+       
+       if QuotaVoice > 0 and reduceOrNot:
+              decreasingQuotaVoice = round((QuotaVoice * 0.5) / 4)
+              if decreasingQuotaVoice == 0:
+                     decreasingQuotaVoice = QuotaVoice
+              QuotaVoice -= decreasingQuotaVoice
+              eventString = decreasingQuotaVoice
+       else:
+              eventString          = '1'
+              consumeOrCharged     = 'Charged'
+
+       
+       QuotaVoice    = int(QuotaVoice)
+       if QuotaVoice > 0 and QuotaSMS <= 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}"
+       elif QuotaVoice > 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}, {QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS <= 0:
+              restBonus = "No Bonus" 
+
+       #{Create} {event} {voice} {MO/MT Home/Local/Other} {Home = from, Local = in, Other = Country 1 to Country 2} {timeString} {eventString}Min D+{day}
+       #Create event voice {MO_or_MT} {MO_MT_Choice} {String_MO_MT} {timeString} {EventString}Min D+{day}
+       # eventLabel = f"Create event voice IDD to {countryName} using access code {vascodeUsed} {timeString} {eventString}Min D+{day}"
+       eventLabel = f"Create event voice {MO_or_MT} {MO_MT_Choice} {String_MO_MT} {eventString}Min {day}"
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       stepsConsume.append(step)
+
+       if len(additionalNegatifCase) > 0:
+              showOrNot = random.randint(0,1)
+              if showOrNot == 1:
+                     selected_value = random.choice(additionalNegatifCase)
+                     stepAdd = [
+                            str(selected_value)+" "+str(day),
+                            "Charged",
+                            restBonus
+                     ]
+                     stepsConsume.append(stepAdd)
+                     additionalNegatifCase.remove(selected_value)
+                     
+       getData += 1
+       count += 1
+       MO_MT_Out += 1
+
+       return stepsConsume, QuotaVoice, getData, count, priorityOut, MO_MT_Out, additionalNegatifCase
+
+def validateStepNormalSMSInternationalFlexiblePostpaid(QuotaVoice, QuotaSMS, day, mergedVascode, bonDesc, additionalNegatifCase):
+       stepsConsume         = []
+       day                  = day.strftime("%d-%m-%Y")
+       vascode           = random.choice(mergedVascode)
+       vascodeName       = vascode["name"]
+       vascodeStatus     = vascode["status"]
+       vascodeUsed       = vascodeName
+
+       if vascodeStatus == 'Positif':
+              consumeOrCharged     = 'Consume Bonus'
+              reduceOrNot          = True
+       else:
+              consumeOrCharged     = 'Charged'
+              reduceOrNot          = False
+       
+       if QuotaSMS > 0 and reduceOrNot:
+              decreasingQuotaSMS = 1
+              QuotaSMS -= decreasingQuotaSMS
+       else:
+              consumeOrCharged     = 'Charged'
+       
+       QuotaSMS    = int(QuotaSMS)
+       if QuotaVoice > 0 and QuotaSMS <= 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}"
+       elif QuotaVoice > 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaVoice} Min {bonDesc}, {QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS > 0:
+              restBonus = f"{QuotaSMS} SMS {bonDesc}"
+       elif QuotaVoice <= 0 and QuotaSMS <= 0:
+              restBonus = "No Bonus" 
+
+       eventLabel = f"Create event direct debit with vascode {vascodeUsed} {day}"
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       stepsConsume.append(step)
+
+       if len(additionalNegatifCase) > 0:
+              showOrNot = random.randint(0,1)
+              if showOrNot == 1:
+                     selected_value = random.choice(additionalNegatifCase)
+                     stepAdd = [
+                            str(selected_value)+" "+str(day),
+                            "Charged",
+                            restBonus
+                     ]
+                     stepsConsume.append(stepAdd)
+                     additionalNegatifCase.remove(selected_value)
+       
+
+       return stepsConsume, QuotaSMS, additionalNegatifCase
+
+def exportExcelANPS(eventName, params=None, neededParams = None):
+       wb = Workbook()
+       ws = wb.active
+
+       offerName            = ''
+       PPName               = ''
+       preloadBonus         = ''
+       wordingAddOffer      = ''
+       wordingReachTreshold = ''
+       dropCallOnnet        = 'N'
+       dropCallOffnet       = 'N'
+       threshold            = ''
+       XPP                  = ''
+       YPP                  = ''
+       zone                 = ''
+       rate                 = ''
+       YAllowance           = ''
+       BonDescPP            = ''
+
+       for params in params:
+              if "Offer Name" in params:
+                     offerName = params["Offer Name"]
+              
+              if "Price Plan Name" in params:
+                     PPName = params["Price Plan Name"]
+              
+              if "Preload Bonus" in params:
+                     preloadBonus = params["Preload Bonus"]
+              
+              if "Wording add offer" in params:
+                     wordingAddOffer = params["Wording add offer"]
+
+              if "Wording reach threshold" in params:
+                     wordingReachTreshold = params["Wording reach threshold"]
+              
+              if "Drop Call Onnet" in params:
+                     dropCallOnnet = params["Drop Call Onnet"]
+              
+              if "Drop Call Offnet" in params:
+                     dropCallOffnet = params["Drop Call Offnet"]
+              
+              if "Threshold" in params:
+                     threshold = params["Threshold"]
+              
+              if "X get Y PP (X,Bonus Description,Y)" in params:
+                     XgetYPP = params["X get Y PP (X,Bonus Description,Y)"].split(",")
+                     XPP           = XgetYPP[0]
+                     BonDescPP     = XgetYPP[1]
+                     YPP           = XgetYPP[2]
+              
+              if "Zone" in params:
+                     zone = params["Zone"]
+              
+              if "Rate Offer" in params:
+                     rate = params["Rate Offer"]
+              
+              if "Y Allowance" in params:
+                     YAllowance = params["Y Allowance"]
+              
+              steps = stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold, XPP, BonDescPP, YPP, zone, rate, YAllowance)
+              
+
+              # Write Header Row
+              header = [f'{eventName} | {offerName}']
+              ws.append(header)
+
+              # Merge Header Cells
+              startColumnIndex = 3  # Example of a dynamic column index
+              startColumn = chr(ord("A") + startColumnIndex)  # Calculate the start column dynamically
+              endColumn = "E"
+              startRow = 1
+              endRow = 1
+              cellRange = f"{startColumn}{startRow}:{endColumn}{endRow}"
+              ws.merge_cells(cellRange)
+
+              headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
+              ws.append(headerRow)
+
+              no = 1
+              for num, step in enumerate(steps, start=1):
+                     if isinstance(step, str):
+                            row = [
+                                   no,
+                                   step,
+                                   "Success",
+                                   "No Bonus",
+                                   "XYZ"
+                            ]
+                            no = no+1
+                     else:
+                            if step is None:
+                                   continue
+                            else:
+                                   if len(step) == 5:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 step[4]
+                                          ]
+                                   elif len(step) == 4:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 "XYZ"
+                                          ]
+                                   elif len(step) == 3:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                                   else:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 "No Bonus",
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                     ws.append(row)
+
+       print("Testing Scenario Successfully Generated")
+       
+       # Save Excel File
+       wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
+
+def stepANPS(offerName, PPName, preloadBonus, wordingAddOffer, wordingReachTreshold, dropCallOnnet, dropCallOffnet, threshold, XPP, BonDescPP, YPP, zone, rate, YAllowance):
+       stepConsumePreload   = None
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+       
+       stepXgetYPP2 = None
+       if BonDescPP == 'Onnet':
+              stepXgetYPP = [f"Create event {XPP} voice onnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+       elif BonDescPP == 'Offnet':
+              stepXgetYPP = [f"Create event {XPP} voice Offnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+       elif BonDescPP == 'All Opr':
+              stepXgetYPP = [f"Create event {XPP} voice onnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+              stepXgetYPP2 = [f"Create event {XPP} voice Offnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP]
+       else:
+              stepXgetYPP = None
+       
+       if dropCallOnnet == "Y":
+              dropOnnet = f"Charged {threshold} IDR"
+       else:
+              dropOnnet = f"Charged Not {threshold} IDR"
+       
+       if dropCallOffnet == "Y":
+              dropOffnet = f"Charged {threshold} IDR"
+       else:
+              dropOffnet = f"Charged Not {threshold} IDR"
+       
+       zone = zone.split(",")
+       zoneSelected = random.choice(zone)
+
+       rate = rate.split(",")
+       
+       rateForOnnet = rate[0].split("/")
+       rateOnnet = rateForOnnet[0]
+       roundedOnnet = rateForOnnet[1]
+
+       rateForOffnet = rate[1].split("/")
+       rateOffnet = rateForOffnet[0]
+       roundedOffnet = rateForOffnet[1]
+
+       step1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              ["Update Balance 1000K","Balance Updated",preloadBonusString],
+              ["Update exp date","Updated",preloadBonusString],
+              stepConsumePreload,
+              stepXgetYPP,
+              stepXgetYPP2,
+              [f"Attach Offer {offerName}","Offer Attached",YPP],
+              ["Check notifikasi & Wording",wordingAddOffer,YPP],
+              ["Check Offername",offerName,YPP],
+              ["Create Event Consume Bonus Y PP", "Consume Bonus", "No Bonus"]
+       ]
+
+       YAllowanceSplit      = YAllowance.split(",")
+       allowanceOnnet       = YAllowanceSplit[0]
+       allowanceOffnet      = ''
+
+       if len(YAllowanceSplit) > 1:
+              allowanceOffnet = YAllowanceSplit[1]
+       
+       allowanceString      = ''
+       if allowanceOnnet != '' and allowanceOffnet != '':
+              allowanceString = f'{allowanceOnnet} min Tsel, {allowanceOffnet} All Opr'
+       elif allowanceOnnet == '' and allowanceOffnet != '':
+              allowanceString = f'{allowanceOffnet} All Opr'
+       elif allowanceOnnet != '' and allowanceOffnet == '':
+              allowanceString = f'{allowanceOnnet} min Tsel'
+       else:
+              allowanceString      = 'No Bonus'
+       
+       firstAllowanceOnnet  = allowanceOnnet
+       firstAllowanceOffnet = allowanceOffnet
+
+       usedRate = 0
+       stepGenerateToReachThreshold1, usedRate = getStepReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, usedRate, random.choice(zone), threshold, allowanceString)
+
+       step2 = [
+              ["Check notifikasi & Wording",wordingReachTreshold,allowanceString]
+       ]
+       
+       stepReduceAllowance1, allowanceOnnet, allowanceOffnet = getStepRecudeQuotaANPS(allowanceOnnet, allowanceOffnet, random.choice(zone))
+       
+       chargedOnnet = math.ceil(7/int(roundedOnnet))*int(rateOnnet)
+       chargedOffnet = math.ceil(13/int(roundedOffnet))*int(rateOffnet)
+
+       step3 = [
+              [f"Create event 10 sms onnet 10am on zone {random.choice(zone)} D+1","Charged","No Bonus"],
+              [f"Create Event Voice Offnet 7s 11am on Zone {random.choice(zone)} D+1",f"Charged {chargedOnnet} IDR","No Bonus"],
+              [f"Create Event Voice Onnet 13s 1pm on Zone {random.choice(zone)} D+1 Rate ANPS",f"Charged {chargedOffnet} IDR","No Bonus"],
+              [f"Create Event voice Offnet Initial 2pm D+1 on Zone {random.choice(zone)} Rate ANPS","Initial Success","No bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 2pm D+1 on Zone {random.choice(zone)}","Intermediate Succes","No bonus"],
+              [f"Create Event Voice Offnet Terminate 0s 2pm D+1 on Zone 5 charge > threshold XgetY",dropOffnet,allowanceString],
+              [f"Check Pricing Item ID and It's Name rate ANPS charge PP Voice Offnet - Flat rate","Checked",allowanceString],
+              [f"Create Event Voice Offnet Initial 11am D+30 on Zone {zoneSelected}", "Initial Success", "No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Success | Drop Call | Is Reversed = YES","No Bonus"],
+              [f"Create Event Voice Offnet Intermediate 180s 11am D+30 on Zone {zoneSelected}","Intermediate Rejected 4012","No Bonus"],
+              [f"Create Event Voice Offnet Terminate 0s 11am D+30 on Zone {zoneSelected}",dropOffnet,allowanceString]
+       ]
+
+       allowanceOnnet2 = firstAllowanceOnnet
+       allowanceOffnet2 = firstAllowanceOffnet
+       stepReduceAllowance2, allowanceOnnet2, allowanceOffnet2 = getStepRecudeQuotaANPS(allowanceOnnet2, allowanceOffnet2, random.choice(zone))
+       current_year = datetime.now().year
+       next_year = (datetime.now() + timedelta(days=365)).year
+
+       step4 = [
+              [f"Remove Offer {offerName}","Offer Removed","No Bonus"],
+              [f"Create Event Voice Onnet 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              [f"Create Event Voice Offnet 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              [f"Create Event Voice PSTN 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              [f"Create Event Voice FWA 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              ["Check Indira","Checked","No Bonus"],
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              ["Update Balance 1000K","Balance Updated",preloadBonusString],
+              [f"Update exp date {current_year}-12-31","Updated",preloadBonusString],
+              stepConsumePreload,
+              [f"Create event {XPP} voice onnet 9am D+0 zone ID = {random.choice(zone)}","Charged | should be used rate PP",YPP],
+              [f"Attach Offer {offerName}","Offer Attached",YPP],
+              ["Check notifikasi & Wording",wordingAddOffer,YPP],
+              ["Create Event Consume Bonus Y PP", "Consume Bonus", "No Bonus"]
+       ]
+
+       step5 = [
+              ["Check notifikasi & Wording",wordingReachTreshold,allowanceString],
+              [f"Create Event Voice Onnet Initial 11am D+30 on {zoneSelected}","Initial Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Success | Drop Call | Is Reversed = YES","No Bonus"],
+              [f"Create Event Voice Onnet Intermediate 180s 11am D+30 on {zoneSelected}","Intermediate Rejected 4012","No Bonus"],
+              [f"Create Event Voice Onnet Terminate 0s 11am D+30 on {zoneSelected}",dropOnnet,allowanceString],
+              [f"Create Event Voice Onnet 60s 7pm {current_year}-12-31 on Zone {random.choice(zone)}","Charged","Np Bonus"],
+              [f"Create Event Voice Onnet 27s 1pm {next_year}-01-01 on Zone {random.choice(zone)}","Charged","No Bonus"],
+              [f"Create Event GPRS 1MB RG 50 7pm {next_year}-01-01 on Zone {random.choice(zone)}","Charged","No Bonus"],
+              [f"Create Event Voice PSTN 18s 3pm {next_year}-01-01 on Zone {random.choice(zone)}","Charged","No Bonus"],
+              [f"Remove Offer {offerName}","Offer Removed","No Bonus"],
+              [f"Create Event Voice Onnet 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              [f"Create Event Voice Offnet 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              [f"Create Event Voice PSTN 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              [f"Create Event Voice FWA 60s 1pm on Zone {random.choice(zone)} Rate PP Voice",f"Charged | Should be used rate PP","No Bonus"],
+              ["Check Indira","Checked","No Bonus"]
+       ]
+
+       steps = []
+
+       steps.extend(step1)
+       steps.extend(stepGenerateToReachThreshold1)
+       steps.extend(step2)
+       steps.extend(stepReduceAllowance1)
+       steps.extend(step3)
+       steps.extend(stepReduceAllowance2)
+       steps.extend(step4)
+       steps.extend(stepGenerateToReachThreshold1)
+       steps.extend(step5)
+       return steps
+
+def getStepReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, usedRate, Zone, Threshold, allowanceString):
+       stepsConsume         = []
+       usedRate             = int(usedRate)
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet',
+                     "Param" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Offnet',
+                     "Param" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA',
+                     "Param" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : "Unknown",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50',
+                     "Param" : "Unknown",
+                     "ShowEvent" : False
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250',
+                     "Param" : "Unknown",
+                     "ShowEvent" : False
+              },
+       ]
+
+       while int(usedRate) <= int(Threshold):
+              stepConsume, usedRate       = getStepChargedToReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, dataEvent, usedRate, Zone, Threshold, allowanceString)
+              stepsConsume.append(stepConsume)
+             
+
+       return stepsConsume, usedRate
+
+def getStepChargedToReachThreshold(roundedOnnet, roundedOffnet, rateOnnet, rateOffnet, dataEvent, usedRate, Zone, Threshold, allowanceString):
+       restBonus            = 'No Bonus'
+       roundedOnnetDouble   = int(roundedOnnet)*2
+       roundedOffnetDouble  = int(roundedOffnet)*2
+       rateOnnet            = int(rateOnnet)
+       rateOffnet           = int(rateOffnet)
+ 
+       random_event  = random.choice(dataEvent)
+       event_name    = random_event["Name"]
+       event_param   = random_event["Param"]
+       event_show    = random_event["ShowEvent"]
+
+       if event_param == 'Onnet':
+              eventSeconds         = random.randint(0,roundedOnnetDouble)
+              eventString          = eventSeconds
+              charged              = math.ceil(eventSeconds/int(roundedOnnet))*rateOnnet
+              consumeOrCharged     = f"Charged {charged} IDR"
+       elif event_param == 'Offnet':
+              eventSeconds         = random.randint(0,roundedOffnetDouble)
+              eventString          = eventSeconds
+              charged              = math.ceil(eventSeconds/int(roundedOffnet))*rateOffnet
+              consumeOrCharged     = f"Charged {charged} IDR"
+       else:
+              eventSeconds         = "1"
+              eventString          = eventSeconds
+              consumeOrCharged     = "Charged"
+              charged              = 0
+       
+       timeNumber    = random.randint(0, 23)
+       timeString    = timeNumber
+       if int(timeString) > 12:
+              timeString = str(int(timeString) - 12) + 'PM'
+       else:
+              timeString = str(timeString) + "AM"
+
+       if event_show:
+              eventLabel = f"Create event {eventString} seconds voice {event_name} {timeString} on Zone id {Zone}"
+       else:
+              eventLabel = f"Create event {event_name}"
+       
+       usedRate = int(usedRate)+int(charged)
+
+       if usedRate > int(Threshold):
+              restBonus = allowanceString
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       return step, usedRate
+
+def getStepRecudeQuotaANPS(QuotaVoiceOnnet, QuotaVoiceOffnet, Zone):
+       stepsConsume         = []
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet',
+                     "Param" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Offnet',
+                     "Param" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA',
+                     "Param" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : "Unknown",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50',
+                     "Param" : "Unknown",
+                     "ShowEvent" : False
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250',
+                     "Param" : "Unknown",
+                     "ShowEvent" : False
+              },
+       ]
+
+       for data in dataEvent:
+              stepConsumeVoice, QuotaVoiceOnnet, QuotaVoiceOffnet = getStepConsumeVoiceANPS(QuotaVoiceOnnet, QuotaVoiceOffnet, Zone, data)
+              stepsConsume.append(stepConsumeVoice)
+
+       return stepsConsume, QuotaVoiceOnnet, QuotaVoiceOffnet
+
+def getStepConsumeVoiceANPS(QuotaVoiceOnnet, QuotaVoiceOffnet, Zone, data):
+       random_event  = data
+       event_name    = random_event["Name"]
+       event_param   = random_event["Param"]
+       event_show    = random_event["ShowEvent"]
+       QuotaVoiceOnnet = int(QuotaVoiceOnnet) if QuotaVoiceOnnet != '' else 0
+       QuotaVoiceOffnet = int(QuotaVoiceOffnet) if QuotaVoiceOffnet != '' else 0
+
+       if event_param == 'Onnet':
+              if QuotaVoiceOnnet > 0:
+                     eventSeconds         = round((int(QuotaVoiceOnnet) * 0.5) / 4)
+                     QuotaVoiceOnnet      -= eventSeconds
+                     eventString          = eventSeconds
+                     consumeOrCharged     = "Consume Bonus"
+              else:
+                     eventString          = 1
+                     consumeOrCharged     = "Charged | Should be used rate PP"
+       elif event_param == 'Offnet':
+              if QuotaVoiceOffnet > 0:
+                     eventSeconds         = round((QuotaVoiceOffnet * 0.5) / 4)
+                     QuotaVoiceOffnet     -= eventSeconds
+                     eventString          = eventSeconds
+                     consumeOrCharged     = "Consume Bonus"
+              else:
+                     eventString          = 1
+                     consumeOrCharged     = "Charged | Should be used rate PP"
+       else:
+              eventSeconds         = "1"
+              eventString          = eventSeconds
+              consumeOrCharged     = "Charged | Should be used rate PP"
+       
+       timeNumber    = random.randint(0, 23)
+       timeString    = timeNumber
+       if int(timeString) > 12:
+              timeString = str(int(timeString) - 12) + 'PM'
+       else:
+              timeString = str(timeString) + "AM"
+
+       if event_show:
+              eventLabel = f"Create event {eventString} min voice {event_name} {timeString} on Zone id {Zone}"
+       else:
+              eventLabel = f"Create event {event_name}"
+       
+       if QuotaVoiceOnnet != 0 and QuotaVoiceOffnet != 0:
+              restBonus = f'{QuotaVoiceOnnet} min Tsel, {QuotaVoiceOffnet} All Opr'
+       elif QuotaVoiceOnnet == 0 and QuotaVoiceOffnet != 0:
+              restBonus = f'{QuotaVoiceOffnet} All Opr'
+       elif QuotaVoiceOnnet != 0 and QuotaVoiceOffnet == 0:
+              restBonus = f'{QuotaVoiceOnnet} min Tsel'
+       else:
+              restBonus      = 'No Bonus'
+
+       step = [
+              eventLabel,
+              consumeOrCharged,
+              restBonus
+       ]
+
+       return step, QuotaVoiceOnnet, QuotaVoiceOffnet
+
+def exportExcelTarifPostpaid(eventName, params=None, neededParams = None):
+       wb = Workbook()
+       ws = wb.active
+
+       offerName            = ''
+       offerDesc            = ''
+       PPName               = ''
+       preloadBonus         = ''
+       roundedType          = 'Seconds'
+       roundedTypePP        = 'Seconds'
+       timeUnit             = ''
+       timeUnitOffer        = ''
+       ratePP               = ''
+       rateOffer            = ''
+       rateDescription      = ''
+       chargeCode           = ''
+       serviceFilter        = ''
+       AMDDChargeCode       = ''
+
+       for params in params:
+              if "Offer Name" in params:
+                     offerName = params["Offer Name"]
+              
+              if "Offer Description" in params:
+                     offerDesc = params["Offer Description"]
+              
+              if "Price Plan Name" in params:
+                     PPName = params["Price Plan Name"]
+              
+              if "Preload Bonus" in params:
+                     preloadBonus = params["Preload Bonus"]
+              
+              if "Rounded Type Offer" in params:
+                     dataRoundedType = {
+                            "1" : "Seconds",
+                            "2" : "Minutes"
+                     }
+                     if isinstance(params["Rounded Type Offer"], list):
+                            roundedType = params["Rounded Type Offer"][0]
+                     else:
+                            if params["Rounded Type Offer"].isnumeric():
+                                   roundedType = dataRoundedType[params["Rounded Type Offer"]]
+                            else:
+                                   roundedType = params["Rounded Type Offer"]
+              
+              if "Rounded Type Existing PP" in params:
+                     dataRoundedType = {
+                            "1" : "Seconds",
+                            "2" : "Minutes"
+                     }
+                     if isinstance(params["Rounded Type Existing PP"], list):
+                            roundedTypePP = params["Rounded Type Existing PP"][0]
+                     else:
+                            if params["Rounded Type Existing PP"].isnumeric():
+                                   roundedTypePP = dataRoundedType[params["Rounded Type Existing PP"]]
+                            else:
+                                   roundedTypePP = params["Rounded Type Existing PP"]
+              
+              if "Time Unit Existing PP" in params:
+                     timeUnit = params["Time Unit Existing PP"]
+              
+              if "Time Unit Offer" in params:
+                     timeUnitOffer = params["Time Unit Offer"]
+
+              if "Rate PP" in params:
+                     ratePP = params["Rate PP"]
+              
+              if "Rate Offer" in params:
+                     rateOffer = params["Rate Offer"]
+              
+              if "Charge Code" in params:
+                     chargeCode = params["Charge Code"]
+              
+              if "Service Filter" in params:
+                     serviceFilter = params["Service Filter"]
+              
+              if "AMDD Charge Code" in params:
+                     AMDDChargeCode = params["AMDD Charge Code"]
+              
+              if "Rate Description" in params:
+                     rateDescription = params["Rate Description"]
+                     dataRateDescription = {
+                           "1" : "All Opr",
+                           "2" : "Tsel (Onnet, Onbrand for Loop)",
+                           "3" : "Opr Lain (Include fwa,pstn)",
+                           "4" : "Opr Lain (Exclude fwa,pstn)"
+                     }
+                     if isinstance(params["Rate Description"], list):
+                            rateDescription = params["Rate Description"][0]
+                     else:
+                            if params["Rate Description"].isnumeric():
+                                   rateDescription = dataRateDescription[params["Rate Description"]]
+                            else:
+                                   rateDescription = params["Rate Description"]
+              
+              steps = stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer, chargeCode, serviceFilter, AMDDChargeCode)
+              
+              # Write Header Row
+              header = [f'{eventName} | {offerName}']
+              ws.append(header)
+
+              # Merge Header Cells
+              startColumnIndex = 3  # Example of a dynamic column index
+              startColumn = chr(ord("A") + startColumnIndex)  # Calculate the start column dynamically
+              endColumn = "E"
+              startRow = 1
+              endRow = 1
+              cellRange = f"{startColumn}{startRow}:{endColumn}{endRow}"
+              ws.merge_cells(cellRange)
+
+              headerRow = ['No.', 'Steps:', 'Validation (per step)',	'*889#', 'Result']
+              ws.append(headerRow)
+
+              no = 1
+              for num, step in enumerate(steps, start=1):
+                     if isinstance(step, str):
+                            row = [
+                                   no,
+                                   step,
+                                   "Success",
+                                   "No Bonus",
+                                   "XYZ"
+                            ]
+                            no = no+1
+                     else:
+                            if step is None:
+                                   continue
+                            else:
+                                   if len(step) == 5:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 step[4]
+                                          ]
+                                   elif len(step) == 4:
+                                          row = [
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 step[3],
+                                                 "XYZ"
+                                          ]
+                                   elif len(step) == 3:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 step[2],
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                                   else:
+                                          row = [
+                                                 no,
+                                                 step[0],
+                                                 step[1],
+                                                 "No Bonus",
+                                                 "XYZ"
+                                          ]
+                                          no = no+1
+                     ws.append(row)
+
+       print("Testing Scenario Successfully Generated")
+       
+       # Save Excel File
+       wb.save('Result/Scenario '+str(eventName)+' '+str(offerName)+'.xlsx')
+
+def stepTarifPostpaid(offerName, offerDesc, PPName, preloadBonus, roundedType, ratePP, rateOffer, rateDescription, roundedTypePP, timeUnit, timeUnitOffer, chargeCode, serviceFilter, AMDDChargeCode):
+       steps = []
+       stepConsumePreload   = None
+
+       if preloadBonus != '' and preloadBonus != 0 and preloadBonus != "0":
+              stepConsumePreload   = ["Consume Bonus Preload","Consume Bonus","No Bonus"]
+              preloadBonusString = preloadBonus
+       else:
+              preloadBonusString = "No Bonus"
+
+       ratePP = ratePP.split(",")
+       timeUnit = timeUnit.split(",")
+
+       timeUnitLocal = timeUnit[0]
+       timeUnitNonLocal = timeUnit[1]
+       
+       ratePPForOnnetLocal = ratePP[0].split("/")
+       ratePPOnnetLocal = ratePPForOnnetLocal[0]
+       roundedPPOnnetLocal = ratePPForOnnetLocal[1]
+
+       ratePPForOnnetNonLocal = ratePP[1].split("/")
+       ratePPOnnetNonLocal = ratePPForOnnetNonLocal[0]
+       roundedPPOnnetNonLocal = ratePPForOnnetNonLocal[1]
+
+       ratePPForOffnetLocal = ratePP[2].split("/")
+       ratePPOffnetLocal = ratePPForOffnetLocal[0]
+       roundedPPOffnetLocal = ratePPForOffnetLocal[1]
+
+       ratePPForOffnetNonLocal = ratePP[3].split("/")
+       ratePPOffnetNonLocal = ratePPForOffnetNonLocal[0]
+       roundedPPOffnetNonLocal = ratePPForOffnetNonLocal[1]
+
+       rateOffer = rateOffer.split(",")
+       
+       rateOfferForOnnet = rateOffer[0].split("/")
+       rateOfferOnnet = rateOfferForOnnet[0]
+       roundedOfferOnnet = rateOfferForOnnet[1]
+
+       if len(rateOffer) == 2:
+              rateOfferForOffnet = rateOffer[1].split("/")
+              rateOfferOffnet = rateOfferForOffnet[0]
+              roundedOfferOffnet = rateOfferForOffnet[1]       
+       else:
+              rateOfferOffnet = 0
+              roundedOfferOffnet = 0
+
+       step1 = [
+              [f"Create & Activate new subscriber PP {PPName}","Check active period",preloadBonusString],
+              ["Update Parameter Init Activation Date","Success",preloadBonusString],
+              ["Attach offer New CLS 10000000","Offer Attached",preloadBonusString],
+              stepConsumePreload
+       ]
+
+       stepGenerateEventRatePP = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 20, True)
+
+       step2 = [
+              [f"Attach Offer {offerName}","Offer Attached","No Bonus"],
+              ["Check 888","Same with 888 before attach","No Bonus"],
+              ["Check offer name and offer description",f"{offerName}|{offerDesc}","No Bonus"],
+       ]
+
+       stepGenerateEventRateOffer = generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnetLocal, roundedPPOnnetLocal, ratePPOffnetLocal, roundedPPOffnetLocal, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, timeUnitLocal, timeUnitOffer, 10)
+
+       step3 = [
+              [f"Remove Offer {offerName}", "Offer Removed", "No Bonus"]
+       ]
+
+       stepGenerateEventRatePPLast = generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, 5, False)
+
+       step4 = [
+              ["Check Charge Code  on XML",f"Checked | {chargeCode}","No Bonus"],
+              ["Check Service Filter on XML and RE",f"Checked | {serviceFilter}","No Bonus"],
+              ["Check Indira","Checked","No Bonus"],
+              ["Check AMDD Charge code ",f"Checked | {AMDDChargeCode}","No Bonus"],
+              ["Check Rated Event | Charge before tax 11%","Checked","No Bonus"],
+              ["Check table error on trb1_subs_errs","No Error","No Bonus"],
+              ["Invoicing"," ","No Bonus"]
+       ]
+
+       steps.extend(step1)
+       steps.extend(stepGenerateEventRatePP)
+       steps.extend(step2)
+       steps.extend(stepGenerateEventRateOffer)
+       steps.extend(step3)
+       steps.extend(stepGenerateEventRatePPLast)
+       steps.extend(step4)
+
+       return steps
+
+def generateEventRatePP(roundedTypePP, ratePPOnnetLocal, ratePPOnnetNonLocal, roundedPPOnnetLocal, roundedPPOnnetNonLocal, ratePPOffnetLocal, ratePPOffnetNonLocal, roundedPPOffnetLocal, roundedPPOffnetNonLocal, timeUnitLocal, timeUnitNonLocal, countEvent, randomize):
+       steps = []
+       ratePPOnnetLocal            = int(ratePPOnnetLocal)
+       ratePPOnnetNonLocal         = int(ratePPOnnetNonLocal)
+       roundedPPOnnetLocal         = int(roundedPPOnnetLocal)
+       roundedPPOnnetNonLocal      = int(roundedPPOnnetNonLocal)
+       ratePPOffnetLocal           = int(ratePPOffnetLocal)
+       ratePPOffnetNonLocal        = int(ratePPOffnetNonLocal)
+       roundedPPOffnetLocal        = int(roundedPPOffnetLocal)
+       roundedPPOffnetNonLocal     = int(roundedPPOffnetNonLocal)
+       timeUnitLocal               = int(timeUnitLocal)
+       timeUnitNonLocal            = int(timeUnitNonLocal)
+
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet Local',
+                     "Param" : "Onnet",
+                     "Local" : True,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Onnet Non Local',
+                     "Param" : "Onnet",
+                     "Local" : False,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Offnet Local',
+                     "Param" : "Offnet",
+                     "Local" : True,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Offnet Non Local',
+                     "Param" : "Offnet",
+                     "Local" : False,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA Local',
+                     "Param" : "Offnet",
+                     "Local" : True,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA Non Local',
+                     "Param" : "Offnet",
+                     "Local" : False,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'PSTN Local',
+                     "Param" : "Offnet",
+                     "Local" : True,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'PSTN Non Local',
+                     "Param" : "Offnet",
+                     "Local" : False,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : "Unknown",
+                     "Local" : False,
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50',
+                     "Param" : "Unknown",
+                     "Local" : False,
+                     "ShowEvent" : False
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250',
+                     "Param" : "Unknown",
+                     "Local" : False,
+                     "ShowEvent" : False
+              },
+       ]
+
+       numberLoop    = list(range(0, countEvent))
+       showEvent     = 0
+       for data in numberLoop:
+              if randomize:
+                     random_event  = random.choice(dataEvent)
+                     event_name    = random_event["Name"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
+                     event_local   = random_event["Local"]
+              else:
+                     if showEvent >= len(dataEvent):
+                            showEvent = 0
+                     random_event  = dataEvent[showEvent]
+                     event_name    = random_event["Name"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
+                     event_local   = random_event["Local"]
+                     showEvent     += 1
+
+              if event_param == 'Onnet':
+                     if roundedTypePP == 'Seconds':
+                            eventString          = random.randint(1,300)
+                     else:
+                            eventString          = random.randint(1,10)
+
+                     if event_local:
+                            charged_rate         = round(ratePPOnnetLocal/roundedPPOnnetLocal)
+                            charged              = (math.ceil(eventString/timeUnitLocal)*timeUnitLocal)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitLocal}s"
+                     else:
+                            charged_rate         = round(ratePPOnnetNonLocal/roundedPPOnnetNonLocal)
+                            charged              = (math.ceil(eventString/timeUnitNonLocal)*timeUnitNonLocal)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitNonLocal}s"
+              elif event_param == 'Offnet':
+                     if roundedTypePP == 'Seconds':
+                            eventString          = random.randint(1,300)
+                     else:
+                            eventString          = random.randint(1,10)
+
+                     if event_local:
+                            charged_rate         = round(ratePPOffnetLocal/roundedPPOffnetLocal)
+                            charged              = (math.ceil(eventString/timeUnitLocal)*timeUnitLocal)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitLocal}s"
+                     else:
+                            charged_rate         = round(ratePPOffnetNonLocal/roundedPPOffnetNonLocal)
+                            charged              = (math.ceil(eventString/timeUnitNonLocal)*timeUnitNonLocal)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitNonLocal}s"
+              else:
+                     eventString          = "1"
+                     consumeOrCharged     = "Charged"
+              
+              timeNumber    = random.randint(0, 23)
+              timeString    = timeNumber
+              if int(timeString) > 12:
+                     timeString = str(int(timeString) - 12) + 'PM'
+              else:
+                     timeString = str(timeString) + "AM"
+
+              if event_show:
+                     eventLabel = f"Create event {eventString} {roundedTypePP} voice {event_name} {timeString}"
+              else:
+                     eventLabel = f"Create event {event_name}"
+
+              restBonus      = 'No Bonus'
+
+              step = [
+                     eventLabel,
+                     consumeOrCharged,
+                     restBonus
+              ]
+
+              steps.append(step)
+
+
+       return steps
+
+def generateEventRateOffer(roundedType, roundedTypePP, ratePPOnnet, roundedPPOnnet, ratePPOffnet, roundedPPOffnet, rateOfferOnnet, roundedOfferOnnet, rateOfferOffnet, roundedOfferOffnet, rateDescription, timeUnit, timeUnitOffer, countEvent):
+       steps = []
+       
+       ratePPOnnet          = int(ratePPOnnet)
+       roundedPPOnnet       = int(roundedPPOnnet)
+       ratePPOffnet         = int(ratePPOffnet)
+       roundedPPOffnet      = int(roundedPPOffnet)
+
+       rateOfferOnnet          = int(rateOfferOnnet)
+       roundedOfferOnnet       = int(roundedOfferOnnet)
+       rateOfferOffnet         = int(rateOfferOffnet)
+       roundedOfferOffnet      = int(roundedOfferOffnet)
+
+       timeUnit      = int(timeUnit)
+       timeUnitOffer = int(timeUnitOffer)
+
+       dataEvent            = [
+              {
+                     "Name" : 'Onnet',
+                     "Param" : ["All Opr", "Tsel (Onnet, Onbrand for Loop)"],
+                     "Type" : "Onnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'Offnet',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)", "Opr Lain (Exclude fwa,pstn)"],
+                     "Type" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'FWA',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"],
+                     "Type" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'PSTN',
+                     "Param" : ["All Opr", "Opr Lain (Include fwa,pstn)"],
+                     "Type" : "Offnet",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'International',
+                     "Param" : [],
+                     "Type" : "Unknown",
+                     "ShowEvent" : True
+              },
+              {
+                     "Name" : 'GPRS 1MB RG 50 ',
+                     "Param" : [],
+                     "Type" : "Unknown",
+                     "ShowEvent" : False
+              },
+              {
+                     "Name" : 'Direct Debit bank_digi_250 ',
+                     "Param" : [],
+                     "Type" : "Unknown",
+                     "ShowEvent" : False
+              },
+       ]
+
+       if rateDescription == "Tsel (Onnet, Onbrand for Loop)":
+              important_data_names = ['Onnet']
+       elif rateDescription == "Opr Lain (Include fwa,pstn)":
+              important_data_names = ['Offnet', 'FWA', 'PSTN']
+       elif rateDescription == "Opr Lain (Exclude fwa,pstn)":
+              important_data_names = ['Offnet']
+       elif rateDescription == "All Opr":
+              important_data_names = ['Onnet', 'Offnet', 'FWA', 'PSTN']
+       else:
+              important_data_names = []
+       
+       if len(important_data_names) > 0:
+              important_data = [d for d in dataEvent if d["Name"] in important_data_names]
+              selected_data = important_data.copy()
+              non_important_data = [d for d in dataEvent if d not in important_data]
+              selected_data.extend(random.sample(non_important_data, min(countEvent - len(important_data), len(non_important_data))))
+              remaining_count = max(0, countEvent - len(selected_data))
+              selected_data.extend(random.choices(important_data + non_important_data, k=remaining_count))
+       else:
+              selected_data = []
+
+       numberLoop = list(range(0, countEvent))
+       no = 0
+       for data in numberLoop:
+
+              if len(selected_data) > 0:
+                     if no >= len(selected_data):
+                            no = 0
+                     random_event  = selected_data[no]
+                     event_name    = random_event["Name"]
+                     event_type    = random_event["Type"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
+                     no            += 1
+              else:
+                     random_event  = random.choice(dataEvent)
+                     event_name    = random_event["Name"]
+                     event_type    = random_event["Type"]
+                     event_param   = random_event["Param"]
+                     event_show    = random_event["ShowEvent"]
+
+              if event_type == 'Onnet':
+                     if roundedType == 'Seconds':
+                            eventString          = random.randint(1,300)
+                     else:
+                            eventString          = random.randint(1,10)
+                     
+                     if rateDescription in event_param:
+                            charged_rate         = round(rateOfferOnnet/roundedOfferOnnet)
+                            charged              = (math.ceil(eventString/timeUnitOffer)*timeUnitOffer)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitOffer}s"
+                     else:
+                            if roundedTypePP == 'Seconds':
+                                   eventString          = random.randint(1,300)
+                            else:
+                                   eventString          = random.randint(1,10)
+
+                            charged_rate         = round(ratePPOnnet/roundedPPOnnet)
+                            charged              = (math.ceil(eventString/timeUnit)*timeUnit)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnit}s"
+
+                     
+
+              elif event_type == 'Offnet':
+                     if roundedType == 'Seconds':
+                            eventString          = random.randint(1,300)
+                     else:
+                            eventString          = random.randint(1,10)
+
+                     if rateDescription in event_param:
+                            charged_rate         = round(rateOfferOffnet/roundedOfferOffnet)
+                            charged              = (math.ceil(eventString/timeUnitOffer)*timeUnitOffer)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnitOffer}s"
+                     else:
+                            if roundedTypePP == 'Seconds':
+                                   eventString          = random.randint(1,300)
+                            else:
+                                   eventString          = random.randint(1,10)
+
+                            charged_rate         = round(ratePPOffnet/roundedPPOffnet)
+                            charged              = (math.ceil(eventString/timeUnit)*timeUnit)*charged_rate
+                            consumeOrCharged     = f"Charged {charged} IDR | Rounded should be {timeUnit}s"
+                     
+              else:
+                     eventString          = "1"
+                     consumeOrCharged     = "Charged"
+              
+              timeNumber    = random.randint(0, 23)
+              timeString    = timeNumber
+              if int(timeString) > 12:
+                     timeString = str(int(timeString) - 12) + 'PM'
+              else:
+                     timeString = str(timeString) + "AM"
+
+              if event_show:
+                     eventLabel = f"Create event {eventString} {roundedType} voice {event_name} {timeString}"
+              else:
+                     eventLabel = f"Create event {event_name}"
+
+              restBonus      = 'No Bonus'
+
+              step = [
+                     eventLabel,
+                     consumeOrCharged,
+                     restBonus
+              ]
+
+              steps.append(step)
+
+
+       return steps

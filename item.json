@@ -1079,5 +1079,595 @@
                      "determiningParam"   : "Offer Type"
               }
        }
+  },
+  {
+       "ItemName" : "Offer Roaming",
+       "EventName" : "Offer Roaming",
+       "FunctionName" : "exportExcelOfferRoaming",
+       "Params": {
+              "Card Type" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Postpaid",
+                            "Prepaid"
+                     ]
+              },
+              "Offer Type Prepaid" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Offer Fix",
+                            "Offer Flexible"
+                     ],
+                     "conditions"  : {
+                            "Card Type" : ["Prepaid"]
+                     },
+                     "determiningParam" : ["Card Type"] 
+              },
+              "Offer Type Postpaid" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Offer Fix",
+                            "Offer Flexible"
+                     ],
+                     "conditions"  : {
+                            "Card Type" : ["Postpaid"]
+                     },
+                     "determiningParam" : ["Card Type"] 
+              },
+              "Offer Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "true",
+                     "dataType"           : "array",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Price Plan Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Preload Bonus" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
+              },
+              "Credit Limit Service" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : {
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Postpaid"]
+              },
+              "Eligible" : {
+                     "type"               : "option",
+                     "multiple"           : "false",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "value"              : [
+                                                 "Voice",
+                                                 "SMS",
+                                                 "Voice & SMS"
+                                          ],
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Scenario" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Please input scenario included by number : \\n Case 1 (Negatif Case: Attach offer without parameter) \\n Case 2 (Negatif Case: Attach offer wrong UOM) \\n Case 3 (Negatif Case: Attach offer backdate) \\n Case 4 (Positif Case: RC Indicator -1 (Historycal)) \\n Case 5 (Positif Case: RC Indicator -1 (Non Historycal)) \\n Case 6 (Positif Case: RC Indicator 0 (Historycal)) \\n Case 7 (Positif Case: RC Indicator 0 (Non Historycal)) \\n Case 8 (Positif Case: RC Indicator more than 1 (Historycal)) \\n Case 9 (Positif Case: RC Indicator more than 1 (Non Historycal)) \\n Case 10 (Multiple 6x) \\n Case 11 (All Case: 1 - 10) \\n Note : Please use comma (,) if want to use more than 1 scenario",
+                     "conditions"         : {
+                            "Offer Type Postpaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Postpaid"]
+              },
+              "RC Indicator" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Just fill in if you choose scenario 8 & 9, if not please input 0",
+                     "conditions"         : {
+                            "Offer Type Postpaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Postpaid"]
+              },
+              "Quota" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice (in minutes);SMS",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Bonus Description" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "MO Eligible" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "MT Eligible" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1 [Ex:Other;Local;Home]",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Vascode (for positif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Vascode (for negatif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Country (for positif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Country (for negatif test case)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Use ; as delimiter if the country more than 1",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix", "Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "in days",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Start Date Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Validity End Date" :{
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023 | Please give 3 date for RC Indicator -1,0,Based on input and separate by ;",
+                     "conditions"         : {
+                            "Offer Type Postpaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Postpaid"]
+              },
+              "End Date Validity" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
+              },
+              "End Date Validity For More Than 60 Days" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
+              },
+              "End Date Validity For Back Date" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Format YYYYmmdd [Ex:20231231] -> 31/12/2023",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Item ID" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice;SMS",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid"]
+              },
+              "Allowance" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice(in seconds);SMS",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Flexible"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              },
+              "Timeband" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "24 hours format [ex:00-23]",
+                     "conditions"         : {
+                            "Offer Type Prepaid" : ["Offer Fix", "Offer Flexible"],
+                            "Offer Type Postpaid" : ["Offer Fix"]
+                     },
+                     "determiningParam"   : ["Offer Type Prepaid", "Offer Type Postpaid"]
+              }
+       }
+  },
+  {
+       "ItemName" : "ANPS",
+       "EventName" : "ANPS",
+       "FunctionName" : "exportExcelANPS",
+       "Params": {
+              "Offer Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "true",
+                     "dataType"           : "array"
+              },
+              "Price Plan Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Preload Bonus" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "X get Y PP (X,Bonus Description,Y)" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Ex : 80s,[Onnet/Offnet/All Opr],50 Min Tsel"
+              },
+              "Wording add offer" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Wording reach threshold" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Drop Call Onnet" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Y/N"
+              },
+              "Drop Call Offnet" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Y/N"
+              },
+              "Threshold" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Zone" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Please use comma if zone more than 1"
+              },
+              "Rate Offer" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Onnet/Rounded,Offnet/Rounded"
+              },
+              "Y Allowance" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Voice Onnet,Voice Offnet"
+              }
+       }
+  },
+  {
+       "ItemName" : "Offer Tarif Postpaid",
+       "EventName" : "Offer Tarif Postpaid",
+       "FunctionName" : "exportExcelTarifPostpaid",
+       "Params": {
+              "Offer Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "true",
+                     "dataType"           : "array"
+              },
+              "Offer Description" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Price Plan Name" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Preload Bonus" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Time Unit Existing PP" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Local,Non Local"
+              },
+              "Rate PP" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Onnet Local/Rounded,Onnet Non Local/Rounded,Offnet Local/Rounded,Offnet Non Local/Rounded"
+              },
+              "Time Unit Offer" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Rate Offer" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array",
+                     "details"            : "Onnet/Rounded,Offnet/Rounded"
+              },
+              "Rate Description" : {
+                     "type"               : "option",
+                     "value"              : [
+                                                 "All Opr",
+                                                 "Tsel (Onnet, Onbrand for Loop)",
+                                                 "Opr Lain (Include fwa,pstn)",
+                                                 "Opr Lain (Exclude fwa,pstn)"
+                                          ],
+                     "multiple"           : "false",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Charge Code" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "Service Filter" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              },
+              "AMDD Charge Code" : {
+                     "type"               : "input",
+                     "value"              : [],
+                     "multiple"           : "true",
+                     "delimiter"          : "|",
+                     "canOthers"          : "false",
+                     "dataType"           : "array"
+              }
+       }
   }
 ]
