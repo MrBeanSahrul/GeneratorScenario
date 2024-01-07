@@ -531,7 +531,7 @@
                        "canOthers" : "false",
                        "dataType" : "array"
                 },
-                "Service Filter" : {
+                "AMDD Charge Code" : {
                        "type" : "input",
                        "value" : [
                        ],
