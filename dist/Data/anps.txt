@@ -1,0 +1,1 @@
+Offer Name|Kartu Flexi|3 MB Data|80s,50 Min Tsel|Wording add offer|Wording reach threshold|Y|N|3000|1,2,3|750/15,750/15|2000000

@@ -1,0 +1,1 @@
+Offer Name|Price Plan Name|1000000|Voice & SMS|11|5|Roamax|Home;Local;Other|Home|Vas_Pos_1;Vas_Pos_2|Vas_Neg_1|Malaysia;Singapura;Thailand;Timur Leste|USA;UK;UEA|20231001|20231231;20231231;20231231|20230901|12000;500
