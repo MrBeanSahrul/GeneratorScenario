@@ -2762,7 +2762,7 @@ def exportExcelUpdateAMDD(eventName, params=None, neededParams = None):
                      ["Invoicing","Success","No Bonus"]
               ]
 
-              allSteps = stepsCaseAfter
+              allSteps = stepsCaseBefore + stepsCaseAfter
 
               # Write Header Row
               header = [f'{offerID} - {offerName} ']
