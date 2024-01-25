@@ -543,310 +543,308 @@
          }
   },
   {
-    "ItemName" : "New PP",
-    "EventName" : "New PP",
-    "FunctionName" : "exportExcelNewPP",
-    "Params": {
-      "Type": {
-              "type" : "option",
-              "multiple" :"false",
-              "canOthers" : "false",
-              "dataType" : "array",
-              "value" : [
-                    "Prepaid",
-                    "Postpaid"
-              ]
-      },
-      "PP Name" : {
-            "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "false",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array"
-      },
-      "Case (Prepaid)" : {
-        "type" : "option",
-        "multiple" :"false",
-        "canOthers" : "false",
-        "dataType" : "array",
-        "value" : [
-              "Preload Bonus",
-              "Tarif Voice",
-              "Tarif SMS",
-              "GPRS & Landing Page",
-              "Split Recharge",
-              "Attach offer & diameter",
-              "Change PP",
-              "PAYU Capped GPRSROAM"
-        ],
-        "conditions"  : ["Prepaid"],
-        "determiningParam" : "Type"
-      },
-      "Case (Postpaid)" : {
-              "type" : "option",
-              "multiple" :"false",
-              "canOthers" : "false",
-              "dataType" : "array",
-              "value" : [
-                    "Tarif Voice",
-                    "Tarif SMS",
-                    "GPRS & Landing Page",
-                    "PAYU Capped GPRSROAM",
-                    "Attach offer RC, OC, and Flexible Offer",
-                    "Change PP",
-                    "Offline Event"
-              ],
-              "conditions"  : ["Postpaid"],
-              "determiningParam" : "Type"
-      },
-      "Card Type" : {
-        "type"      : "option",
-        "multiple"  :"false",
-        "canOthers" : "false",
-        "dataType"  : "array",
-        "value"     : [
-          "Telkomsel Prabayar",
-          "Simpati/Loop",
-          "KartuAs"
-        ],
-        "conditions": {
-          "Case (Prepaid)" : ["GPRS & Landing Page"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Rounded (Time Unit)" : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "true",
-        "dataType"    : "array",
-        "conditions"  : {
-          "Case (Postpaid)" : ["Tarif Voice"]
-        },
-        "determiningParam" : ["Case (Postpaid)"] 
-      },
-      "Rounded/Unit" : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "false",
-        "dataType"    : "array",
-        "details"     : "sample [20/kb]",
-        "conditions"  : {
-          "Case (Prepaid)" : ["GPRS & Landing Page"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Rate Onnet" : {
-            "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Postpaid)" : ["Tarif Voice","Tarif SMS"],
-                    "Case (Prepaid)"  : ["Tarif Voice"]
+       "ItemName" : "New PP",
+       "EventName" : "New PP",
+       "FunctionName" : "exportExcelNewPP",
+       "Params": {
+              "Type": {
+                            "type" : "option",
+                            "multiple" :"false",
+                            "canOthers" : "false",
+                            "dataType" : "array",
+                            "value" : [
+                            "Prepaid",
+                            "Postpaid"
+                            ]
               },
-              "determiningParam" : ["Case (Postpaid)","Case (Prepaid)"] 
-      },
-      "Rate Offnet" : {
-            "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Postpaid)" : ["Tarif Voice","Tarif SMS"],
-                    "Case (Prepaid)"  : ["Tarif Voice"]
+              "PP Name" : {
+                     "type"        : "input",
+                            "value"       : [
+                            ],
+                            "multiple"    : "false",
+                            "delimiter"   : "|",
+                            "canOthers"   : "false",
+                            "dataType"    : "array"
               },
-              "determiningParam" : ["Case (Postpaid)"] 
-      },
-      "Rate Lokal PSTN" : {
-            "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Postpaid)" : ["Tarif Voice"]
+              "Case (Prepaid)" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                            "Attach offer & diameter",
+                            "Preload Bonus",
+                            "PAYU Capped GPRSROAM",
+                            "Split Recharge",
+                            "Change PP",
+                            "GPRS & Landing Page"
+                     ],
+                     "conditions"  : ["Prepaid"],
+                     "determiningParam" : "Type"
               },
-              "determiningParam" : ["Case (Postpaid)"] 
-      },
-      "PP To" : {
-            "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Postpaid)" : ["Change PP"],
-                    "Case (Prepaid)" : ["Change PP"]
+              "Case (Postpaid)" : {
+                     "type" : "option",
+                     "multiple" :"false",
+                     "canOthers" : "false",
+                     "dataType" : "array",
+                     "value" : [
+                     "Tarif Voice",
+                     "Tarif SMS",
+                     "GPRS & Landing Page",
+                     "PAYU Capped GPRSROAM",
+                     "Attach offer RC, OC, and Flexible Offer",
+                     "Change PP",
+                     "Offline Event"
+                     ],
+                     "conditions"  : ["Postpaid"],
+                     "determiningParam" : "Type"
               },
-              "determiningParam" : ["Case (Postpaid)", "Case (Prepaid)"] 
-      },
-      "Unit" : {
-            "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Postpaid)" : ["GPRS & Landing Page"]
+              "Card Type" : {
+                     "type"      : "option",
+                     "multiple"  :"false",
+                     "canOthers" : "false",
+                     "dataType"  : "array",
+                     "value"     : [
+                     "Telkomsel Prabayar",
+                     "Simpati/Loop",
+                     "KartuAs"
+                     ],
+                     "conditions": {
+                     "Case (Prepaid)" : ["GPRS & Landing Page"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
               },
-              "determiningParam" : ["Case (Postpaid)"] 
-      },
-      "Rate" : {
-            "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "details"     : "Per Unit/Per Rounded",
-              "conditions"  : {
-                    "Case (Postpaid)" : ["GPRS & Landing Page"],
-                    "Case (Prepaid)" : ["GPRS & Landing Page"]
+              "Rounded (Time Unit)" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "true",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Postpaid)" : ["Tarif Voice"]
+                     },
+                     "determiningParam" : ["Case (Postpaid)"] 
               },
-              "determiningParam" : ["Case (Postpaid)", "Case (Prepaid)"] 
-      },
-      "Welcome Message"  : {
-              "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Prepaid)" : ["Preload Bonus","Split Recharge"]
+              "Rounded/Unit" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "details"     : "sample [20/kb]",
+                     "conditions"  : {
+                     "Case (Prepaid)" : ["GPRS & Landing Page"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
               },
-              "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Preload Bonus"  : {
-              "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Prepaid)" : ["Preload Bonus", "Change PP"]
+              "Rate Onnet" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Postpaid)" : ["Tarif Voice","Tarif SMS"],
+                     "Case (Prepaid)"  : ["Tarif Voice"]
+                     },
+                     "determiningParam" : ["Case (Postpaid)","Case (Prepaid)"] 
               },
-              "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Preload Balance"  : {
-              "type"        : "input",
-              "value"       : [
-              ],
-              "multiple"    : "true",
-              "delimiter"   : "|",
-              "canOthers"   : "false",
-              "dataType"    : "array",
-              "conditions"  : {
-                    "Case (Prepaid)" : ["Preload Bonus"]
+              "Rate Offnet" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Postpaid)" : ["Tarif Voice","Tarif SMS"],
+                     "Case (Prepaid)"  : ["Tarif Voice"]
+                     },
+                     "determiningParam" : ["Case (Postpaid)"] 
               },
-              "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Validity"  : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "false",
-        "dataType"    : "array",
-        "conditions"  : {
-              "Case (Prepaid)" : ["Preload Bonus"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Preload Bonus (For PP TO)"  : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "false",
-        "dataType"    : "array",
-        "conditions"  : {
-              "Case (Prepaid)" : ["Preload Bonus", "Change PP"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Rate Per Zone" : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "false",
-        "dataType"    : "array",
-        "details"     : "A;B;C;D;E;F;G;H;Special",
-        "conditions"  : {
-              "Case (Prepaid)" : ["Tarif SMS"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Landing Page" : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "false",
-        "dataType"    : "array",
-        "details"     : "limit;error_code,limit;error_code",
-        "conditions"  : {
-              "Case (Prepaid)" : ["GPRS & Landing Page"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Rate Nol" : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "false",
-        "dataType"    : "array",
-        "conditions"  : {
-              "Case (Prepaid)" : ["GPRS & Landing Page"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      },
-      "Remaining Allowance" : {
-        "type"        : "input",
-        "value"       : [
-        ],
-        "multiple"    : "true",
-        "delimiter"   : "|",
-        "canOthers"   : "false",
-        "dataType"    : "array",
-        "details"     : "allowance;unit;error_code",
-        "conditions"  : {
-              "Case (Prepaid)" : ["GPRS & Landing Page"]
-        },
-        "determiningParam" : ["Case (Prepaid)"] 
-      }
-    }
+              "Rate Lokal PSTN" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Postpaid)" : ["Tarif Voice"]
+                     },
+                     "determiningParam" : ["Case (Postpaid)"] 
+              },
+              "PP To" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Postpaid)" : ["Change PP"],
+                     "Case (Prepaid)" : ["Change PP"]
+                     },
+                     "determiningParam" : ["Case (Postpaid)", "Case (Prepaid)"] 
+              },
+              "Unit" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Postpaid)" : ["GPRS & Landing Page"]
+                     },
+                     "determiningParam" : ["Case (Postpaid)"] 
+              },
+              "Rate" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "details"     : "Per Unit/Per Rounded",
+                     "conditions"  : {
+                     "Case (Postpaid)" : ["GPRS & Landing Page"],
+                     "Case (Prepaid)" : ["GPRS & Landing Page"]
+                     },
+                     "determiningParam" : ["Case (Postpaid)", "Case (Prepaid)"] 
+              },
+              "Welcome Message"  : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Prepaid)" : ["Preload Bonus","Split Recharge"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Preload Bonus"  : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Prepaid)" : ["Preload Bonus", "Change PP"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Preload Balance"  : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                     "Case (Prepaid)" : ["Preload Bonus"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Validity"  : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                            "Case (Prepaid)" : ["Preload Bonus"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Preload Bonus (For PP TO)"  : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                            "Case (Prepaid)" : ["Preload Bonus", "Change PP"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Rate Per Zone" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "details"     : "A;B;C;D;E;F;G;H;Special",
+                     "conditions"  : {
+                            "Case (Prepaid)" : ["Tarif SMS"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Landing Page" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "details"     : "limit;error_code,limit;error_code",
+                     "conditions"  : {
+                            "Case (Prepaid)" : ["GPRS & Landing Page"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Rate Nol" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "conditions"  : {
+                            "Case (Prepaid)" : ["GPRS & Landing Page"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              },
+              "Remaining Allowance" : {
+                     "type"        : "input",
+                     "value"       : [
+                     ],
+                     "multiple"    : "true",
+                     "delimiter"   : "|",
+                     "canOthers"   : "false",
+                     "dataType"    : "array",
+                     "details"     : "allowance;unit;error_code",
+                     "conditions"  : {
+                            "Case (Prepaid)" : ["GPRS & Landing Page"]
+                     },
+                     "determiningParam" : ["Case (Prepaid)"] 
+              }
+       }
   },
   {
        "ItemName" : "Prepaid Offer",
